@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Siris Realty Group – Real Estate With Common Sense | Glen Allen, Richmond, Henrico VA</title>
+<meta name="description" content="Siris Realty Group – Expert real estate services in Glen Allen, Richmond & Henrico VA. Buy, sell or manage property with Vijay Kanth. 804-426-6495.">
+<meta name="keywords" content="real estate Glen Allen VA, buy home Richmond, sell home Henrico, property management Virginia, Vijay Kanth realtor">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #050d1f;
+    --navy-mid: #0b1530;
+    --navy-card: #0e1a38;
+    --gold: #c8a84b;
+    --gold-light: #e2c97a;
+    --gold-dim: #a8893a;
+    --red: #b83025;
+    --white: #f5f3ee;
+    --off-white: #eae6db;
+    --text: #0f1626;
+    --muted: #5a6275;
+    --card-bg: #ffffff;
+    --border: rgba(200,168,75,0.28);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5%;
+    height: 92px;
+    background: rgba(5,13,31,0.97);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    transition: all .3s;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+  .nav-logo-icon {
+    width: 52px; height: 52px; border-radius: 50%;
+    /* background: var(--gold); */
+    background-image: url(https://sirisrealtygroup.com/wp-content/uploads/2024/04/logo50x50.png); background-size: 100%;
+    background-repeat: no-repeat; background-position: center;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif; font-weight: 900; color: var(--navy); font-size: 22px;
+  }
+  .nav-logo-text { font-family: 'Playfair Display', serif; color: #fff; font-size: 28px; font-weight: 700; line-height: 1.5; }
+  .nav-logo-sub { font-size: 10px; color: var(--gold); font-family: 'DM Sans', sans-serif; letter-spacing: 3px; font-weight: 500; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 36px; align-items: center; }
+  .nav-links a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px; letter-spacing: 0.5px; font-weight: 500; transition: color .2s; }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    background: var(--gold); color: var(--navy); padding: 10px 22px;
+    border-radius: 4px; font-weight: 700; font-size: 13px; text-decoration: none; letter-spacing: 0.5px;
+    transition: all .2s;
+  }
+  .nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: #fff; transition: all .3s; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    background: linear-gradient(140deg, #050d1f 0%, #091428 45%, #071224 100%);
+    position: relative; overflow: hidden;
+    display: flex; align-items: center;
+    padding: 120px 5% 60px;
+  }
+  .hero-bg-pattern {
+    position: absolute; inset: 0; opacity: 0.04;
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(201,168,76,1) 60px, rgba(201,168,76,1) 61px),
+                      repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(201,168,76,1) 60px, rgba(201,168,76,1) 61px);
+  }
+  .hero-glow {
+    position: absolute; width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,0.15) 0%, transparent 70%);
+    top: -100px; right: -100px; pointer-events: none;
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 620px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(201,168,76,0.15); border: 1px solid var(--gold);
+    padding: 6px 16px; border-radius: 100px; margin-bottom: 28px;
+  }
+  .hero-badge span { font-size: 11px; color: var(--gold); letter-spacing: 2px; font-weight: 600; text-transform: uppercase; }
+  .hero-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+  
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(38px, 5.5vw, 72px);
+    color: #fff; font-weight: 900; line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  .hero-title em { color: var(--gold); font-style: normal; }
+  .hero-sub { font-size: 17px; color: rgba(255,255,255,0.7); line-height: 1.7; margin-bottom: 40px; max-width: 480px; }
+  .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 56px; }
+  .btn-primary {
+    background: var(--gold); color: var(--navy); padding: 15px 32px;
+    border-radius: 5px; font-weight: 700; font-size: 14px; text-decoration: none;
+    letter-spacing: 0.5px; transition: all .25s; display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,0.35); }
+  .btn-ghost {
+    border: 1.5px solid rgba(255,255,255,0.4); color: #fff; padding: 14px 32px;
+    border-radius: 5px; font-weight: 600; font-size: 14px; text-decoration: none;
+    transition: all .25s; display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+  .hero-stats { display: flex; gap: 40px; }
+  .stat { }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 900; color: var(--gold); line-height: 1; }
+  .stat-label { font-size: 11px; color: rgba(255,255,255,0.55); letter-spacing: 1px; margin-top: 4px; text-transform: uppercase; }
+
+  .hero-agent-card {
+    position: absolute; right: 5%; bottom: 60px; z-index: 2;
+    background: rgba(255,255,255,0.06); backdrop-filter: blur(20px);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 16px; padding: 28px 32px;
+    animation: floatCard 4s ease-in-out infinite;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    min-width: 240px;
+  }
+  @keyframes floatCard { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  .agent-avatar {
+    width: 90px; height: 90px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900;
+    color: var(--navy); border: 3px solid rgba(255,255,255,0.2);
+  }
+  .agent-name { font-family: 'Playfair Display', serif; color: #fff; font-size: 18px; font-weight: 700; text-align: center; }
+  .agent-title-tag { font-size: 11px; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; text-align: center; }
+  .agent-phone {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--gold); color: var(--navy);
+    padding: 10px 18px; border-radius: 100px; text-decoration: none;
+    font-weight: 700; font-size: 13px; margin-top: 4px;
+    transition: all .2s;
+  }
+  .agent-phone:hover { background: var(--gold-light); transform: scale(1.03); }
+
+  /* ── AI AGENT WIDGET ── */
+  #agent-section {
+    background: var(--navy); padding: 80px 5%;
+    position: relative; overflow: hidden;
+  }
+  .agent-bg { position: absolute; inset: 0; background: linear-gradient(135deg, #050d1f, #071224); }
+  .agent-container { position: relative; z-index: 2; max-width: 900px; margin: 0 auto; text-align: center; }
+  .section-eyebrow { font-size: 11px; color: var(--gold); letter-spacing: 3px; text-transform: uppercase; font-weight: 600; margin-bottom: 16px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(28px, 4vw, 48px); color: #fff; font-weight: 900; margin-bottom: 16px; }
+  .section-sub { font-size: 16px; color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 48px; }
+
+  .ai-chat-box {
+    background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+    border-radius: 20px; padding: 32px;
+    text-align: left; max-width: 680px; margin: 0 auto;
+  }
+  .chat-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+  .chat-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; font-weight: 900; color: var(--navy); font-size: 16px; font-family: 'Playfair Display', serif; }
+  .chat-name { font-weight: 700; color: #fff; font-size: 14px; }
+  .chat-status { font-size: 11px; color: #4ade80; display: flex; align-items: center; gap: 4px; }
+  .chat-status::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #4ade80; }
+
+  .chat-messages { min-height: 180px; max-height: 280px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
+  .msg { display: flex; flex-direction: column; max-width: 85%; }
+  .msg.agent { align-self: flex-start; }
+  .msg.user { align-self: flex-end; }
+  .msg-bubble {
+    padding: 12px 16px; border-radius: 12px; font-size: 14px; line-height: 1.5;
+  }
+  .msg.agent .msg-bubble { background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.2); color: rgba(255,255,255,0.9); border-bottom-left-radius: 3px; }
+  .msg.user .msg-bubble { background: var(--gold); color: var(--navy); font-weight: 600; border-bottom-right-radius: 3px; }
+  .msg-time { font-size: 10px; color: rgba(255,255,255,0.35); margin-top: 4px; padding: 0 4px; }
+  .msg.user .msg-time { text-align: right; }
+
+  .typing-indicator { display: flex; gap: 5px; align-items: center; padding: 12px 16px; background: rgba(201,168,76,0.08); border-radius: 12px; width: fit-content; }
+  .typing-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); opacity: .4; animation: typingBounce 1.2s infinite; }
+  .typing-dot:nth-child(2) { animation-delay: .2s; }
+  .typing-dot:nth-child(3) { animation-delay: .4s; }
+  @keyframes typingBounce { 0%,60%,100%{transform:translateY(0);opacity:.4} 30%{transform:translateY(-6px);opacity:1} }
+
+  .chat-quick-replies { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .quick-reply {
+    background: transparent; border: 1px solid rgba(201,168,76,0.4); color: var(--gold);
+    padding: 8px 16px; border-radius: 100px; font-size: 12px; cursor: pointer;
+    transition: all .2s; font-family: 'DM Sans', sans-serif; font-weight: 500;
+  }
+  .quick-reply:hover { background: var(--gold); color: var(--navy); }
+
+  .chat-input-row { display: flex; gap: 10px; }
+  .chat-input {
+    flex: 1; background: rgba(255,255,255,0.08); border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 10px; padding: 12px 16px; color: #fff; font-family: 'DM Sans', sans-serif; font-size: 14px;
+    outline: none;
+  }
+  .chat-input::placeholder { color: rgba(255,255,255,0.35); }
+  .chat-input:focus { border-color: var(--gold); }
+  .chat-send {
+    background: var(--gold); border: none; border-radius: 10px; padding: 12px 18px;
+    cursor: pointer; color: var(--navy); font-size: 18px; transition: all .2s;
+  }
+  .chat-send:hover { background: var(--gold-light); transform: scale(1.05); }
+
+  /* ── SERVICES ── */
+  #services { padding: 100px 5%; background: var(--white); }
+  .section-header { text-align: center; margin-bottom: 64px; }
+  .section-header .section-title { color: var(--text); }
+  .section-header .section-sub { color: var(--muted); }
+
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; max-width: 1200px; margin: 0 auto; }
+  .service-card {
+    background: var(--card-bg); border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 16px; padding: 40px 32px;
+    transition: all .3s; cursor: pointer; position: relative; overflow: hidden;
+  }
+  .service-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    transform: scaleX(0); transition: transform .3s; transform-origin: left;
+  }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.1); border-color: rgba(201,168,76,0.3); }
+  .service-icon { font-size: 40px; margin-bottom: 20px; }
+  .service-name { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
+  .service-desc { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 24px; }
+  .service-features { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+  .service-features li { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text); }
+  .service-features li::before { content: '✓'; color: var(--gold); font-weight: 700; }
+  .service-link { font-size: 13px; color: var(--navy); font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; letter-spacing: 0.5px; }
+  .service-link:hover { color: var(--gold); }
+
+  /* ── PROPERTIES ── */
+  #properties { padding: 100px 5%; background: #f0ede5; }
+  .prop-filters { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 48px; }
+  .filter-btn {
+    background: #fff; border: 1.5px solid rgba(0,0,0,0.1); padding: 10px 24px;
+    border-radius: 100px; font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: all .2s; font-family: 'DM Sans', sans-serif; color: var(--muted);
+  }
+  .filter-btn.active, .filter-btn:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+  .props-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1200px; margin: 0 auto 48px; }
+  .prop-card {
+    background: #fff; border-radius: 16px; overflow: hidden;
+    transition: all .3s; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .prop-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.12); }
+  .prop-img {
+    height: 200px; position: relative; overflow: hidden;
+    background: linear-gradient(135deg, #1a2f6b, #0d3b6e);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 60px;
+  }
+  .prop-badge {
+    position: absolute; top: 14px; left: 14px;
+    background: var(--gold); color: var(--navy); padding: 4px 12px;
+    border-radius: 100px; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .prop-badge.rent { background: var(--red); color: #fff; }
+  .prop-badge.sold { background: #6b7280; color: #fff; }
+  .prop-body { padding: 20px; }
+  .prop-price { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; color: var(--navy); margin-bottom: 4px; }
+  .prop-address { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+  .prop-stats { display: flex; gap: 16px; padding-top: 14px; border-top: 1px solid rgba(0,0,0,0.07); }
+  .prop-stat { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--muted); font-weight: 500; }
+
+  .view-all { display: flex; justify-content: center; }
+  .view-all a { margin: 0 24px; color:var(--white); background-color: var(--navy-mid); }
+
+  /* ── WHY US ── */
+  #why { padding: 100px 5%; background: #050d1f; position: relative; overflow: hidden; }
+  .why-bg-circle {
+    position: absolute; width: 700px; height: 700px; border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.08); top: 50%; left: 50%; transform: translate(-50%,-50%);
+    pointer-events: none;
+  }
+  .why-bg-circle-2 { width: 500px; height: 500px; border-color: rgba(201,168,76,0.05); }
+  .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; max-width: 1100px; margin: 0 auto; position: relative; z-index: 2; }
+  .why-left .section-title { color: #fff; text-align: left; }
+  .why-left .section-eyebrow { text-align: left; }
+  .why-left .section-sub { text-align: left; margin-bottom: 40px; }
+
+  .why-features { display: flex; flex-direction: column; gap: 24px; }
+  .why-feature { display: flex; gap: 16px; align-items: flex-start; }
+  .why-feature-icon { width: 44px; height: 44px; border-radius: 10px; background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.2); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .why-feature-body h4 { font-weight: 700; color: #fff; margin-bottom: 4px; font-size: 15px; }
+  .why-feature-body p { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.6; }
+
+  .why-right { display: flex; flex-direction: column; gap: 16px; }
+  .why-stat-card {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 14px; padding: 28px 24px; display: flex; align-items: center; gap: 20px;
+    transition: all .2s;
+  }
+  .why-stat-card:hover { background: rgba(201,168,76,0.08); border-color: rgba(201,168,76,0.3); transform: translateX(6px); }
+  .why-stat-icon { font-size: 36px; }
+  .why-stat-num { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 900; color: var(--gold); line-height: 1; }
+  .why-stat-label { font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+
+  /* ── TESTIMONIALS ── */
+  #testimonials { padding: 100px 5%; background: var(--white); }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1200px; margin: 0 auto; }
+  .testimonial-card {
+    background: var(--card-bg); border: 1px solid rgba(0,0,0,0.07);
+    border-radius: 16px; padding: 32px; position: relative;
+    transition: all .3s;
+  }
+  .testimonial-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); border-color: rgba(201,168,76,0.3); }
+  .testi-stars { display: flex; gap: 3px; margin-bottom: 16px; }
+  .testi-star { color: var(--gold); font-size: 16px; }
+  .testi-quote { font-size: 14px; color: var(--muted); line-height: 1.75; margin-bottom: 24px; font-style: italic; }
+  .testi-author { display: flex; align-items: center; gap: 12px; }
+  .testi-avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--navy), #1a2f6b); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 14px; font-family: 'Playfair Display', serif; }
+  .testi-name { font-weight: 700; font-size: 14px; color: var(--navy); }
+  .testi-detail { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .quote-mark { position: absolute; top: 24px; right: 24px; font-size: 60px; color: rgba(201,168,76,0.12); font-family: 'Playfair Display', serif; line-height: 1; }
+
+  /* ── BLOG ── */
+  #blog { padding: 100px 5%; background: #f0ede5; }
+  .blog-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 32px; max-width: 1200px; margin: 0 auto; }
+  .blog-main-card {
+    background: var(--card-bg); border-radius: 20px; overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    transition: all .3s;
+  }
+  .blog-main-card:hover { transform: translateY(-3px); box-shadow: 0 16px 48px rgba(0,0,0,0.12); }
+  .blog-main-img { height: 260px; background: linear-gradient(135deg, var(--navy), #1a2f6b); display: flex; align-items: center; justify-content: center; font-size: 72px; }
+  .blog-main-body { padding: 32px; }
+  .blog-tag { display: inline-block; background: rgba(201,168,76,0.15); color: var(--gold); padding: 4px 12px; border-radius: 100px; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 14px; }
+  .blog-main-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--navy); margin-bottom: 12px; line-height: 1.3; }
+  .blog-excerpt { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 20px; }
+  .blog-meta { display: flex; align-items: center; gap: 16px; font-size: 12px; color: var(--muted); }
+  .blog-sidebar { display: flex; flex-direction: column; gap: 16px; }
+  .blog-mini-card {
+    background: var(--card-bg); border-radius: 14px; padding: 20px;
+    display: flex; gap: 16px; align-items: flex-start;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05); transition: all .3s; cursor: pointer;
+  }
+  .blog-mini-card:hover { transform: translateX(4px); box-shadow: 0 6px 24px rgba(0,0,0,0.1); }
+  .blog-mini-img { width: 60px; height: 60px; border-radius: 10px; background: linear-gradient(135deg, var(--navy), #1a2f6b); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+  .blog-mini-title { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; color: var(--navy); line-height: 1.3; margin-bottom: 6px; }
+  .blog-mini-date { font-size: 11px; color: var(--muted); }
+
+  /* ── CTA ── */
+  #cta {
+    padding: 100px 5%;
+    background: linear-gradient(135deg, #050d1f 0%, #091428 100%);
+    position: relative; overflow: hidden; text-align: center;
+  }
+  .cta-glow { position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(201,168,76,0.1), transparent 70%); top: 50%; left: 50%; transform: translate(-50%,-50%); pointer-events: none; }
+  #cta .section-title { color: #fff; margin-bottom: 20px; position: relative; z-index: 2; }
+  #cta .section-sub { position: relative; z-index: 2; max-width: 500px; margin: 0 auto 40px; }
+  .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 2; }
+  .cta-areas { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 40px; position: relative; z-index: 2; }
+  .area-badge { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.7); padding: 8px 18px; border-radius: 100px; font-size: 12px; letter-spacing: 0.5px; }
+
+  /* ── FOOTER ── */
+  footer { background: #070f22; padding: 64px 5% 32px; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; max-width: 1200px; margin-left: auto; margin-right: auto; margin-bottom: 48px; }
+  .footer-brand p { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.7; margin: 16px 0 24px; }
+  .footer-social { display: flex; gap: 10px; }
+  .social-btn { width: 36px; height: 36px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.5); font-size: 15px; text-decoration: none; transition: all .2s; }
+  .social-btn:hover { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+  .footer-heading { font-size: 11px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; font-weight: 700; margin-bottom: 20px; }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-links a { font-size: 13px; color: rgba(255,255,255,0.45); text-decoration: none; transition: color .2s; }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: gap; max-width: 1200px; margin: 0 auto; }
+  .footer-bottom p { font-size: 12px; color: rgba(255,255,255,0.3); }
+  .footer-bottom a { color: var(--gold); text-decoration: none; }
+
+  /* ── SCROLL ANIMATIONS ── */
+  .fade-up { opacity: 0; transform: translateY(30px); transition: all .7s cubic-bezier(0.16, 1, 0.3, 1); }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  .fade-up-delay-1 { transition-delay: .1s; }
+  .fade-up-delay-2 { transition-delay: .2s; }
+  .fade-up-delay-3 { transition-delay: .3s; }
+
+  /* ── MOBILE NAV ── */
+  .mobile-nav { display: none; position: fixed; top: 92px; left: 0; right: 0; background: #050d1f; border-bottom: 1px solid var(--border); padding: 20px 5%; z-index: 999; flex-direction: column; gap: 16px; }
+  .mobile-nav.open { display: flex; }
+  .mobile-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 15px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    .services-grid { grid-template-columns: repeat(2, 1fr); }
+    .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+    .why-grid { grid-template-columns: 1fr; gap: 48px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .blog-grid { grid-template-columns: 1fr; }
+    .hero-agent-card { display: none; }
+  }
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .services-grid { grid-template-columns: 1fr; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .props-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 24px; }
+    .hero-title { font-size: 32px; }
+    .why-right { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">
+    <div class="nav-logo-icon"></div>
+    <div>
+      <div class="nav-logo-text">Siris Realty Group</div>
+      <div class="nav-logo-sub"><span>Dream big</span> . <span>Buy with courage</span></div>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#properties">Properties</a>
+    <a href="#why">Why Us</a>
+    <a href="#testimonials">Reviews</a>
+    <a href="#blog">Blog</a>
+    <a href="tel:8044266495" class="nav-cta">📞 804-426-6495</a>
+  </div>
+  <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+  <a href="#services" onclick="toggleMenu()">Services</a>
+  <a href="#properties" onclick="toggleMenu()">Properties</a>
+  <a href="#why" onclick="toggleMenu()">Why Us</a>
+  <a href="#testimonials" onclick="toggleMenu()">Reviews</a>
+  <a href="#blog" onclick="toggleMenu()">Blog</a>
+  <a href="tel:8044266495" style="color:var(--gold);font-weight:700;">📞 804-426-6495</a>
+</div>
+
+<!-- HERO CAROUSEL -->
+<section id="hero">
+  <!-- Carousel Track -->
+  <div class="carousel-track" id="carouselTrack">
+
+    <!-- Slide 1: Buy -->
+    <div class="carousel-slide active" data-slide="0" style="background: #0a0f1a;">
+      <div class="slide-bg" style="background-image: url('https://i.pinimg.com/originals/8b/2d/0a/8b2d0a3e3e3e3e3e3e3e3e3e3e3e3e3e.jpg'); background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80'); background-size: cover; background-position: center;"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-inner">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <div class="hero-dot"></div>
+            <span>Glen Allen · Richmond · Henrico, VA</span>
+          </div>
+          <h1 class="hero-title">Your <em>Dream Home</em><br>Starts Right Here</h1>
+          <p class="hero-sub">Siris Realty Group brings expert guidance on buying, selling, and managing property — with the personalized care only a dedicated full-time agent can provide.</p>
+          <div class="hero-actions">
+            <a href="#agent-section" class="btn-primary">💬 Talk to Our AI Agent</a>
+            <a href="#properties" class="btn-ghost">🏡 Browse Properties</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat"><div class="stat-num">128+</div><div class="stat-label">Closed Sales</div></div>
+            <div class="stat"><div class="stat-num">8+</div><div class="stat-label">Years Experience</div></div>
+            <div class="stat"><div class="stat-num">5★</div><div class="stat-label">Zillow Rating</div></div>
+          </div>
+        </div>
+        <div class="slide-visual">
+          <div class="slide-card-accent">
+            <div class="slide-emoji">🏡</div>
+            <div class="slide-tag">Buy a Home</div>
+            <div class="slide-card-text">Personalized search, off-market access, and expert negotiation — all for you.</div>
+            <a href="#services" class="slide-card-btn">Explore Buying →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Sell -->
+    <div class="carousel-slide" data-slide="1" style="background: #0a0f1a;">
+      <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1600&q=80'); background-size: cover; background-position: center;"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-inner">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <div class="hero-dot"></div>
+            <span>Maximum Value · Proven Strategy</span>
+          </div>
+          <h1 class="hero-title">Sell Smarter,<br>Earn <em>More</em></h1>
+          <p class="hero-sub">From accurate CMA pricing to high-impact marketing and strong negotiation — we maximize your home's value and get it sold on your terms.</p>
+          <div class="hero-actions">
+            <a href="#agent-section" class="btn-primary">💰 Get a Free Home Valuation</a>
+            <a href="#services" class="btn-ghost">📋 How We Sell</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat"><div class="stat-num">$1.3M</div><div class="stat-label">Top Sale Value</div></div>
+            <div class="stat"><div class="stat-num">High</div><div class="stat-label">Impact Marketing</div></div>
+            <div class="stat"><div class="stat-num">CMA</div><div class="stat-label">Accurate Pricing</div></div>
+          </div>
+        </div>
+        <div class="slide-visual">
+          <div class="slide-card-accent">
+            <div class="slide-emoji">💰</div>
+            <div class="slide-tag">Sell Your Home</div>
+            <div class="slide-card-text">Professional staging advice, MLS listing, Zillow marketing, and max-value negotiation.</div>
+            <a href="#services" class="slide-card-btn">Explore Selling →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Manage -->
+    <div class="carousel-slide" data-slide="2" style="background: #0a0f1a;">
+      <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1600&q=80'); background-size: cover; background-position: center;"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-inner">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <div class="hero-dot"></div>
+            <span>Tenant Placement · Rent Collection · Compliance</span>
+          </div>
+          <h1 class="hero-title">Passive Income,<br><em>Zero</em> Headaches</h1>
+          <p class="hero-sub">Let Siris Realty handle everything — from screening tenants to collecting rent and managing maintenance. You invest; we manage.</p>
+          <div class="hero-actions">
+            <a href="#agent-section" class="btn-primary">🔑 Start Managing Today</a>
+            <a href="#services" class="btn-ghost">📂 Management Services</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat"><div class="stat-num">Full</div><div class="stat-label">Tenant Screening</div></div>
+            <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Maintenance</div></div>
+            <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Compliance</div></div>
+          </div>
+        </div>
+        <div class="slide-visual">
+          <div class="slide-card-accent">
+            <div class="slide-emoji">🔑</div>
+            <div class="slide-tag">Property Management</div>
+            <div class="slide-card-text">End-to-end rental management for landlords and investors across the Richmond metro.</div>
+            <a href="#services" class="slide-card-btn">Explore Management →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Relocate -->
+    <div class="carousel-slide" data-slide="3" style="background: #0a0f1a;">
+      <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600&q=80'); background-size: cover; background-position: center;"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-inner">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <div class="hero-dot"></div>
+            <span>NOVA · Richmond · Virginia Beach · Henrico</span>
+          </div>
+          <h1 class="hero-title">Move to Virginia<br>with <em>Confidence</em></h1>
+          <p class="hero-sub">Relocating to the Richmond area? Our specialists guide you through every neighborhood, school district, and community so your transition feels like coming home.</p>
+          <div class="hero-actions">
+            <a href="#agent-section" class="btn-primary">📦 Plan My Relocation</a>
+            <a href="#properties" class="btn-ghost">🗺 Explore Neighborhoods</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat"><div class="stat-num">7+</div><div class="stat-label">Service Areas</div></div>
+            <div class="stat"><div class="stat-num">Local</div><div class="stat-label">Expert Knowledge</div></div>
+            <div class="stat"><div class="stat-num">E2E</div><div class="stat-label">Support</div></div>
+          </div>
+        </div>
+        <div class="slide-visual">
+          <div class="slide-card-accent">
+            <div class="slide-emoji">📦</div>
+            <div class="slide-tag">Relocation Services</div>
+            <div class="slide-card-text">School districts, commute planning, community tours — we make Virginia feel like home.</div>
+            <a href="#services" class="slide-card-btn">Explore Relocation →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /carousel-track -->
+
+  <!-- Controls -->
+  <button class="carousel-arrow carousel-prev" onclick="moveCarousel(-1)" aria-label="Previous slide">&#8592;</button>
+  <button class="carousel-arrow carousel-next" onclick="moveCarousel(1)" aria-label="Next slide">&#8594;</button>
+
+  <!-- Dots -->
+  <div class="carousel-dots">
+    <button class="carousel-dot active" onclick="goToSlide(0)"></button>
+    <button class="carousel-dot" onclick="goToSlide(1)"></button>
+    <button class="carousel-dot" onclick="goToSlide(2)"></button>
+    <button class="carousel-dot" onclick="goToSlide(3)"></button>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="carousel-progress"><div class="carousel-progress-bar" id="progressBar"></div></div>
+
+</section>
+
+<style>
+/* ── CAROUSEL STYLES ── */
+#hero { padding: 0; min-height: 100vh; position: relative; overflow: hidden; display: block; }
+
+.carousel-track { position: relative; width: 100%; height: 100vh; min-height: 680px; }
+
+.carousel-slide {
+  position: absolute; inset: 0;
+  display: flex; align-items: center;
+  opacity: 0; transform: translateX(60px);
+  transition: opacity .7s cubic-bezier(0.4,0,0.2,1), transform .7s cubic-bezier(0.4,0,0.2,1);
+  pointer-events: none;
+}
+.carousel-slide.active {
+  opacity: 1; transform: translateX(0);
+  pointer-events: auto;
+}
+.carousel-slide.exit-left { opacity: 0; transform: translateX(-60px); }
+
+/* Full-bleed photo layer */
+.slide-bg {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  transform: scale(1.04);
+  transition: transform 6s ease;
+}
+.carousel-slide.active .slide-bg { transform: scale(1); }
+
+/* Dark gradient overlay for text legibility */
+.slide-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    105deg,
+    rgba(5,13,31,0.78) 0%,
+    rgba(5,13,31,0.55) 55%,
+    rgba(5,13,31,0.25) 100%
+  );
+}
+
+.slide-glow {
+  position: absolute; width: 700px; height: 700px; border-radius: 50%;
+  pointer-events: none; z-index: 0;
+}
+
+.slide-inner {
+  position: relative; z-index: 2;
+  width: 100%; max-width: 1300px; margin: 0 auto;
+  padding: 120px 5% 60px;
+  display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 60px; align-items: center;
+}
+
+/* Hero text — white over dark photo */
+.carousel-slide .hero-badge {
+  background: rgba(200,168,75,0.15);
+  border: 1px solid rgba(200,168,75,0.5);
+}
+.carousel-slide .hero-badge span { color: var(--gold-light); }
+.carousel-slide .hero-dot { background: var(--gold); }
+
+.carousel-slide .hero-title { color: #ffffff; }
+.carousel-slide .hero-title em { color: var(--gold); }
+.carousel-slide .hero-sub { color: rgba(255,255,255,0.78); }
+
+.carousel-slide .stat-num { color: var(--gold); }
+.carousel-slide .stat-label { color: rgba(255,255,255,0.5); }
+
+.carousel-slide .btn-ghost {
+  border-color: rgba(255,255,255,0.4);
+  color: #ffffff;
+}
+.carousel-slide .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+/* Accent card — frosted glass on photo */
+.slide-visual { display: flex; justify-content: flex-end; }
+
+.slide-card-accent {
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 20px; padding: 36px 32px;
+  width: 100%; max-width: 340px;
+  animation: floatCard 5s ease-in-out infinite;
+  display: flex; flex-direction: column; gap: 14px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+}
+.slide-emoji { font-size: 52px; }
+.slide-tag {
+  display: inline-block;
+  background: var(--gold); color: var(--navy);
+  padding: 5px 14px; border-radius: 100px;
+  font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  width: fit-content;
+}
+.slide-card-text { font-size: 14px; color: rgba(255,255,255,0.75); line-height: 1.65; }
+.slide-card-btn {
+  font-size: 13px; font-weight: 700; color: var(--gold);
+  text-decoration: none; display: inline-flex; align-items: center; gap: 4px;
+  margin-top: 4px; transition: gap .2s, color .2s;
+}
+.slide-card-btn:hover { gap: 10px; color: var(--gold-light); }
+
+/* Arrows */
+.carousel-arrow {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  z-index: 10; background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.25); color: #fff;
+  width: 52px; height: 52px; border-radius: 50%;
+  font-size: 20px; cursor: pointer; transition: all .2s;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(10px);
+}
+.carousel-arrow:hover { background: var(--gold); color: var(--navy); border-color: var(--gold); transform: translateY(-50%) scale(1.08); }
+.carousel-prev { left: 24px; }
+.carousel-next { right: 24px; }
+
+/* Dots */
+.carousel-dots {
+  position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 10px; z-index: 10;
+}
+.carousel-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: rgba(255,255,255,0.3); border: none; cursor: pointer; transition: all .3s;
+}
+.carousel-dot.active { background: var(--gold); transform: scale(1.3); }
+
+/* Progress bar */
+.carousel-progress {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: rgba(255,255,255,0.1); z-index: 10;
+}
+.carousel-progress-bar {
+  height: 100%; background: var(--gold);
+  width: 0%; transition: width linear;
+}
+
+@media (max-width: 900px) {
+  .slide-inner { grid-template-columns: 1fr; padding: 110px 5% 80px; gap: 32px; }
+  .slide-visual { justify-content: flex-start; }
+  .slide-card-accent { max-width: 100%; }
+  .carousel-arrow { display: none; }
+}
+@media (max-width: 600px) {
+  .carousel-track { min-height: 820px; }
+}
+</style>
+
+<!-- AI AGENT SECTION -->
+<section id="agent-section">
+  <div class="agent-bg"></div>
+  <div class="agent-container">
+    <div class="section-eyebrow">Powered by AI</div>
+    <h2 class="section-title">Meet Your Personal Real Estate Agent</h2>
+    <p class="section-sub">Get instant answers about buying, selling, or renting in the Richmond area. Our AI agent walks you through every step — 24/7.</p>
+
+    <div class="ai-chat-box">
+      <div class="chat-header">
+        <div class="chat-avatar">S</div>
+        <div>
+          <div class="chat-name">Siris AI Agent</div>
+          <div class="chat-status">Online – Ready to help</div>
+        </div>
+      </div>
+
+      <div class="chat-messages" id="chatMessages">
+        <div class="msg agent">
+          <div class="msg-bubble">👋 Hello! I'm your Siris Realty AI assistant. Whether you're looking to <strong>buy, sell, or manage</strong> a property in the Glen Allen, Richmond, or Henrico area — I'm here to guide you every step of the way. What can I help you with today?</div>
+          <div class="msg-time">Just now</div>
+        </div>
+      </div>
+
+      <div class="chat-quick-replies" id="quickReplies">
+        <button class="quick-reply" onclick="sendQuick('I want to buy a home')">🏡 Buy a Home</button>
+        <button class="quick-reply" onclick="sendQuick('I want to sell my home')">💰 Sell My Home</button>
+        <button class="quick-reply" onclick="sendQuick('I need property management')">🔑 Property Management</button>
+        <button class="quick-reply" onclick="sendQuick('What areas do you serve?')">📍 Service Areas</button>
+      </div>
+
+      <div class="chat-input-row">
+        <input class="chat-input" id="chatInput" placeholder="Ask me anything about real estate…" onkeydown="handleKey(event)">
+        <button class="chat-send" onclick="sendMessage()">➤</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-header">
+    <div class="section-eyebrow">What We Do</div>
+    <h2 class="section-title" style="color:var(--text)">Full-Service Real Estate, Simplified</h2>
+    <p class="section-sub" style="color:var(--muted)">From your first home search to long-term property management — Siris Realty handles it all with expertise and care.</p>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card fade-up">
+      <div class="service-icon">🏡</div>
+      <div class="service-name">Buy a Home</div>
+      <p class="service-desc">Find your perfect home with personalized guidance, off-market access, and expert negotiation on your behalf.</p>
+      <ul class="service-features">
+        <li>Personalized Home Search</li>
+        <li>Off-Market Opportunities</li>
+        <li>Strong Negotiation Skills</li>
+        <li>First-Time Buyer Support</li>
+      </ul>
+      <a href="#agent-section" class="service-link">Start Your Search →</a>
+    </div>
+
+    <div class="service-card fade-up fade-up-delay-1">
+      <div class="service-icon">💰</div>
+      <div class="service-name">Sell Your Home</div>
+      <p class="service-desc">Maximize your home's value with accurate pricing, high-impact marketing, and a proven maximum-value strategy.</p>
+      <ul class="service-features">
+        <li>Accurate CMA Pricing</li>
+        <li>High-Impact Marketing</li>
+        <li>Professional Photography</li>
+        <li>Max Value Strategy</li>
+      </ul>
+      <a href="#agent-section" class="service-link">Get a Free CMA →</a>
+    </div>
+
+    <div class="service-card fade-up fade-up-delay-2">
+      <div class="service-icon">🔑</div>
+      <div class="service-name">Property Management</div>
+      <p class="service-desc">Sit back and earn. We handle tenant placement, rent collection, maintenance, and full compliance for your rental.</p>
+      <ul class="service-features">
+        <li>Tenant Placement</li>
+        <li>Rent Collection</li>
+        <li>Maintenance & Compliance</li>
+        <li>Landlord Consulting</li>
+      </ul>
+      <a href="#agent-section" class="service-link">Learn More →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROPERTIES -->
+<section id="properties">
+  <div class="section-header">
+    <div class="section-eyebrow">Featured Listings</div>
+    <h2 class="section-title" style="color:var(--text)">Properties For You</h2>
+    <p class="section-sub" style="color:var(--muted)">Browse active listings, recently sold, and rental properties in the Richmond metro area.</p>
+  </div>
+
+  <div class="prop-filters">
+    <button class="filter-btn active" onclick="filterProps(this,'all')">All</button>
+    <button class="filter-btn" onclick="filterProps(this,'buy')">For Sale</button>
+    <button class="filter-btn" onclick="filterProps(this,'rent')">For Rent</button>
+    <button class="filter-btn" onclick="filterProps(this,'sold')">Recently Sold</button>
+  </div>
+
+  <div class="props-grid" id="propsGrid">
+    <div class="prop-card" data-type="buy">
+      <div class="prop-img">🏠<span class="prop-badge">For Sale</span></div>
+      <div class="prop-body">
+        <div class="prop-price">$485,000</div>
+        <div class="prop-address">📍 2847 Wyndham Dr, Glen Allen, VA 23060</div>
+        <div class="prop-stats">
+          <span class="prop-stat">🛏 4 Beds</span>
+          <span class="prop-stat">🚿 3 Baths</span>
+          <span class="prop-stat">📐 2,340 sqft</span>
+        </div>
+      </div>
+    </div>
+    <div class="prop-card" data-type="buy">
+      <div class="prop-img">🏡<span class="prop-badge">For Sale</span></div>
+      <div class="prop-body">
+        <div class="prop-price">$629,000</div>
+        <div class="prop-address">📍 1124 Broad Oak Ct, Richmond, VA 23229</div>
+        <div class="prop-stats">
+          <span class="prop-stat">🛏 5 Beds</span>
+          <span class="prop-stat">🚿 4 Baths</span>
+          <span class="prop-stat">📐 3,100 sqft</span>
+        </div>
+      </div>
+    </div>
+    <div class="prop-card" data-type="rent">
+      <div class="prop-img">🏘<span class="prop-badge rent">For Rent</span></div>
+      <div class="prop-body">
+        <div class="prop-price">$2,200/mo</div>
+        <div class="prop-address">📍 5543 Henrico Blvd, Henrico, VA 23228</div>
+        <div class="prop-stats">
+          <span class="prop-stat">🛏 3 Beds</span>
+          <span class="prop-stat">🚿 2 Baths</span>
+          <span class="prop-stat">📐 1,680 sqft</span>
+        </div>
+      </div>
+    </div>
+    <div class="prop-card" data-type="sold">
+      <div class="prop-img">🏠<span class="prop-badge sold">Sold</span></div>
+      <div class="prop-body">
+        <div class="prop-price">$514,700</div>
+        <div class="prop-address">📍 3312 Short Pump Pkwy, Glen Allen, VA 23233</div>
+        <div class="prop-stats">
+          <span class="prop-stat">🛏 4 Beds</span>
+          <span class="prop-stat">🚿 3 Baths</span>
+          <span class="prop-stat">📐 2,580 sqft</span>
+        </div>
+      </div>
+    </div>
+    <div class="prop-card" data-type="buy">
+      <div class="prop-img">🏡<span class="prop-badge">For Sale</span></div>
+      <div class="prop-body">
+        <div class="prop-price">$379,000</div>
+        <div class="prop-address">📍 780 Skipwith Rd, Henrico, VA 23226</div>
+        <div class="prop-stats">
+          <span class="prop-stat">🛏 3 Beds</span>
+          <span class="prop-stat">🚿 2 Baths</span>
+          <span class="prop-stat">📐 1,920 sqft</span>
+        </div>
+      </div>
+    </div>
+    <div class="prop-card" data-type="rent">
+      <div class="prop-img">🏘<span class="prop-badge rent">For Rent</span></div>
+      <div class="prop-body">
+        <div class="prop-price">$1,750/mo</div>
+        <div class="prop-address">📍 412 Brook Rd, Richmond, VA 23220</div>
+        <div class="prop-stats">
+          <span class="prop-stat">🛏 2 Beds</span>
+          <span class="prop-stat">🚿 2 Baths</span>
+          <span class="prop-stat">📐 1,100 sqft</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="view-all">
+    <a href="https://www.zillow.com/profile/Vijay-Kanth" target="_blank" class="btn-primary">View All Listings on Zillow →</a>
+    <a href="https://www.homes.com/real-estate-agents/vijay-kanth/q4872hy" target="_blank" class="btn-primary">View All Listings on Homes.Com →</a>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why">
+  <div class="why-bg-circle"></div>
+  <div class="why-bg-circle why-bg-circle-2"></div>
+  <div class="why-grid">
+    <div class="why-left">
+      <div class="section-eyebrow">Why Choose Us</div>
+      <h2 class="section-title">A Realtor Who's Always In Your Corner</h2>
+      <p class="section-sub">Vijay Kanth is a full-time, dedicated realtor — not a part-time agent. That means you get expert attention, fast response times, and unwavering advocacy throughout your real estate journey.</p>
+      <div class="why-features">
+        <div class="why-feature">
+          <div class="why-feature-icon">🎯</div>
+          <div class="why-feature-body">
+            <h4>Full-Time Expert</h4>
+            <p>Not a side hustle — real estate is Vijay's only profession. You get 100% commitment, every time.</p>
+          </div>
+        </div>
+        <div class="why-feature">
+          <div class="why-feature-icon">🤝</div>
+          <div class="why-feature-body">
+            <h4>Negotiation Specialist</h4>
+            <p>ABR & SRS certified with a track record of winning deals in competitive markets.</p>
+          </div>
+        </div>
+        <div class="why-feature">
+          <div class="why-feature-icon">🗺️</div>
+          <div class="why-feature-body">
+            <h4>Deep Local Knowledge</h4>
+            <p>From Wyndham to Short Pump, Southside to NOVA — Vijay knows every neighborhood, school district, and market trend.</p>
+          </div>
+        </div>
+        <div class="why-feature">
+          <div class="why-feature-icon">📱</div>
+          <div class="why-feature-body">
+            <h4>End-to-End Support</h4>
+            <p>From your very first search through closing day — and even after — Vijay is there to answer every question.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="why-right">
+      <div class="why-stat-card">
+        <div class="why-stat-icon">🏆</div>
+        <div>
+          <div class="why-stat-num">128+</div>
+          <div class="why-stat-label">Successful Closings</div>
+        </div>
+      </div>
+      <div class="why-stat-card">
+        <div class="why-stat-icon">💵</div>
+        <div>
+          <div class="why-stat-num">$1.3M</div>
+          <div class="why-stat-label">Top Sale Value</div>
+        </div>
+      </div>
+      <div class="why-stat-card">
+        <div class="why-stat-icon">⭐</div>
+        <div>
+          <div class="why-stat-num">5.0</div>
+          <div class="why-stat-label">Average Zillow Rating</div>
+        </div>
+      </div>
+      <div class="why-stat-card">
+        <div class="why-stat-icon">📅</div>
+        <div>
+          <div class="why-stat-num">2017</div>
+          <div class="why-stat-label">Licensed Since</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-header">
+    <div class="section-eyebrow">Client Reviews</div>
+    <h2 class="section-title" style="color:var(--text)">What Our Clients Say</h2>
+    <p class="section-sub" style="color:var(--muted)">Real words from real clients across the Richmond metro area.</p>
+  </div>
+
+  <div class="testimonials-grid">
+    <div class="testimonial-card fade-up">
+      <div class="quote-mark">"</div>
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">From the moment we met, Vijay impressed us with his professionalism, knowledge and dedication to helping us find our dream home in the highly rated school district in Wyndham. His expertise in the local market was evident throughout every step.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">FM</div>
+        <div>
+          <div class="testi-name">Dr. Fanta Meleza</div>
+          <div class="testi-detail">Bought in Wyndham, Glen Allen • April 2024</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card fade-up fade-up-delay-1">
+      <div class="quote-mark">"</div>
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">Vijay was very good in educating us on all steps related to house buying. He gave us a wide variety of options and was there from search to closing. His assurance to guide us even after we bought the home was outstanding.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">AB</div>
+        <div>
+          <div class="testi-name">Abhiram B.</div>
+          <div class="testi-detail">Bought a Home • February 2024</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card fade-up fade-up-delay-2">
+      <div class="quote-mark">"</div>
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">Vijay did an outstanding job helping with our house sale. He has great local knowledge and excellent negotiation skills. He was on top of all the work that needed to be done for the house. Highly recommend!</p>
+      <div class="testi-author">
+        <div class="testi-avatar">MB</div>
+        <div>
+          <div class="testi-name">Mahalakshmi Boddupally</div>
+          <div class="testi-detail">Sold in Glen Allen • December 2022</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:48px;">
+    <a href="https://www.zillow.com/profile/Vijay-Kanth/#reviews" target="_blank" class="btn-ghost" style="border-color:rgba(0,0,0,0.2);color:var(--navy);">Read All Reviews on Zillow →</a>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section id="blog">
+  <div class="section-header">
+    <div class="section-eyebrow">Resources & Insights</div>
+    <h2 class="section-title" style="color:var(--text)">Real Estate Tips & Market Updates</h2>
+    <p class="section-sub" style="color:var(--muted)">Stay informed with the latest market trends, home buying tips, and investment insights for the Richmond VA area.</p>
+  </div>
+
+  <div class="blog-grid">
+    <div class="blog-main-card">
+      <div class="blog-main-img">🏠</div>
+      <div class="blog-main-body">
+        <span class="blog-tag">Market Update</span>
+        <h3 class="blog-main-title">Richmond VA Real Estate Market: What Buyers and Sellers Need to Know in 2025</h3>
+        <p class="blog-excerpt">The Richmond metro area continues to show strong demand across Glen Allen, Henrico, and the West End. Inventory remains tight while interest rates are creating unique opportunities for both buyers and sellers. Here's what you need to know before making your next move.</p>
+        <div class="blog-meta">
+          <span>✍️ Vijay Kanth</span>
+          <span>📅 March 2025</span>
+          <span>⏱ 5 min read</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="blog-sidebar">
+      <div class="blog-mini-card">
+        <div class="blog-mini-img">💡</div>
+        <div>
+          <div class="blog-mini-title">5 Things First-Time Buyers Must Know Before Making an Offer</div>
+          <div class="blog-mini-date">February 2025 · Buying Tips</div>
+        </div>
+      </div>
+      <div class="blog-mini-card">
+        <div class="blog-mini-img">📊</div>
+        <div>
+          <div class="blog-mini-title">How to Price Your Home Right the First Time — A Seller's Guide</div>
+          <div class="blog-mini-date">January 2025 · Selling Tips</div>
+        </div>
+      </div>
+      <div class="blog-mini-card">
+        <div class="blog-mini-img">🔑</div>
+        <div>
+          <div class="blog-mini-title">Is Becoming a Landlord Worth It in Virginia? A Realistic Look</div>
+          <div class="blog-mini-date">December 2024 · Investment</div>
+        </div>
+      </div>
+      <div class="blog-mini-card">
+        <div class="blog-mini-img">🏫</div>
+        <div>
+          <div class="blog-mini-title">Best School Districts in Henrico County — A Neighborhood Guide</div>
+          <div class="blog-mini-date">November 2024 · Neighborhood</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-glow"></div>
+  <div class="section-eyebrow" style="position:relative;z-index:2;">Ready To Get Started?</div>
+  <h2 class="section-title">Let's Build Your Real Estate Success Story</h2>
+  <p class="section-sub">Whether you're buying your first home, selling an investment property, or need reliable property management — Vijay Kanth is ready to guide you every step of the way.</p>
+  <div class="cta-actions">
+    <a href="tel:8044266495" class="btn-primary">📞 Call 804-426-6495</a>
+    <a href="https://calendly.com/vijaykanth" target="_blank" class="btn-ghost">📅 Book an Appointment</a>
+  </div>
+  <div class="cta-areas">
+    <span class="area-badge">📍 Glen Allen</span>
+    <span class="area-badge">📍 Richmond</span>
+    <span class="area-badge">📍 Henrico</span>
+    <span class="area-badge">📍 Short Pump</span>
+    <span class="area-badge">📍 West End</span>
+    <span class="area-badge">📍 NOVA</span>
+    <span class="area-badge">📍 VA Beach</span>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="nav-logo" style="margin-bottom:12px">
+        <div class="nav-logo-icon">S</div>
+        <div>
+          <div class="nav-logo-text">Siris Realty Group</div>
+          <div class="nav-logo-sub">Workflow of Wealth</div>
+        </div>
+      </div>
+      <p>Real Estate With Common Sense. Serving Glen Allen, Richmond, Henrico and the greater Virginia area since 2017 with integrity, expertise, and a commitment to your success.</p>
+      <div class="footer-social">
+        <a href="https://www.facebook.com" target="_blank" class="social-btn">f</a>
+        <a href="https://www.instagram.com" target="_blank" class="social-btn">📷</a>
+        <a href="https://www.linkedin.com" target="_blank" class="social-btn">in</a>
+        <a href="https://twitter.com" target="_blank" class="social-btn">𝕏</a>
+      </div>
+    </div>
+
+    <div>
+      <div class="footer-heading">Services</div>
+      <ul class="footer-links">
+        <li><a href="#services">Buy a Home</a></li>
+        <li><a href="#services">Sell Your Home</a></li>
+        <li><a href="#services">Property Management</a></li>
+        <li><a href="#services">Relocation</a></li>
+        <li><a href="#services">Foreclosures</a></li>
+        <li><a href="#services">Landlord Consulting</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="footer-heading">Resources</div>
+      <ul class="footer-links">
+        <li><a href="#blog">Market Updates</a></li>
+        <li><a href="#blog">Buyer's Guide</a></li>
+        <li><a href="#blog">Seller's Guide</a></li>
+        <li><a href="#blog">Investor Tips</a></li>
+        <li><a href="https://www.zillow.com/profile/Vijay-Kanth/#reviews" target="_blank">Reviews</a></li>
+        <li><a href="https://calendly.com/vijaykanth" target="_blank">Book Appointment</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="footer-heading">Contact</div>
+      <ul class="footer-links">
+        <li><a href="tel:8044266495">📞 804-426-6495</a></li>
+        <li><a href="/cdn-cgi/l/email-protection#43352a29223a03302a312a303126222f373a24312c36336d202c2e">✉ <span class="__cf_email__" data-cfemail="8cfae5e6edf5ccffe5fee5fffee9ede0f8f5ebfee3f9fca2efe3e1">[email&#160;protected]</span></a></li>
+        <li><a href="#">📍 Glen Allen, VA 23060</a></li>
+        <li><a href="https://sirisrealtygroup.com">🌐 sirisrealtygroup.com</a></li>
+        <li><a href="https://calendly.com/vijaykanth" target="_blank">📅 Book a Consultation</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2026 Siris Realty Group . All rights reserved.</p>
+    <p>
+      <a href="#">Privacy Policy</a> · 
+      <a href="#">Terms</a>
+    </p>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── MOBILE MENU
+function toggleMenu() {
+  document.getElementById('mobileNav').classList.toggle('open');
+}
+
+// ── SCROLL ANIMATIONS
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// ── PROPERTY FILTER
+function filterProps(btn, type) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.prop-card').forEach(card => {
+    card.style.display = (type === 'all' || card.dataset.type === type) ? 'block' : 'none';
+  });
+}
+
+// ── AI CHAT
+const agentReplies = {
+  'buy': `Great choice! 🏡 Here's how we help buyers:\n\n✅ Personalized home search based on your needs\n✅ Access to off-market opportunities\n✅ Expert negotiation to get you the best price\n✅ Full support from search to closing\n\nWould you like to schedule a free buyer consultation with Vijay? You can call 📞 804-426-6495 or book at calendly.com/vijaykanth`,
+  'sell': `Selling your home? Here's what we do: 💰\n\n✅ Accurate Comparative Market Analysis (CMA)\n✅ Professional photography & staging advice\n✅ High-impact marketing on Zillow, MLS & social media\n✅ Strong negotiation to maximize your sale price\n\nGet your FREE home valuation — call 📞 804-426-6495 today!`,
+  'management': `Property management made easy! 🔑\n\n✅ Tenant screening & placement\n✅ Monthly rent collection\n✅ Maintenance coordination\n✅ Legal compliance & documentation\n\nWe take the stress out of being a landlord. Want to learn more about our management packages?`,
+  'areas': `We serve the greater Richmond, Virginia area: 📍\n\n🏘 Glen Allen (including Wyndham, Short Pump)\n🏘 Richmond (West End, Southside, Central)\n🏘 Henrico County\n🏘 Northern Virginia (NOVA)\n🏘 Virginia Beach area\n\nLocal knowledge is our superpower! Which area are you interested in?`,
+  'default': `Thanks for reaching out! 😊 Vijay Kanth and the Siris Realty Group team are here to help.\n\n📞 Call or text: 804-426-6495\n📅 Book online: calendly.com/vijaykanth\n🌐 Visit: sirisrealtygroup.com\n\nOr ask me anything about buying, selling, renting, or property management in the Richmond area!`
+};
+
+function getReply(msg) {
+  const m = msg.toLowerCase();
+  if (m.includes('buy') || m.includes('purchase') || m.includes('looking for')) return agentReplies.buy;
+  if (m.includes('sell') || m.includes('selling') || m.includes('list')) return agentReplies.sell;
+  if (m.includes('manage') || m.includes('management') || m.includes('rent') || m.includes('tenant') || m.includes('landlord')) return agentReplies.management;
+  if (m.includes('area') || m.includes('where') || m.includes('location') || m.includes('serve')) return agentReplies.areas;
+  return agentReplies.default;
+}
+
+function addMessage(text, role) {
+  const msgs = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = `msg ${role}`;
+  const now = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  div.innerHTML = `<div class="msg-bubble">${text.replace(/\n/g,'<br>')}</div><div class="msg-time">${now}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function showTyping() {
+  const msgs = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'msg agent'; div.id = 'typing';
+  div.innerHTML = `<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  addMessage(text, 'user');
+  input.value = '';
+  document.getElementById('quickReplies').style.display = 'none';
+  showTyping();
+  setTimeout(() => {
+    document.getElementById('typing')?.remove();
+    addMessage(getReply(text), 'agent');
+  }, 1200);
+}
+
+function sendQuick(text) {
+  addMessage(text, 'user');
+  document.getElementById('quickReplies').style.display = 'none';
+  showTyping();
+  setTimeout(() => {
+    document.getElementById('typing')?.remove();
+    addMessage(getReply(text), 'agent');
+  }, 1200);
+}
+
+function handleKey(e) { if (e.key === 'Enter') sendMessage(); }
+
+// ── CAROUSEL
+let currentSlide = 0;
+const totalSlides = 4;
+const autoPlayDuration = 5500;
+let autoPlayTimer = null;
+let progressTimer = null;
+
+function goToSlide(index, direction = 1) {
+  const slides = document.querySelectorAll('.carousel-slide');
+  const dots = document.querySelectorAll('.carousel-dot');
+
+  slides[currentSlide].classList.remove('active');
+  slides[currentSlide].classList.add('exit-left');
+  setTimeout(() => slides[currentSlide].classList.remove('exit-left'), 700);
+
+  currentSlide = (index + totalSlides) % totalSlides;
+  slides[currentSlide].classList.add('active');
+  dots.forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+
+  resetProgress();
+}
+
+function moveCarousel(dir) {
+  clearInterval(autoPlayTimer);
+  goToSlide(currentSlide + dir, dir);
+  startAutoPlay();
+}
+
+function resetProgress() {
+  const bar = document.getElementById('progressBar');
+  if (!bar) return;
+  bar.style.transition = 'none';
+  bar.style.width = '0%';
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      bar.style.transition = `width ${autoPlayDuration}ms linear`;
+      bar.style.width = '100%';
+    });
+  });
+}
+
+function startAutoPlay() {
+  clearInterval(autoPlayTimer);
+  resetProgress();
+  autoPlayTimer = setInterval(() => goToSlide(currentSlide + 1), autoPlayDuration);
+}
+
+// Start on load
+window.addEventListener('load', startAutoPlay);
+
+// ── NAVBAR SCROLL EFFECT
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('navbar');
+  if (window.scrollY > 60) {
+    nav.style.background = 'rgba(5,13,31,0.99)';
+    nav.style.borderBottomColor = 'rgba(200,168,75,0.28)';
+  } else {
+    nav.style.background = 'rgba(5,13,31,0.88)';
+    nav.style.borderBottomColor = 'rgba(200,168,75,0.15)';
+  }
+});
+</script>
+</body>
+</html>

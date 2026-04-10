@@ -5,22 +5,16 @@ const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mjgpqowr'
 
 const contactPoints = [
   {
-    title: 'Call directly',
-    body: 'Reach Vijay Kanth at 804-426-6495 for an immediate conversation.',
     icon: Phone,
     href: 'tel:8044266495',
     label: '804-426-6495',
   },
   {
-    title: 'Email details',
-    body: 'Share your requirements and preferred timeline by email.',
     icon: Mail,
     href: 'mailto:vijay@sirisrealtygroup.com',
     label: 'vijay@sirisrealtygroup.com',
   },
   {
-    title: 'Local focus',
-    body: 'Serving Glen Allen, Richmond, Henrico, Short Pump, West End, and nearby Virginia markets.',
     icon: MapPin,
     href: 'https://www.google.com/maps/search/?api=1&query=Glen+Allen+VA+23060',
     label: 'Glen Allen, VA 23060',
@@ -99,10 +93,6 @@ function InquirySection() {
           <aside className="inquiry-panel inquiry-panel--info">
             <div className="inquiry-panel__intro">
               <h3>Tell us what you need.</h3>
-              <p>
-                This form is designed as a clean first contact point before we
-                connect the final Formspree delivery flow.
-              </p>
             </div>
 
             <div className="inquiry-panel__points">
@@ -121,11 +111,7 @@ function InquirySection() {
                       <Icon size={18} />
                     </span>
 
-                    <span className="inquiry-point__body">
-                      <span className="inquiry-point__title">{point.title}</span>
-                      <span className="inquiry-point__text">{point.body}</span>
-                      <span className="inquiry-point__link">{point.label}</span>
-                    </span>
+                    <span className="inquiry-point__link">{point.label}</span>
                   </a>
                 )
               })}
@@ -162,7 +148,7 @@ function InquirySection() {
                     type="tel"
                     name="phone"
                     inputMode="tel"
-                    placeholder="555 123 4567"
+                    placeholder="Phone No."
                     required
                   />
                 </div>

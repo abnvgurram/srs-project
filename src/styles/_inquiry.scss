@@ -53,8 +53,8 @@
 .inquiry-panel--info {
   padding: 36px;
   background:
-    radial-gradient(circle at top right, rgba(200, 168, 75, 0.16), transparent 34%),
-    linear-gradient(145deg, #071124 0%, #0b1632 100%);
+    radial-gradient(circle at top right, rgba(200, 168, 75, 0.18), transparent 34%),
+    linear-gradient(145deg, #0a1020 0%, #171325 100%);
   box-shadow: 0 22px 60px rgba(5, 13, 31, 0.16);
 }
 
@@ -66,26 +66,20 @@
   line-height: 1.1;
 }
 
-.inquiry-panel__intro p {
-  margin: 16px 0 0;
-  color: rgba(255, 255, 255, 0.72);
-  line-height: 1.8;
-}
-
 .inquiry-panel__points {
   display: grid;
-  gap: 16px;
-  margin-top: 30px;
+  gap: 14px;
+  margin-top: 24px;
 }
 
 .inquiry-point {
   display: flex;
-  gap: 14px;
-  align-items: flex-start;
-  padding: 18px;
-  border: 1px solid rgba(200, 168, 75, 0.14);
+  gap: 12px;
+  align-items: center;
+  padding: 16px 18px;
+  border: 1px solid rgba(200, 168, 75, 0.16);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   transition:
     border-color 0.2s ease,
     background-color 0.2s ease,
@@ -102,37 +96,21 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
   border-radius: 12px;
   color: var(--gold);
   background: rgba(200, 168, 75, 0.12);
   border: 1px solid rgba(200, 168, 75, 0.16);
 }
 
-.inquiry-point__body {
-  display: flex;
-  flex-direction: column;
-}
-
-.inquiry-point__title {
-  color: #fff;
-  font-weight: 700;
-}
-
-.inquiry-point__text {
-  margin-top: 6px;
-  color: rgba(255, 255, 255, 0.68);
-  font-size: 0.95rem;
-  line-height: 1.7;
-}
-
 .inquiry-point__link {
-  margin-top: 10px;
-  color: var(--gold-light);
-  font-size: 0.92rem;
+  color: #fff;
+  font-size: 0.98rem;
   font-weight: 700;
+  line-height: 1.5;
+  word-break: break-word;
 }
 
 .inquiry-panel--form {
@@ -309,8 +287,6 @@
   }
 
   .inquiry-section__copy,
-  .inquiry-panel__intro p,
-  .inquiry-point__text,
   .inquiry-form__hint,
   .inquiry-form__status {
     font-size: 0.95rem;

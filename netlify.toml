@@ -1,0 +1,7 @@
+[build]
+publish = "."
+
+[[redirects]]
+from = "/"
+to = "/srg-adbucons.html"
+status = 200

@@ -1,7 +1,3 @@
 [build]
-publish = "."
-
-[[redirects]]
-from = "/"
-to = "/srg-adbucons.html"
-status = 200
+command = "npm run build"
+publish = "dist"

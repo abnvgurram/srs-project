@@ -1,0 +1,453 @@
+.hero-section-react {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #050d1f;
+}
+
+.hero-carousel-react {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 680px;
+}
+
+.hero-carousel-react__slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  transform: translateX(60px);
+  pointer-events: none;
+  transition:
+    opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-carousel-react__slide.is-active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.hero-carousel-react__slide.is-exiting {
+  opacity: 0;
+  transform: translateX(-60px);
+}
+
+.hero-carousel-react__bg,
+.hero-carousel-react__overlay {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-carousel-react__bg {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  transform: scale(1.04);
+  transition: transform 6s ease;
+}
+
+.hero-carousel-react__slide.is-active .hero-carousel-react__bg {
+  transform: scale(1);
+}
+
+.hero-carousel-react__overlay {
+  background: linear-gradient(
+    105deg,
+    rgba(5, 13, 31, 0.78) 0%,
+    rgba(5, 13, 31, 0.55) 55%,
+    rgba(5, 13, 31, 0.25) 100%
+  );
+}
+
+.hero-carousel-react__inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 60px;
+  align-items: center;
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 132px 5% 60px;
+}
+
+.hero-carousel-react__content {
+  max-width: 620px;
+}
+
+.hero-carousel-react__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 28px;
+  padding: 6px 16px;
+  border: 1px solid rgba(226, 201, 122, 0.46);
+  border-radius: 999px;
+  background: rgba(200, 168, 75, 0.15);
+}
+
+.hero-carousel-react__badge span:last-child {
+  color: var(--gold-light);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.hero-carousel-react__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: heroPulse 2s infinite;
+}
+
+@keyframes heroPulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(1.4);
+  }
+}
+
+.hero-carousel-react__title {
+  margin: 0 0 20px;
+  color: #fff;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.4rem, 5.5vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.08;
+}
+
+.hero-carousel-react__title em {
+  color: var(--gold);
+  font-style: normal;
+}
+
+.hero-carousel-react__copy {
+  max-width: 480px;
+  margin: 0 0 40px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.hero-carousel-react__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 56px;
+}
+
+.hero-carousel-react__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 30px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  transition:
+    transform 0.25s ease,
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.hero-carousel-react__button--primary {
+  background: var(--gold);
+  color: var(--navy);
+}
+
+.hero-carousel-react__button--primary:hover {
+  background: var(--gold-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(200, 168, 75, 0.35);
+}
+
+.hero-carousel-react__button--ghost {
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
+}
+
+.hero-carousel-react__button--ghost:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.hero-carousel-react__stats {
+  display: flex;
+  gap: 40px;
+}
+
+.hero-carousel-react__stat-value {
+  color: var(--gold);
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.hero-carousel-react__stat-label {
+  margin-top: 4px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.hero-carousel-react__visual {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.hero-carousel-react__card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 340px;
+  padding: 36px 32px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.3);
+  animation: heroFloatCard 5s ease-in-out infinite;
+  backdrop-filter: blur(20px);
+}
+
+@keyframes heroFloatCard {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.hero-carousel-react__card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 62px;
+  height: 62px;
+  border-radius: 18px;
+  background: rgba(200, 168, 75, 0.16);
+  color: var(--gold-light);
+}
+
+.hero-carousel-react__card-tag {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.hero-carousel-react__card-copy {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.hero-carousel-react__card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 700;
+  transition:
+    gap 0.2s ease,
+    color 0.2s ease;
+}
+
+.hero-carousel-react__card-link:hover {
+  gap: 10px;
+  color: var(--gold-light);
+}
+
+.hero-carousel-react__arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+  backdrop-filter: blur(10px);
+}
+
+.hero-carousel-react__arrow:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.hero-carousel-react__arrow--prev {
+  left: 24px;
+}
+
+.hero-carousel-react__arrow--next {
+  right: 24px;
+}
+
+.hero-carousel-react__dots {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  z-index: 10;
+  display: flex;
+  gap: 10px;
+  transform: translateX(-50%);
+}
+
+.hero-carousel-react__dot-button {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition:
+    transform 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.hero-carousel-react__dot-button.is-active {
+  background: var(--gold);
+  transform: scale(1.3);
+}
+
+.hero-carousel-react__progress {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.hero-carousel-react__progress-bar {
+  width: 100%;
+  height: 100%;
+  transform-origin: left;
+  background: var(--gold);
+  animation-name: heroProgressFill;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes heroProgressFill {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (max-width: 1100px) {
+  .hero-carousel-react__inner {
+    gap: 42px;
+  }
+
+  .hero-carousel-react__stats {
+    gap: 28px;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-carousel-react {
+    min-height: 820px;
+  }
+
+  .hero-carousel-react__inner {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 118px 5% 88px;
+  }
+
+  .hero-carousel-react__visual {
+    justify-content: flex-start;
+  }
+
+  .hero-carousel-react__card {
+    max-width: 100%;
+  }
+
+  .hero-carousel-react__arrow {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-carousel-react__inner {
+    padding: 108px 24px 88px;
+  }
+
+  .hero-carousel-react__title {
+    font-size: clamp(2rem, 12vw, 3.15rem);
+  }
+
+  .hero-carousel-react__copy {
+    font-size: 15px;
+  }
+
+  .hero-carousel-react__actions {
+    margin-bottom: 42px;
+  }
+
+  .hero-carousel-react__button {
+    width: 100%;
+    justify-content: center;
+    padding-inline: 20px;
+  }
+
+  .hero-carousel-react__stats {
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .hero-carousel-react__dots {
+    bottom: 28px;
+  }
+}

@@ -7,6 +7,7 @@ import {
   MapPin,
   Ruler,
 } from 'lucide-react'
+import './ListingCard.scss'
 
 const illustrationIcons = {
   house: House,

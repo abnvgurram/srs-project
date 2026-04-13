@@ -8,6 +8,7 @@ import {
   Lightbulb,
   NotebookPen,
 } from 'lucide-react'
+import './BlogSection.scss'
 
 const featuredPost = {
   tag: 'Market Update',

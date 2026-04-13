@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
-import { propertyFilters, propertyListings } from '../data/properties.js'
+import { propertyFilters, propertyListings } from '../../data/properties.js'
 import ListingCard from './ListingCard.jsx'
+import './PropertiesSection.scss'
 
 function PropertiesSection() {
   const [activeFilter, setActiveFilter] = useState('all')

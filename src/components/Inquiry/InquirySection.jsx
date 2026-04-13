@@ -1,20 +1,24 @@
 import { useState } from 'react'
 import { Mail, MapPin, Phone } from 'lucide-react'
+import './InquirySection.scss'
 
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mjgpqowr'
 
 const contactPoints = [
   {
+    title: 'Phone',
     icon: Phone,
     href: 'tel:8044266495',
     label: '804-426-6495',
   },
   {
+    title: 'Email',
     icon: Mail,
     href: 'mailto:vijay@sirisrealtygroup.com',
     label: 'vijay@sirisrealtygroup.com',
   },
   {
+    title: 'Address',
     icon: MapPin,
     href: 'https://www.google.com/maps/search/?api=1&query=Glen+Allen+VA+23060',
     label: 'Glen Allen, VA 23060',
@@ -111,7 +115,10 @@ function InquirySection() {
                       <Icon size={18} />
                     </span>
 
-                    <span className="inquiry-point__link">{point.label}</span>
+                    <span className="inquiry-point__body">
+                      <span className="inquiry-point__title">{point.title}</span>
+                      <span className="inquiry-point__link">{point.label}</span>
+                    </span>
                   </a>
                 )
               })}

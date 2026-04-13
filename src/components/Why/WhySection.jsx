@@ -6,6 +6,7 @@ import {
   Target,
   Trophy,
 } from 'lucide-react'
+import './WhySection.scss'
 
 const features = [
   {

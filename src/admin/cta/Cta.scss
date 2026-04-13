@@ -1,0 +1,55 @@
+.cta-admin-section {
+  display: grid;
+  gap: 22px;
+}
+
+.cta-admin-section__eyebrow {
+  margin: 0 0 10px;
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.cta-admin-section__title {
+  margin: 0;
+  color: var(--text);
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 3vw, 2.35rem);
+}
+
+.cta-admin-section__copy {
+  margin: 14px 0 0;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.cta-admin-section__card {
+  padding: 22px;
+  border: 1px solid rgba(5, 13, 31, 0.08);
+  border-radius: 20px;
+  background: #fff;
+}
+
+.cta-admin-section__card h3 {
+  margin: 0;
+  color: var(--navy);
+  font-family: 'Playfair Display', serif;
+}
+
+.cta-admin-section__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.cta-admin-section__chip {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(200, 168, 75, 0.12);
+  color: var(--navy);
+  font-size: 0.88rem;
+  font-weight: 700;
+}

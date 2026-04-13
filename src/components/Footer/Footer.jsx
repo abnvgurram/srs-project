@@ -6,6 +6,7 @@ import {
   faXTwitter,
 } from '@fortawesome/free-brands-svg-icons'
 import { Calendar, Globe, Mail, MapPin, Phone } from 'lucide-react'
+import './Footer.scss'
 
 const serviceLinks = [
   { label: 'Buy a Home', href: '#services' },

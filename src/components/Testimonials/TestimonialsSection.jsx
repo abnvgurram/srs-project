@@ -1,3 +1,5 @@
+import './TestimonialsSection.scss'
+
 const testimonials = [
   {
     quote:

@@ -1,4 +1,5 @@
 import { CalendarDays, MapPin, Phone } from 'lucide-react'
+import './CtaSection.scss'
 
 const areas = [
   'Glen Allen',

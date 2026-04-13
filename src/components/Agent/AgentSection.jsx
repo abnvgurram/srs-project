@@ -7,6 +7,7 @@ import {
   RotateCcw,
   SendHorizontal,
 } from 'lucide-react'
+import './AgentSection.scss'
 
 const quickReplies = [
   {

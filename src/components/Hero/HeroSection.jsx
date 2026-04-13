@@ -9,6 +9,7 @@ import {
   MapPin,
   MessageCircle,
 } from 'lucide-react'
+import './HeroSection.scss'
 
 const AUTOPLAY_DURATION = 5500
 const EXIT_DURATION = 700

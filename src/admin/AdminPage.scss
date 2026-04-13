@@ -1,0 +1,412 @@
+.admin-login-page {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 32px 20px;
+  background:
+    radial-gradient(circle at top, rgba(200, 168, 75, 0.18), transparent 32%),
+    linear-gradient(180deg, #071022 0%, #0c1630 100%);
+}
+
+.admin-login-page__backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(200, 168, 75, 0.12), transparent 18%),
+    radial-gradient(circle at 82% 78%, rgba(226, 201, 122, 0.12), transparent 20%);
+  pointer-events: none;
+}
+
+.admin-login-card {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 520px);
+  padding: 40px 34px;
+  border: 1px solid rgba(200, 168, 75, 0.18);
+  border-radius: 28px;
+  background: rgba(7, 17, 36, 0.78);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.24);
+  text-align: center;
+  backdrop-filter: blur(18px);
+}
+
+.admin-login-card__eyebrow,
+.admin-topbar__eyebrow,
+.admin-panel__eyebrow,
+.admin-sidebar__eyebrow {
+  margin: 0 0 12px;
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.admin-login-card__title,
+.admin-topbar__title,
+.admin-panel__title,
+.admin-sidebar__title {
+  margin: 0;
+  font-family: 'Playfair Display', serif;
+}
+
+.admin-login-card__title {
+  color: #fff;
+  font-size: clamp(2rem, 6vw, 3rem);
+  line-height: 1.04;
+}
+
+.admin-login-card__copy {
+  margin: 18px 0 0;
+  color: rgba(255, 255, 255, 0.74);
+  line-height: 1.75;
+}
+
+.admin-login-card__button {
+  min-height: 54px;
+  margin-top: 28px;
+  padding: 0 28px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--navy);
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.admin-login-card__button:hover {
+  background: var(--gold-light);
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px rgba(200, 168, 75, 0.2);
+}
+
+.admin-shell {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f5f3ee 0%, #eeece4 100%);
+}
+
+.admin-sidebar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 26px 18px;
+  border-right: 1px solid rgba(5, 13, 31, 0.08);
+  background:
+    radial-gradient(circle at top right, rgba(200, 168, 75, 0.16), transparent 28%),
+    linear-gradient(180deg, #081022 0%, #11192f 100%);
+}
+
+.admin-sidebar__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 26px;
+}
+
+.admin-sidebar__brandmark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(200, 168, 75, 0.16);
+}
+
+.admin-sidebar__logo {
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-image: url('https://sirisrealtygroup.com/wp-content/uploads/2024/04/logo50x50.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.admin-sidebar__close,
+.admin-topbar__menu {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(200, 168, 75, 0.22);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--gold-light);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.admin-sidebar__close:hover,
+.admin-topbar__menu:hover {
+  border-color: rgba(200, 168, 75, 0.42);
+  background: rgba(200, 168, 75, 0.12);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.admin-sidebar__nav {
+  display: grid;
+  flex: 1;
+  gap: 8px;
+}
+
+.admin-sidebar__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 14px;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.76);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.admin-sidebar__item:hover {
+  border-color: rgba(200, 168, 75, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  transform: translateX(2px);
+}
+
+.admin-sidebar__item.is-active {
+  border-color: rgba(200, 168, 75, 0.26);
+  background: rgba(200, 168, 75, 0.16);
+  color: #fff;
+}
+
+.admin-sidebar__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 18;
+  display: none;
+  background: rgba(5, 13, 31, 0.45);
+}
+
+.admin-sidebar__footer {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.admin-sidebar__logout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid rgba(200, 168, 75, 0.24);
+  border-radius: 16px;
+  background: rgba(200, 168, 75, 0.12);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.admin-sidebar__logout:hover {
+  border-color: rgba(200, 168, 75, 0.42);
+  background: rgba(200, 168, 75, 0.2);
+  transform: translateY(-1px);
+}
+
+.admin-content {
+  min-width: 0;
+  padding: 28px;
+}
+
+.admin-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+  padding: 18px 22px;
+  border: 1px solid rgba(200, 168, 75, 0.16);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at top right, rgba(200, 168, 75, 0.14), transparent 28%),
+    linear-gradient(180deg, rgba(5, 13, 31, 0.98), rgba(11, 21, 48, 0.98));
+  box-shadow: 0 20px 48px rgba(5, 13, 31, 0.16);
+}
+
+.admin-topbar__left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.admin-topbar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+}
+
+.admin-topbar__brand-copy {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-topbar__brand-title {
+  color: #fff;
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.admin-topbar__brand-subtitle {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+.admin-topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.admin-topbar__link,
+.admin-panel__save {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.admin-topbar__link {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.admin-panel {
+  padding: 30px;
+  border: 1px solid rgba(5, 13, 31, 0.08);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 20px 60px rgba(15, 22, 38, 0.08);
+}
+
+.admin-panel__footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 26px;
+}
+
+.admin-panel__save {
+  border: 0;
+  background: rgba(5, 13, 31, 0.12);
+  color: rgba(15, 22, 38, 0.52);
+  cursor: not-allowed;
+}
+
+@media (max-width: 1100px) {
+  .admin-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 20;
+    width: min(320px, calc(100% - 36px));
+    transform: translateX(-104%);
+    transition: transform 0.24s ease;
+  }
+
+  .admin-sidebar.is-open {
+    transform: translateX(0);
+  }
+
+  .admin-sidebar__close,
+  .admin-topbar__menu,
+  .admin-sidebar__overlay.is-open {
+    display: inline-flex;
+  }
+}
+
+@media (max-width: 900px) {
+  .admin-topbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-topbar__actions {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-content {
+    padding: 18px;
+  }
+
+  .admin-panel,
+  .admin-login-card {
+    padding: 24px 20px;
+    border-radius: 24px;
+  }
+
+  .admin-topbar__actions {
+    width: 100%;
+  }
+
+  .admin-topbar__brand-title {
+    font-size: 22px;
+  }
+
+  .admin-topbar__brand-subtitle {
+    gap: 6px;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+  }
+
+  .admin-topbar__link,
+  .admin-panel__save {
+    flex: 1;
+    justify-content: center;
+  }
+}

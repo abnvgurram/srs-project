@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPhone } from '@fortawesome/free-solid-svg-icons'
+import './Header.scss'
 
 const navItems = [
   { label: 'Services', href: '#services' },

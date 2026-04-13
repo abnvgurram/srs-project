@@ -1,4 +1,5 @@
 import { BadgeDollarSign, House, KeyRound } from 'lucide-react'
+import './ServicesSection.scss'
 
 const services = [
   {

@@ -1,3 +1,5 @@
+const LEGACY_PROPERTY_PLACEHOLDER_IMAGE = '/images/property-placeholder.svg'
+
 export const propertyFilters = [
   { label: 'All', value: 'all' },
   { label: 'For Sale', value: 'buy' },
@@ -5,77 +7,125 @@ export const propertyFilters = [
   { label: 'Recently Sold', value: 'sold' },
 ]
 
-export const propertyListings = [
-  {
-    id: 'wyndham-dr',
-    type: 'buy',
-    illustration: 'house',
+export const propertyTypeMeta = {
+  buy: {
     badge: 'For Sale',
     badgeVariant: 'default',
-    price: '$485,000',
-    address: '2847 Wyndham Dr, Glen Allen, VA 23060',
-    beds: '4 Beds',
-    baths: '3 Baths',
-    size: '2,340 sqft',
   },
-  {
-    id: 'broad-oak-ct',
-    type: 'buy',
-    illustration: 'villa',
-    badge: 'For Sale',
-    badgeVariant: 'default',
-    price: '$629,000',
-    address: '1124 Broad Oak Ct, Richmond, VA 23229',
-    beds: '5 Beds',
-    baths: '4 Baths',
-    size: '3,100 sqft',
-  },
-  {
-    id: 'henrico-blvd',
-    type: 'rent',
-    illustration: 'building',
+  rent: {
     badge: 'For Rent',
     badgeVariant: 'rent',
-    price: '$2,200/mo',
-    address: '5543 Henrico Blvd, Henrico, VA 23228',
-    beds: '3 Beds',
-    baths: '2 Baths',
-    size: '1,680 sqft',
   },
-  {
-    id: 'short-pump-pkwy',
-    type: 'sold',
-    illustration: 'house',
+  sold: {
     badge: 'Sold',
     badgeVariant: 'sold',
-    price: '$514,700',
-    address: '3312 Short Pump Pkwy, Glen Allen, VA 23233',
-    beds: '4 Beds',
-    baths: '3 Baths',
-    size: '2,580 sqft',
   },
-  {
-    id: 'skipwith-rd',
-    type: 'buy',
-    illustration: 'villa',
-    badge: 'For Sale',
-    badgeVariant: 'default',
-    price: '$379,000',
-    address: '780 Skipwith Rd, Henrico, VA 23226',
-    beds: '3 Beds',
-    baths: '2 Baths',
-    size: '1,920 sqft',
-  },
-  {
-    id: 'brook-rd',
-    type: 'rent',
-    illustration: 'building',
-    badge: 'For Rent',
-    badgeVariant: 'rent',
-    price: '$1,750/mo',
-    address: '412 Brook Rd, Richmond, VA 23220',
-    beds: '2 Beds',
-    baths: '2 Baths',
-    size: '1,100 sqft',
-  },
-]
+}
+
+export function buildPropertyAddress(listing) {
+  const streetAddress = String(
+    listing.streetAddress ?? listing.street_address ?? listing.address ?? '',
+  ).trim()
+  const city = String(listing.city ?? '').trim()
+  const state = String(listing.state ?? '').trim()
+  const zipCode = String(listing.zipCode ?? listing.zip_code ?? '').trim()
+  const stateZip = [state, zipCode].filter(Boolean).join(' ')
+  const regionParts = [city, stateZip].filter(Boolean)
+
+  if (!streetAddress && !regionParts.length) return ''
+  if (!regionParts.length) return streetAddress
+  if (!streetAddress) return regionParts.join(', ')
+  return `${streetAddress}, ${regionParts.join(', ')}`
+}
+
+export function normalizePropertyType(type) {
+  return Object.hasOwn(propertyTypeMeta, type) ? type : 'buy'
+}
+
+export function normalizeImageUrls(imageUrls) {
+  if (!Array.isArray(imageUrls)) return []
+
+  return imageUrls
+    .map((imageUrl) => String(imageUrl ?? '').trim())
+    .filter(
+      (imageUrl) =>
+        Boolean(imageUrl) && imageUrl !== LEGACY_PROPERTY_PLACEHOLDER_IMAGE,
+    )
+}
+
+export function normalizePropertyListing(listing, fallbackIndex = 0) {
+  const type = normalizePropertyType(listing.type)
+  const imageUrls = normalizeImageUrls(
+    listing.imageUrls ?? listing.image_urls ?? [],
+  )
+  const coverImageIndex = Number.isInteger(listing.coverImageIndex)
+    ? listing.coverImageIndex
+    : Number.isInteger(listing.cover_image)
+      ? listing.cover_image
+      : 0
+  const safeCoverImageIndex =
+    imageUrls[coverImageIndex] !== undefined ? coverImageIndex : 0
+  const streetAddress = String(
+    listing.streetAddress ?? listing.street_address ?? listing.address ?? '',
+  ).trim()
+  const city = String(listing.city ?? '').trim()
+  const state = String(listing.state ?? '').trim()
+  const zipCode = String(listing.zipCode ?? listing.zip_code ?? '').trim()
+
+  return {
+    id: String(listing.id ?? crypto.randomUUID()),
+    type,
+    badge: propertyTypeMeta[type].badge,
+    badgeVariant: propertyTypeMeta[type].badgeVariant,
+    isPublished:
+      typeof listing.isPublished === 'boolean'
+        ? listing.isPublished
+        : typeof listing.is_published === 'boolean'
+          ? listing.is_published
+          : true,
+    price: String(listing.price ?? '').trim(),
+    streetAddress,
+    city,
+    state,
+    zipCode,
+    address: buildPropertyAddress({
+      streetAddress,
+      city,
+      state,
+      zipCode,
+      address: listing.address,
+    }),
+    description: String(listing.description ?? '').trim(),
+    beds: String(listing.beds ?? '').trim(),
+    baths: String(listing.baths ?? '').trim(),
+    size: String(listing.size ?? '').trim(),
+    imageUrls,
+    coverImageIndex: safeCoverImageIndex,
+    displayOrder:
+      Number.isFinite(Number(listing.displayOrder ?? listing.display_order))
+        ? Number(listing.displayOrder ?? listing.display_order)
+        : fallbackIndex + 1,
+  }
+}
+
+export function toPropertyRecord(listing) {
+  return {
+    id: listing.id,
+    type: listing.type,
+    is_published: listing.isPublished,
+    price: listing.price,
+    address: buildPropertyAddress(listing),
+    street_address: listing.streetAddress,
+    city: listing.city,
+    state: listing.state,
+    zip_code: listing.zipCode,
+    description: listing.description,
+    beds: listing.beds,
+    baths: listing.baths,
+    size: listing.size,
+    image_urls: listing.imageUrls,
+    cover_image: listing.coverImageIndex,
+    display_order: listing.displayOrder,
+    updated_at: new Date().toISOString(),
+  }
+}

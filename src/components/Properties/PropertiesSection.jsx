@@ -1,15 +1,21 @@
 import { useMemo, useState } from 'react'
-import { propertyFilters, propertyListings } from '../../data/properties.js'
+import { propertyFilters } from '../../data/properties.js'
+import usePropertyListings from '../../context/propertyListings/usePropertyListings.js'
 import ListingCard from './ListingCard.jsx'
 import './PropertiesSection.scss'
 
 function PropertiesSection() {
   const [activeFilter, setActiveFilter] = useState('all')
+  const { isLoading, propertyListings } = usePropertyListings()
+  const publishedListings = useMemo(
+    () => propertyListings.filter((property) => property.isPublished),
+    [propertyListings],
+  )
 
   const visibleProperties = useMemo(() => {
-    if (activeFilter === 'all') return propertyListings
-    return propertyListings.filter((property) => property.type === activeFilter)
-  }, [activeFilter])
+    if (activeFilter === 'all') return publishedListings
+    return publishedListings.filter((property) => property.type === activeFilter)
+  }, [activeFilter, publishedListings])
 
   return (
     <section className="properties-section" id="properties">
@@ -42,11 +48,19 @@ function PropertiesSection() {
           ))}
         </div>
 
-        <div className="properties-grid">
-          {visibleProperties.map((property) => (
-            <ListingCard key={property.id} listing={property} />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="properties-section__status">Loading listings...</div>
+        ) : visibleProperties.length ? (
+          <div className="properties-grid">
+            {visibleProperties.map((property) => (
+              <ListingCard key={property.id} listing={property} />
+            ))}
+          </div>
+        ) : (
+          <div className="properties-section__status">
+            No listings match this filter right now.
+          </div>
+        )}
 
         <div className="properties-section__actions">
           <a

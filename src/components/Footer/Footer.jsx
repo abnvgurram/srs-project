@@ -6,25 +6,27 @@ import {
   faXTwitter,
 } from '@fortawesome/free-brands-svg-icons'
 import { Calendar, Globe, Mail, MapPin, Phone } from 'lucide-react'
+import useSiteSections from '../../context/siteSections/useSiteSections.js'
 import './Footer.scss'
 
 const serviceLinks = [
-  { label: 'Buy a Home', href: '#services' },
-  { label: 'Sell Your Home', href: '#services' },
-  { label: 'Property Management', href: '#services' },
-  { label: 'Relocation', href: '#services' },
-  { label: 'Foreclosures', href: '#services' },
-  { label: 'Landlord Consulting', href: '#services' },
+  { label: 'Buy a Home', href: '#services', sectionKey: 'services' },
+  { label: 'Sell Your Home', href: '#services', sectionKey: 'services' },
+  { label: 'Property Management', href: '#services', sectionKey: 'services' },
+  { label: 'Relocation', href: '#services', sectionKey: 'services' },
+  { label: 'Foreclosures', href: '#services', sectionKey: 'services' },
+  { label: 'Landlord Consulting', href: '#services', sectionKey: 'services' },
 ]
 
 const resourceLinks = [
-  { label: 'Market Updates', href: '#blog' },
-  { label: "Buyer's Guide", href: '#blog' },
-  { label: "Seller's Guide", href: '#blog' },
-  { label: 'Investor Tips', href: '#blog' },
+  { label: 'Market Updates', href: '#blog', sectionKey: 'blog' },
+  { label: "Buyer's Guide", href: '#blog', sectionKey: 'blog' },
+  { label: "Seller's Guide", href: '#blog', sectionKey: 'blog' },
+  { label: 'Investor Tips', href: '#blog', sectionKey: 'blog' },
   {
     label: 'Reviews',
     href: '#testimonials',
+    sectionKey: 'testimonials',
   },
   {
     label: 'Book Appointment',
@@ -48,6 +50,7 @@ const contactLinks = [
     label: 'Glen Allen, VA 23060',
     href: '#why',
     icon: MapPin,
+    sectionKey: 'why',
   },
   {
     label: 'sirisrealtygroup.com',
@@ -79,6 +82,17 @@ function FooterLink({ href, label, external = false }) {
 }
 
 function Footer() {
+  const { sectionVisibility } = useSiteSections()
+  const visibleServiceLinks = serviceLinks.filter(
+    (link) => !link.sectionKey || sectionVisibility[link.sectionKey],
+  )
+  const visibleResourceLinks = resourceLinks.filter(
+    (link) => !link.sectionKey || sectionVisibility[link.sectionKey],
+  )
+  const visibleContactLinks = contactLinks.filter(
+    (link) => !link.sectionKey || sectionVisibility[link.sectionKey],
+  )
+
   return (
     <footer className="site-footer">
       <div className="site-footer__inner">
@@ -120,7 +134,7 @@ function Footer() {
           <section>
             <h2 className="site-footer__heading">Services</h2>
             <ul className="site-footer__links">
-              {serviceLinks.map((link) => (
+              {visibleServiceLinks.map((link) => (
                 <li key={link.label}>
                   <FooterLink href={link.href} label={link.label} />
                 </li>
@@ -131,7 +145,7 @@ function Footer() {
           <section>
             <h2 className="site-footer__heading">Resources</h2>
             <ul className="site-footer__links">
-              {resourceLinks.map((link) => (
+              {visibleResourceLinks.map((link) => (
                 <li key={link.label}>
                   <FooterLink
                     href={link.href}
@@ -146,7 +160,7 @@ function Footer() {
           <section>
             <h2 className="site-footer__heading">Contact</h2>
             <ul className="site-footer__links site-footer__links--contact">
-              {contactLinks.map((link) => {
+              {visibleContactLinks.map((link) => {
                 const Icon = link.icon
 
                 return (

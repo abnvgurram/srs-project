@@ -1,30 +1,17 @@
-import {
-  Bath,
-  BedDouble,
-  Building2,
-  House,
-  HousePlus,
-  MapPin,
-  Ruler,
-} from 'lucide-react'
+import { Bath, BedDouble, MapPin, Ruler } from 'lucide-react'
+import PropertyImageCarousel from './PropertyImageCarousel.jsx'
 import './ListingCard.scss'
 
-const illustrationIcons = {
-  house: House,
-  villa: HousePlus,
-  building: Building2,
-}
-
 function ListingCard({ listing }) {
-  const IllustrationIcon = illustrationIcons[listing.illustration] ?? House
+  const images = listing.imageUrls
 
   return (
     <article className="listing-card">
-      <div className="listing-card__visual" aria-hidden="true">
-        <IllustrationIcon
-          className="listing-card__illustration"
-          size={60}
-          strokeWidth={1.8}
+      <div className="listing-card__visual">
+        <PropertyImageCarousel
+          alt={listing.address}
+          images={images}
+          size="default"
         />
         <span className={`listing-card__badge listing-card__badge--${listing.badgeVariant}`}>
           {listing.badge}

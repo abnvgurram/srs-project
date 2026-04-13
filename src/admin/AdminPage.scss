@@ -296,49 +296,12 @@
   text-transform: uppercase;
 }
 
-.admin-topbar__actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.admin-topbar__link,
-.admin-panel__save {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 46px;
-  padding: 0 18px;
-  border-radius: 999px;
-  font-weight: 700;
-}
-
-.admin-topbar__link {
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.06);
-  color: #fff;
-}
-
 .admin-panel {
   padding: 30px;
   border: 1px solid rgba(5, 13, 31, 0.08);
   border-radius: 28px;
   background: rgba(255, 255, 255, 0.9);
   box-shadow: 0 20px 60px rgba(15, 22, 38, 0.08);
-}
-
-.admin-panel__footer {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 26px;
-}
-
-.admin-panel__save {
-  border: 0;
-  background: rgba(5, 13, 31, 0.12);
-  color: rgba(15, 22, 38, 0.52);
-  cursor: not-allowed;
 }
 
 @media (max-width: 1100px) {
@@ -374,9 +337,6 @@
     align-items: stretch;
   }
 
-  .admin-topbar__actions {
-    justify-content: flex-start;
-  }
 }
 
 @media (max-width: 640px) {
@@ -402,11 +362,5 @@
     gap: 6px;
     font-size: 9px;
     letter-spacing: 0.2em;
-  }
-
-  .admin-topbar__link,
-  .admin-panel__save {
-    flex: 1;
-    justify-content: center;
   }
 }

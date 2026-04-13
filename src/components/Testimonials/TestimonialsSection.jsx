@@ -1,30 +1,13 @@
+import { Star } from 'lucide-react'
+import useTestimonials from '../../context/testimonials/useTestimonials.js'
 import './TestimonialsSection.scss'
 
-const testimonials = [
-  {
-    quote:
-      'From the moment we met, Vijay impressed us with his professionalism, knowledge and dedication to helping us find our dream home in the highly rated school district in Wyndham. His expertise in the local market was evident throughout every step.',
-    name: 'Dr. Fanta Meleza',
-    detail: 'Bought in Wyndham, Glen Allen • April 2024',
-    initials: 'FM',
-  },
-  {
-    quote:
-      'Vijay was very good in educating us on all steps related to house buying. He gave us a wide variety of options and was there from search to closing. His assurance to guide us even after we bought the home was outstanding.',
-    name: 'Abhiram B.',
-    detail: 'Bought a Home • February 2024',
-    initials: 'AB',
-  },
-  {
-    quote:
-      'Vijay did an outstanding job helping with our house sale. He has great local knowledge and excellent negotiation skills. He was on top of all the work that needed to be done for the house. Highly recommend!',
-    name: 'Mahalakshmi Boddupally',
-    detail: 'Sold in Glen Allen • December 2022',
-    initials: 'MB',
-  },
-]
-
 function TestimonialsSection() {
+  const { isLoading, testimonials } = useTestimonials()
+  const publishedTestimonials = testimonials.filter(
+    (testimonial) => testimonial.isPublished,
+  )
+
   return (
     <section className="testimonials-section" id="testimonials">
       <div className="testimonials-section__inner">
@@ -36,36 +19,57 @@ function TestimonialsSection() {
           </p>
         </header>
 
-        <div className="testimonials-section__grid">
-          {testimonials.map((item) => (
-            <article className="testimonial-card-react" key={item.name}>
-              <span className="testimonial-card-react__quote-mark" aria-hidden="true">
-                "
-              </span>
-
-              <div className="testimonial-card-react__stars" aria-label="5 star review">
-                <span>★</span>
-                <span>★</span>
-                <span>★</span>
-                <span>★</span>
-                <span>★</span>
-              </div>
-
-              <p className="testimonial-card-react__quote">{item.quote}</p>
-
-              <div className="testimonial-card-react__author">
-                <span className="testimonial-card-react__avatar" aria-hidden="true">
-                  {item.initials}
+        {isLoading ? (
+          <div className="testimonials-section__empty">
+            Loading client reviews...
+          </div>
+        ) : publishedTestimonials.length ? (
+          <div className="testimonials-section__grid">
+            {publishedTestimonials.map((item) => (
+              <article className="testimonial-card-react" key={item.id}>
+                <span
+                  className="testimonial-card-react__quote-mark"
+                  aria-hidden="true"
+                >
+                  "
                 </span>
 
-                <span className="testimonial-card-react__meta">
-                  <span className="testimonial-card-react__name">{item.name}</span>
-                  <span className="testimonial-card-react__detail">{item.detail}</span>
-                </span>
-              </div>
-            </article>
-          ))}
-        </div>
+                <div
+                  className="testimonial-card-react__stars"
+                  aria-label={`${item.rating} star review`}
+                >
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <Star
+                      className={index < item.rating ? 'is-active' : ''}
+                      key={`${item.id}-star-${index + 1}`}
+                      size={15}
+                      strokeWidth={2}
+                    />
+                  ))}
+                </div>
+
+                <p className="testimonial-card-react__quote">{item.review}</p>
+
+                <div className="testimonial-card-react__author">
+                  <span className="testimonial-card-react__avatar" aria-hidden="true">
+                    {item.initials}
+                  </span>
+
+                  <span className="testimonial-card-react__meta">
+                    <span className="testimonial-card-react__name">{item.name}</span>
+                    <span className="testimonial-card-react__detail">
+                      {item.subtitle}
+                    </span>
+                  </span>
+                </div>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <div className="testimonials-section__empty">
+            Client reviews will appear here once they are published.
+          </div>
+        )}
 
         <div className="testimonials-section__action">
           <a
@@ -74,7 +78,7 @@ function TestimonialsSection() {
             target="_blank"
             rel="noreferrer"
           >
-            Read All Reviews on Zillow →
+            Read All Reviews on Zillow
           </a>
         </div>
       </div>

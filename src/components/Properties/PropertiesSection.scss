@@ -74,6 +74,16 @@
   gap: 24px;
 }
 
+.properties-section__status {
+  padding: 28px 24px;
+  border: 1px solid rgba(5, 13, 31, 0.08);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.7;
+}
+
 .properties-section__actions {
   display: flex;
   justify-content: center;

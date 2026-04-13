@@ -9,21 +9,24 @@ import PropertiesSection from './components/Properties/PropertiesSection.jsx'
 import ServicesSection from './components/Services/ServicesSection.jsx'
 import TestimonialsSection from './components/Testimonials/TestimonialsSection.jsx'
 import WhySection from './components/Why/WhySection.jsx'
+import useSiteSections from './context/siteSections/useSiteSections.js'
 
 function App() {
+  const { sectionVisibility } = useSiteSections()
+
   return (
     <div className="app-shell">
-      <Header />
-      <HeroSection />
-      <AgentSection />
-      <ServicesSection />
-      <PropertiesSection />
-      <WhySection />
-      <TestimonialsSection />
-      <BlogSection />
-      <CtaSection />
-      <InquirySection />
-      <Footer />
+      {sectionVisibility.header && <Header />}
+      {sectionVisibility.hero && <HeroSection />}
+      {sectionVisibility.agent && <AgentSection />}
+      {sectionVisibility.services && <ServicesSection />}
+      {sectionVisibility.properties && <PropertiesSection />}
+      {sectionVisibility.why && <WhySection />}
+      {sectionVisibility.testimonials && <TestimonialsSection />}
+      {sectionVisibility.blog && <BlogSection />}
+      {sectionVisibility.cta && <CtaSection />}
+      {sectionVisibility.inquiry && <InquirySection />}
+      {sectionVisibility.footer && <Footer />}
     </div>
   )
 }

@@ -1,0 +1,95 @@
+.property-image-carousel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.property-image-carousel--fallback {
+  background:
+    radial-gradient(circle at top right, rgba(212, 178, 72, 0.14), transparent 34%),
+    linear-gradient(135deg, #13254a, #0c1731);
+}
+
+.property-image-carousel__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.property-image-carousel__fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 74px;
+  height: 74px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(212, 178, 72, 0.94);
+  backdrop-filter: blur(10px);
+}
+
+.property-image-carousel__controls {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.property-image-carousel__count {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: rgba(7, 17, 36, 0.84);
+  color: #fff;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.property-image-carousel__actions {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.property-image-carousel__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(7, 17, 36, 0.84);
+  color: #fff;
+  cursor: pointer;
+}
+
+.property-image-carousel--compact .property-image-carousel__controls {
+  right: 8px;
+  bottom: 8px;
+}
+
+.property-image-carousel--compact .property-image-carousel__count {
+  min-height: 24px;
+  padding: 0 8px;
+  font-size: 0.68rem;
+}
+
+.property-image-carousel--compact .property-image-carousel__button {
+  width: 24px;
+  height: 24px;
+}
+
+.property-image-carousel--compact .property-image-carousel__fallback {
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+}

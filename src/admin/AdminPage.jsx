@@ -17,7 +17,6 @@ import {
   BriefcaseBusiness,
   Building2,
   ContactRound,
-  ExternalLink,
   LayoutDashboard,
   LayoutPanelTop,
   LogOut,
@@ -278,23 +277,10 @@ function AdminPage() {
               </span>
             </a>
           </div>
-
-          <div className="admin-topbar__actions">
-            <a className="admin-topbar__link" href="/">
-              <ExternalLink aria-hidden="true" size={16} strokeWidth={2.1} />
-              <span>Site Preview</span>
-            </a>
-          </div>
         </header>
 
         <section className="admin-panel">
           <ActiveSectionComponent />
-
-          <div className="admin-panel__footer">
-            <button className="admin-panel__save" type="button" disabled>
-              Save Disabled
-            </button>
-          </div>
         </section>
       </main>
     </div>

@@ -1,5 +1,5 @@
 import { Bath, BedDouble, MapPin, Ruler } from 'lucide-react'
-import PropertyImageCarousel from './PropertyImageCarousel.jsx'
+import PropertyImageCarousel from '../propertyImageCarousel/PropertyImageCarousel.jsx'
 import './ListingCard.scss'
 
 function ListingCard({ listing }) {

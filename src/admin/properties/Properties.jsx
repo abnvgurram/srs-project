@@ -13,8 +13,10 @@ import {
 import './Properties.scss'
 import { propertyFilters } from '../../data/properties.js'
 import usePropertyListings from '../../context/propertyListings/usePropertyListings.js'
-import PropertyImageCarousel from '../../components/Properties/PropertyImageCarousel.jsx'
-import SectionVisibilityGate from '../common/SectionVisibilityGate.jsx'
+import PropertyImageCarousel from '../../components/Properties/propertyImageCarousel/PropertyImageCarousel.jsx'
+import ConfirmationModal from '../common/confirmationModal/ConfirmationModal.jsx'
+import Pagination from '../common/pagination/Pagination.jsx'
+import SectionVisibilityGate from '../common/sectionVisibilityGate/SectionVisibilityGate.jsx'
 
 const propertyTypeOptions = propertyFilters.filter(
   (filter) => filter.value !== 'all',
@@ -26,6 +28,31 @@ const manageFilters = [
   { label: 'Rent', value: 'rent' },
   { label: 'Sold', value: 'sold' },
 ]
+const MANAGE_PROPERTIES_PAGE_SIZE = 4
+
+function PropertyImagePreview({ imageUrl, label }) {
+  const [hasError, setHasError] = useState(false)
+
+  if (!imageUrl.trim()) return null
+
+  return (
+    <div className="properties-admin-section__image-preview">
+      {hasError ? (
+        <div className="properties-admin-section__image-preview-fallback">
+          Preview unavailable
+        </div>
+      ) : (
+        <img
+          className="properties-admin-section__image-preview-image"
+          src={imageUrl}
+          alt={label}
+          loading="lazy"
+          onError={() => setHasError(true)}
+        />
+      )}
+    </div>
+  )
+}
 
 function createEmptyDraft(nextDisplayOrder) {
   return {
@@ -129,6 +156,9 @@ function Properties() {
   const [isCreating, setIsCreating] = useState(true)
   const [formMessage, setFormMessage] = useState('')
   const [manageFilter, setManageFilter] = useState('all')
+  const [managePage, setManagePage] = useState(1)
+  const [confirmationState, setConfirmationState] = useState(null)
+  const [isConfirmingAction, setIsConfirmingAction] = useState(false)
 
   const nextDisplayOrder =
     propertyListings.reduce(
@@ -142,6 +172,39 @@ function Properties() {
     if (manageFilter === 'all') return propertyListings
     return propertyListings.filter((listing) => listing.type === manageFilter)
   }, [manageFilter, propertyListings])
+  const totalManagePages = Math.max(
+    1,
+    Math.ceil(filteredListings.length / MANAGE_PROPERTIES_PAGE_SIZE),
+  )
+  const paginatedListings = useMemo(() => {
+    const startIndex = (managePage - 1) * MANAGE_PROPERTIES_PAGE_SIZE
+    return filteredListings.slice(
+      startIndex,
+      startIndex + MANAGE_PROPERTIES_PAGE_SIZE,
+    )
+  }, [filteredListings, managePage])
+
+  useEffect(() => {
+    if (!formMessage) return undefined
+
+    const timeoutId = window.setTimeout(() => {
+      setFormMessage('')
+    }, 2000)
+
+    return () => {
+      window.clearTimeout(timeoutId)
+    }
+  }, [formMessage])
+
+  useEffect(() => {
+    setManagePage(1)
+  }, [manageFilter])
+
+  useEffect(() => {
+    if (managePage > totalManagePages) {
+      setManagePage(totalManagePages)
+    }
+  }, [managePage, totalManagePages])
 
   function openAddProperty() {
     setActiveTab('editor')
@@ -180,6 +243,48 @@ function Properties() {
       ...currentDraft,
       [field]: value,
     }))
+  }
+
+  function closeConfirmation() {
+    if (isConfirmingAction) return
+    setConfirmationState(null)
+  }
+
+  function requestDelete(listing) {
+    setConfirmationState({
+      confirmLabel: 'Delete Property',
+      description: `This will remove "${listing.address}" from Featured Properties.`,
+      onConfirm: () => handleDelete(listing),
+      title: 'Delete property?',
+      tone: 'danger',
+    })
+  }
+
+  function requestPublishToggle(listing) {
+    const isUnpublishing = listing.isPublished
+
+    setConfirmationState({
+      confirmLabel: isUnpublishing ? 'Unpublish Property' : 'Publish Property',
+      description: isUnpublishing
+        ? `This will hide "${listing.address}" from the website until you publish it again.`
+        : `This will make "${listing.address}" visible on the website.`,
+      onConfirm: () => handlePublishToggle(listing),
+      title: isUnpublishing ? 'Unpublish property?' : 'Publish property?',
+      tone: isUnpublishing ? 'danger' : 'default',
+    })
+  }
+
+  async function handleConfirmAction() {
+    if (!confirmationState?.onConfirm) return
+
+    setIsConfirmingAction(true)
+
+    try {
+      await confirmationState.onConfirm()
+      setConfirmationState(null)
+    } finally {
+      setIsConfirmingAction(false)
+    }
   }
 
   function handleImageChange(index, value) {
@@ -261,12 +366,6 @@ function Properties() {
   }
 
   async function handleDelete(listing) {
-    const shouldDelete = window.confirm(
-      `Delete "${listing.address}" from Featured Listings?`,
-    )
-
-    if (!shouldDelete) return
-
     const didDelete = await deletePropertyListing(listing.id)
 
     if (!didDelete) {
@@ -304,7 +403,7 @@ function Properties() {
     <SectionVisibilityGate sectionKey="properties">
       <div className="properties-admin-section">
         <div className="properties-admin-section__header">
-          <p className="properties-admin-section__eyebrow">Featured Listings</p>
+          <p className="properties-admin-section__eyebrow">Featured Properties</p>
           <h2 className="properties-admin-section__title">Properties Control Panel</h2>
           <p className="properties-admin-section__copy">
             Manage property content, media, category, publishing state, and listing
@@ -483,31 +582,42 @@ function Properties() {
                     className="properties-admin-section__image-row"
                     key={`${selectedListingId || 'new'}-image-${index}`}
                   >
-                    <label
-                      className="properties-admin-section__field"
-                      htmlFor={`listing-image-${index}`}
-                    >
-                      <span>Image {index + 1} URL</span>
-                      <input
-                        id={`listing-image-${index}`}
-                        type="url"
-                        value={imageUrl}
-                        placeholder="Image URL"
-                        onChange={(event) =>
-                          handleImageChange(index, event.target.value)
-                        }
-                      />
-                    </label>
+                    <div className="properties-admin-section__image-entry">
+                      <label
+                        className="properties-admin-section__field"
+                        htmlFor={`listing-image-${index}`}
+                      >
+                        <span>Image {index + 1} URL</span>
+                      </label>
 
-                    <button
-                      className="properties-admin-section__icon-button"
-                      type="button"
-                      aria-label={`Remove image ${index + 1}`}
-                      onClick={() => handleRemoveImageField(index)}
-                    >
-                      <Trash2 aria-hidden="true" size={16} strokeWidth={2.1} />
-                      <span>Delete</span>
-                    </button>
+                      <div className="properties-admin-section__image-input-row">
+                        <input
+                          id={`listing-image-${index}`}
+                          type="url"
+                          value={imageUrl}
+                          placeholder="Image URL"
+                          onChange={(event) =>
+                            handleImageChange(index, event.target.value)
+                          }
+                        />
+
+                        <button
+                          className="properties-admin-section__icon-button"
+                          type="button"
+                          aria-label={`Remove image ${index + 1}`}
+                          onClick={() => handleRemoveImageField(index)}
+                        >
+                          <Trash2 aria-hidden="true" size={16} strokeWidth={2.1} />
+                          <span>Delete</span>
+                        </button>
+                      </div>
+
+                      <PropertyImagePreview
+                        key={imageUrl || `preview-${index}`}
+                        imageUrl={imageUrl}
+                        label={`Preview for image ${index + 1}`}
+                      />
+                    </div>
                   </div>
                 ))}
               </div>
@@ -570,7 +680,9 @@ function Properties() {
                   }`}
                   key={filter.value}
                   type="button"
-                  onClick={() => setManageFilter(filter.value)}
+                  onClick={() => {
+                    setManageFilter(filter.value)
+                  }}
                 >
                   {filter.label}
                 </button>
@@ -595,8 +707,9 @@ function Properties() {
               Loading properties...
             </div>
           ) : filteredListings.length ? (
-            <div className="properties-admin-section__list">
-              {filteredListings.map((listing) => {
+            <>
+              <div className="properties-admin-section__list">
+                {paginatedListings.map((listing) => {
                 const images = listing.imageUrls
 
                 return (
@@ -649,7 +762,7 @@ function Properties() {
                           <button
                             className="properties-admin-section__listing-action"
                             type="button"
-                            onClick={() => handlePublishToggle(listing)}
+                            onClick={() => requestPublishToggle(listing)}
                           >
                             {listing.isPublished ? (
                               <EyeOff
@@ -672,7 +785,7 @@ function Properties() {
                           <button
                             className="properties-admin-section__listing-action properties-admin-section__listing-action--danger"
                             type="button"
-                            onClick={() => handleDelete(listing)}
+                            onClick={() => requestDelete(listing)}
                           >
                             <Trash2
                               aria-hidden="true"
@@ -696,8 +809,16 @@ function Properties() {
                     </div>
                   </article>
                 )
-              })}
-            </div>
+                })}
+              </div>
+
+              <Pagination
+                currentPage={managePage}
+                onPageChange={setManagePage}
+                totalItems={filteredListings.length}
+                totalPages={totalManagePages}
+              />
+            </>
           ) : (
             <div className="properties-admin-section__empty-state">
               No properties match this filter.
@@ -706,6 +827,17 @@ function Properties() {
           </section>
         )}
       </div>
+
+      <ConfirmationModal
+        confirmLabel={confirmationState?.confirmLabel}
+        description={confirmationState?.description}
+        isLoading={isConfirmingAction}
+        isOpen={Boolean(confirmationState)}
+        onCancel={closeConfirmation}
+        onConfirm={handleConfirmAction}
+        title={confirmationState?.title}
+        tone={confirmationState?.tone}
+      />
     </SectionVisibilityGate>
   )
 }

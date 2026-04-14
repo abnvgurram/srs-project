@@ -1,5 +1,5 @@
 import './Hero.scss'
-import SectionVisibilityGate from '../common/SectionVisibilityGate.jsx'
+import SectionVisibilityGate from '../common/sectionVisibilityGate/SectionVisibilityGate.jsx'
 
 const slides = ['Buy Slide', 'Sell Slide', 'Management Slide', 'Relocation Slide']
 

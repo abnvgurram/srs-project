@@ -1,5 +1,5 @@
 import './Footer.scss'
-import SectionVisibilityGate from '../common/SectionVisibilityGate.jsx'
+import SectionVisibilityGate from '../common/sectionVisibilityGate/SectionVisibilityGate.jsx'
 
 const footerGroups = ['Brand', 'Services', 'Resources', 'Contact']
 

@@ -1,5 +1,3 @@
-const LEGACY_PROPERTY_PLACEHOLDER_IMAGE = '/images/property-placeholder.svg'
-
 export const propertyFilters = [
   { label: 'All', value: 'all' },
   { label: 'For Sale', value: 'buy' },
@@ -47,10 +45,7 @@ export function normalizeImageUrls(imageUrls) {
 
   return imageUrls
     .map((imageUrl) => String(imageUrl ?? '').trim())
-    .filter(
-      (imageUrl) =>
-        Boolean(imageUrl) && imageUrl !== LEGACY_PROPERTY_PLACEHOLDER_IMAGE,
-    )
+    .filter(Boolean)
 }
 
 export function normalizePropertyListing(listing, fallbackIndex = 0) {

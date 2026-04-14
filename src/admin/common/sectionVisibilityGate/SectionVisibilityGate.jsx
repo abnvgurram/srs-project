@@ -1,4 +1,4 @@
-import useSiteSections from '../../context/siteSections/useSiteSections.js'
+import useSiteSections from '../../../context/siteSections/useSiteSections.js'
 import './SectionVisibilityGate.scss'
 
 function SectionVisibilityGate({ children, sectionKey }) {

@@ -65,7 +65,7 @@ const adminSections = [
   },
   {
     id: 'properties',
-    label: 'Featured Listings',
+    label: 'Featured Properties',
     icon: Building2,
     Component: Properties,
   },

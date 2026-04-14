@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
-import { propertyFilters } from '../../data/properties.js'
-import usePropertyListings from '../../context/propertyListings/usePropertyListings.js'
-import ListingCard from './ListingCard.jsx'
+import { propertyFilters } from '../../../data/properties.js'
+import usePropertyListings from '../../../context/propertyListings/usePropertyListings.js'
+import ListingCard from '../listingCard/ListingCard.jsx'
 import './PropertiesSection.scss'
 
 function PropertiesSection() {
@@ -21,7 +21,7 @@ function PropertiesSection() {
     <section className="properties-section" id="properties">
       <div className="properties-section__inner">
         <header className="properties-section__header">
-          <p className="properties-section__eyebrow">Featured Listings</p>
+          <p className="properties-section__eyebrow">Featured Properties</p>
           <h2 className="properties-section__title">Properties For You</h2>
           <p className="properties-section__copy">
             Browse active listings, recently sold, and rental properties in the

@@ -1,5 +1,5 @@
 import './Header.scss'
-import SectionVisibilityGate from '../common/SectionVisibilityGate.jsx'
+import SectionVisibilityGate from '../common/sectionVisibilityGate/SectionVisibilityGate.jsx'
 
 const navItems = ['Services', 'Properties', 'Why Us', 'Reviews', 'Blog', 'Contact Us']
 

@@ -10,13 +10,15 @@ import {
   Trash2,
   X,
 } from 'lucide-react'
-import SectionVisibilityGate from '../common/SectionVisibilityGate.jsx'
+import ConfirmationModal from '../common/confirmationModal/ConfirmationModal.jsx'
+import SectionVisibilityGate from '../common/sectionVisibilityGate/SectionVisibilityGate.jsx'
 import useTestimonials from '../../context/testimonials/useTestimonials.js'
 import {
   getTestimonialSourceMeta,
   testimonialSourceOptions,
 } from '../../data/testimonials.js'
 import { hasSupabaseConfig, supabase } from '../../lib/supabase.js'
+import Pagination from '../common/pagination/Pagination.jsx'
 import './Testimonials.scss'
 
 const manageFilters = [
@@ -25,6 +27,7 @@ const manageFilters = [
   { label: 'Unpublished', value: 'unpublished' },
   ...testimonialSourceOptions,
 ]
+const MANAGE_REVIEWS_PAGE_SIZE = 4
 
 function createEmptyDraft(nextDisplayOrder) {
   return {
@@ -121,6 +124,9 @@ function Testimonials() {
   const [isCreating, setIsCreating] = useState(true)
   const [formMessage, setFormMessage] = useState('')
   const [manageFilter, setManageFilter] = useState('all')
+  const [managePage, setManagePage] = useState(1)
+  const [confirmationState, setConfirmationState] = useState(null)
+  const [isConfirmingAction, setIsConfirmingAction] = useState(false)
   const [googleConfig, setGoogleConfig] = useState({
     accountId: '',
     locationId: '',
@@ -153,6 +159,17 @@ function Testimonials() {
     }
     return testimonials.filter((testimonial) => testimonial.source === manageFilter)
   }, [manageFilter, testimonials])
+  const totalManagePages = Math.max(
+    1,
+    Math.ceil(filteredTestimonials.length / MANAGE_REVIEWS_PAGE_SIZE),
+  )
+  const paginatedTestimonials = useMemo(() => {
+    const startIndex = (managePage - 1) * MANAGE_REVIEWS_PAGE_SIZE
+    return filteredTestimonials.slice(
+      startIndex,
+      startIndex + MANAGE_REVIEWS_PAGE_SIZE,
+    )
+  }, [filteredTestimonials, managePage])
 
   useEffect(() => {
     if (!hasSupabaseConfig) return
@@ -203,6 +220,28 @@ function Testimonials() {
     }
   }, [])
 
+  useEffect(() => {
+    if (!formMessage) return undefined
+
+    const timeoutId = window.setTimeout(() => {
+      setFormMessage('')
+    }, 2000)
+
+    return () => {
+      window.clearTimeout(timeoutId)
+    }
+  }, [formMessage])
+
+  useEffect(() => {
+    setManagePage(1)
+  }, [manageFilter])
+
+  useEffect(() => {
+    if (managePage > totalManagePages) {
+      setManagePage(totalManagePages)
+    }
+  }, [managePage, totalManagePages])
+
   function openAddReview() {
     setActiveTab('editor')
     setIsCreating(true)
@@ -249,6 +288,48 @@ function Testimonials() {
     }))
   }
 
+  function closeConfirmation() {
+    if (isConfirmingAction) return
+    setConfirmationState(null)
+  }
+
+  function requestDelete(testimonial) {
+    setConfirmationState({
+      confirmLabel: 'Delete Review',
+      description: `This will permanently remove the review from ${testimonial.name}.`,
+      onConfirm: () => handleDelete(testimonial),
+      title: 'Delete review?',
+      tone: 'danger',
+    })
+  }
+
+  function requestPublishToggle(testimonial) {
+    const isUnpublishing = testimonial.isPublished
+
+    setConfirmationState({
+      confirmLabel: isUnpublishing ? 'Unpublish Review' : 'Publish Review',
+      description: isUnpublishing
+        ? `This will hide ${testimonial.name}'s review from the website until you publish it again.`
+        : `This will make ${testimonial.name}'s review visible on the website.`,
+      onConfirm: () => handlePublishToggle(testimonial),
+      title: isUnpublishing ? 'Unpublish review?' : 'Publish review?',
+      tone: isUnpublishing ? 'danger' : 'default',
+    })
+  }
+
+  async function handleConfirmAction() {
+    if (!confirmationState?.onConfirm) return
+
+    setIsConfirmingAction(true)
+
+    try {
+      await confirmationState.onConfirm()
+      setConfirmationState(null)
+    } finally {
+      setIsConfirmingAction(false)
+    }
+  }
+
   function handleSourceChange(source) {
     const sourceMeta = getTestimonialSourceMeta(source)
 
@@ -292,12 +373,6 @@ function Testimonials() {
   }
 
   async function handleDelete(testimonial) {
-    const shouldDelete = window.confirm(
-      `Delete "${testimonial.name}" from Client Reviews?`,
-    )
-
-    if (!shouldDelete) return
-
     const didDelete = await deleteTestimonial(testimonial.id)
 
     if (!didDelete) {
@@ -647,7 +722,9 @@ function Testimonials() {
                   }`}
                   key={filter.value}
                   type="button"
-                  onClick={() => setManageFilter(filter.value)}
+                  onClick={() => {
+                    setManageFilter(filter.value)
+                  }}
                 >
                   {filter.label}
                 </button>
@@ -671,8 +748,9 @@ function Testimonials() {
                 Loading reviews...
               </div>
             ) : filteredTestimonials.length ? (
-              <div className="testimonials-admin-section__list">
-                {filteredTestimonials.map((testimonial) => (
+              <>
+                <div className="testimonials-admin-section__list">
+                  {paginatedTestimonials.map((testimonial) => (
                   <article
                     className={`testimonials-admin-section__review${
                       selectedTestimonialId === testimonial.id ? ' is-active' : ''
@@ -701,7 +779,7 @@ function Testimonials() {
                         <button
                           className="testimonials-admin-section__review-action"
                           type="button"
-                          onClick={() => handlePublishToggle(testimonial)}
+                          onClick={() => requestPublishToggle(testimonial)}
                         >
                           {testimonial.isPublished ? (
                             <EyeOff aria-hidden="true" size={14} strokeWidth={2.1} />
@@ -716,7 +794,7 @@ function Testimonials() {
                         <button
                           className="testimonials-admin-section__review-action testimonials-admin-section__review-action--danger"
                           type="button"
-                          onClick={() => handleDelete(testimonial)}
+                          onClick={() => requestDelete(testimonial)}
                         >
                           <Trash2 aria-hidden="true" size={14} strokeWidth={2.1} />
                           <span>Delete</span>
@@ -736,8 +814,16 @@ function Testimonials() {
                       </span>
                     </div>
                   </article>
-                ))}
-              </div>
+                  ))}
+                </div>
+
+                <Pagination
+                  currentPage={managePage}
+                  onPageChange={setManagePage}
+                  totalItems={filteredTestimonials.length}
+                  totalPages={totalManagePages}
+                />
+              </>
             ) : (
               <div className="testimonials-admin-section__empty-state">
                 No reviews match this filter.
@@ -929,6 +1015,17 @@ function Testimonials() {
           </section>
         )}
       </div>
+
+      <ConfirmationModal
+        confirmLabel={confirmationState?.confirmLabel}
+        description={confirmationState?.description}
+        isLoading={isConfirmingAction}
+        isOpen={Boolean(confirmationState)}
+        onCancel={closeConfirmation}
+        onConfirm={handleConfirmAction}
+        title={confirmationState?.title}
+        tone={confirmationState?.tone}
+      />
     </SectionVisibilityGate>
   )
 }

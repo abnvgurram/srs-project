@@ -3,7 +3,7 @@ export const siteSections = [
   { key: 'hero', label: 'Hero' },
   { key: 'agent', label: 'Agent Section' },
   { key: 'services', label: 'Services' },
-  { key: 'properties', label: 'Featured Listings' },
+  { key: 'properties', label: 'Featured Properties' },
   { key: 'why', label: 'Why Us' },
   { key: 'testimonials', label: 'Testimonials' },
   { key: 'blog', label: 'Blog / Resources' },

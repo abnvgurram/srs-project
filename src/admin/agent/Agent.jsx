@@ -1,5 +1,5 @@
 import './Agent.scss'
-import SectionVisibilityGate from '../common/SectionVisibilityGate.jsx'
+import SectionVisibilityGate from '../common/sectionVisibilityGate/SectionVisibilityGate.jsx'
 
 const quickReplies = [
   'Buy a Home',

@@ -1,5 +1,5 @@
 import './Why.scss'
-import SectionVisibilityGate from '../common/SectionVisibilityGate.jsx'
+import SectionVisibilityGate from '../common/sectionVisibilityGate/SectionVisibilityGate.jsx'
 
 const proofItems = ['Market Guidance', 'Negotiation Strength', 'Property Management', 'Client Care']
 

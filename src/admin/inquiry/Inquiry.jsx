@@ -1,5 +1,5 @@
 import './Inquiry.scss'
-import SectionVisibilityGate from '../common/SectionVisibilityGate.jsx'
+import SectionVisibilityGate from '../common/sectionVisibilityGate/SectionVisibilityGate.jsx'
 
 const formFields = ['Name', 'Email', 'Phone Number', 'Type of Service', 'Message']
 

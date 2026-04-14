@@ -1,5 +1,5 @@
 import './Cta.scss'
-import SectionVisibilityGate from '../common/SectionVisibilityGate.jsx'
+import SectionVisibilityGate from '../common/sectionVisibilityGate/SectionVisibilityGate.jsx'
 
 const chips = ['Glen Allen', 'Richmond', 'Henrico', 'Short Pump', 'West End']
 

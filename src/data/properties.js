@@ -48,6 +48,61 @@ export function normalizeImageUrls(imageUrls) {
     .filter(Boolean)
 }
 
+export function orderPropertyImages(imageUrls, coverImageIndex) {
+  const normalizedImageUrls = normalizeImageUrls(imageUrls)
+
+  if (!normalizedImageUrls.length) return []
+  if (!Number.isInteger(coverImageIndex)) return normalizedImageUrls
+  if (coverImageIndex <= 0) return normalizedImageUrls
+  if (normalizedImageUrls[coverImageIndex] === undefined) {
+    return normalizedImageUrls
+  }
+
+  return [
+    normalizedImageUrls[coverImageIndex],
+    ...normalizedImageUrls.slice(0, coverImageIndex),
+    ...normalizedImageUrls.slice(coverImageIndex + 1),
+  ]
+}
+
+export function normalizePropertySize(size) {
+  const normalizedSize = String(size ?? '').trim()
+
+  if (!normalizedSize) return ''
+  if (/[a-z]/i.test(normalizedSize)) return normalizedSize
+
+  return `${normalizedSize} sqft`
+}
+
+export function normalizePropertyPrice(price) {
+  const normalizedPrice = String(price ?? '').trim()
+
+  if (!normalizedPrice) return ''
+  if (normalizedPrice.startsWith('$')) {
+    const strippedPrice = normalizedPrice.replace(/^\$\s*/, '').trim()
+    return strippedPrice ? `$ ${strippedPrice}` : '$'
+  }
+  if (!/\d/.test(normalizedPrice)) return normalizedPrice
+
+  return `$ ${normalizedPrice}`
+}
+
+export function splitPropertyPrice(price) {
+  const normalizedPrice = normalizePropertyPrice(price)
+
+  if (!normalizedPrice.startsWith('$')) {
+    return {
+      amount: normalizedPrice,
+      prefix: '',
+    }
+  }
+
+  return {
+    amount: normalizedPrice.replace(/^\$\s*/, ''),
+    prefix: '$',
+  }
+}
+
 export function normalizePropertyListing(listing, fallbackIndex = 0) {
   const type = normalizePropertyType(listing.type)
   const imageUrls = normalizeImageUrls(
@@ -78,7 +133,7 @@ export function normalizePropertyListing(listing, fallbackIndex = 0) {
         : typeof listing.is_published === 'boolean'
           ? listing.is_published
           : true,
-    price: String(listing.price ?? '').trim(),
+    price: normalizePropertyPrice(listing.price),
     streetAddress,
     city,
     state,
@@ -93,7 +148,7 @@ export function normalizePropertyListing(listing, fallbackIndex = 0) {
     description: String(listing.description ?? '').trim(),
     beds: String(listing.beds ?? '').trim(),
     baths: String(listing.baths ?? '').trim(),
-    size: String(listing.size ?? '').trim(),
+    size: normalizePropertySize(listing.size),
     imageUrls,
     coverImageIndex: safeCoverImageIndex,
     displayOrder:

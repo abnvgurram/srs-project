@@ -8,15 +8,21 @@ import {
   Plus,
   Save,
   Trash2,
+  Upload,
   X,
 } from 'lucide-react'
 import './Properties.scss'
-import { propertyFilters } from '../../data/properties.js'
+import {
+  normalizePropertyPrice,
+  orderPropertyImages,
+  propertyFilters,
+} from '../../data/properties.js'
 import usePropertyListings from '../../context/propertyListings/usePropertyListings.js'
 import PropertyImageCarousel from '../../components/Properties/propertyImageCarousel/PropertyImageCarousel.jsx'
 import ConfirmationModal from '../common/confirmationModal/ConfirmationModal.jsx'
 import Pagination from '../common/pagination/Pagination.jsx'
 import SectionVisibilityGate from '../common/sectionVisibilityGate/SectionVisibilityGate.jsx'
+import { hasSupabaseConfig, supabase } from '../../lib/supabase.js'
 
 const propertyTypeOptions = propertyFilters.filter(
   (filter) => filter.value !== 'all',
@@ -29,6 +35,9 @@ const manageFilters = [
   { label: 'Sold', value: 'sold' },
 ]
 const MANAGE_PROPERTIES_PAGE_SIZE = 4
+const PROPERTY_IMAGES_PAGE_SIZE = 5
+const PROPERTY_IMAGES_BUCKET = 'property-images'
+const PROPERTY_IMAGES_PUBLIC_PATH = `/storage/v1/object/public/${PROPERTY_IMAGES_BUCKET}/`
 
 function PropertyImagePreview({ imageUrl, label }) {
   const [hasError, setHasError] = useState(false)
@@ -54,6 +63,235 @@ function PropertyImagePreview({ imageUrl, label }) {
   )
 }
 
+function isUploadedPropertyImage(imageUrl) {
+  const normalizedImageUrl = String(imageUrl ?? '').trim()
+
+  return (
+    Boolean(normalizedImageUrl) &&
+    normalizedImageUrl.includes(PROPERTY_IMAGES_PUBLIC_PATH)
+  )
+}
+
+function getUploadedPropertyImageLabel(imageUrl) {
+  try {
+    const url = new URL(imageUrl)
+    const fileName = url.pathname.split('/').filter(Boolean).at(-1)
+    return fileName ? decodeURIComponent(fileName) : 'Uploaded image'
+  } catch {
+    return 'Uploaded image'
+  }
+}
+
+function getPropertyImageStoragePath(imageUrl) {
+  try {
+    const url = new URL(imageUrl)
+    const marker = `/storage/v1/object/public/${PROPERTY_IMAGES_BUCKET}/`
+    const markerIndex = url.pathname.indexOf(marker)
+
+    if (markerIndex === -1) return null
+
+    return decodeURIComponent(url.pathname.slice(markerIndex + marker.length))
+  } catch {
+    return null
+  }
+}
+
+function createImageDisplayNumbers(imageUrls) {
+  return imageUrls.map((_, index) => index + 1)
+}
+
+function getNextImageDisplayNumber(currentDisplayNumbers) {
+  return currentDisplayNumbers.length
+    ? Math.max(...currentDisplayNumbers) + 1
+    : 1
+}
+
+function normalizeAdminPriceInput(price) {
+  return String(price ?? '')
+    .replace(/^\$\s*/, '')
+    .trimStart()
+}
+
+function normalizeAdminSizeInput(size) {
+  return String(size ?? '')
+    .replace(/\s*sqft$/i, '')
+    .trimStart()
+}
+
+function hasMeaningfulPrice(price) {
+  return Boolean(String(price ?? '').trim())
+}
+
+function createSuggestionList(values) {
+  const seenValues = new Set()
+
+  return values.filter((value) => {
+    const normalizedValue = String(value ?? '').trim()
+    const normalizedKey = normalizedValue.toLowerCase()
+
+    if (!normalizedValue || seenValues.has(normalizedKey)) return false
+
+    seenValues.add(normalizedKey)
+    return true
+  })
+}
+
+function BrandedSuggestionField({
+  id,
+  inputMode,
+  label,
+  onChange,
+  placeholder,
+  prefix,
+  suffix,
+  suggestions = [],
+  value,
+}) {
+  const [isOpen, setIsOpen] = useState(false)
+  const fieldRef = useRef(null)
+  const filteredSuggestions = useMemo(() => {
+    const normalizedValue = String(value ?? '').trim().toLowerCase()
+
+    if (!normalizedValue) {
+      return suggestions.slice(0, 6)
+    }
+
+    const primaryMatches = suggestions.filter((suggestion) =>
+      suggestion.toLowerCase().startsWith(normalizedValue),
+    )
+    const secondaryMatches = suggestions.filter((suggestion) => {
+      const normalizedSuggestion = suggestion.toLowerCase()
+
+      return (
+        !normalizedSuggestion.startsWith(normalizedValue) &&
+        normalizedSuggestion.includes(normalizedValue)
+      )
+    })
+
+    return [...primaryMatches, ...secondaryMatches].slice(0, 6)
+  }, [suggestions, value])
+
+  useEffect(() => {
+    function handleOutsideMouseDown(event) {
+      if (!fieldRef.current?.contains(event.target)) {
+        setIsOpen(false)
+      }
+    }
+
+    window.addEventListener('mousedown', handleOutsideMouseDown)
+
+    return () => {
+      window.removeEventListener('mousedown', handleOutsideMouseDown)
+    }
+  }, [])
+
+  return (
+    <div className="properties-admin-section__field">
+      <label htmlFor={id}>{label}</label>
+
+      <div className="properties-admin-section__suggestion-field" ref={fieldRef}>
+        {prefix || suffix ? (
+          <div
+            className={`properties-admin-section__input-with-prefix${
+              suffix ? ' has-suffix' : ''
+            }`}
+          >
+            {prefix ? (
+              <span className="properties-admin-section__input-prefix">
+                {prefix}
+              </span>
+            ) : null}
+            <input
+              autoComplete="new-password"
+              id={id}
+              inputMode={inputMode}
+              type="text"
+              value={value}
+              placeholder={placeholder}
+              onChange={(event) => {
+                onChange(event.target.value)
+                setIsOpen(true)
+              }}
+              onFocus={() => setIsOpen(true)}
+              onKeyDown={(event) => {
+                if (event.key === 'Escape') {
+                  setIsOpen(false)
+                }
+              }}
+            />
+            {suffix ? (
+              <span className="properties-admin-section__input-suffix">
+                {suffix}
+              </span>
+            ) : null}
+          </div>
+        ) : (
+          <input
+            autoComplete="new-password"
+            id={id}
+            inputMode={inputMode}
+            type="text"
+            value={value}
+            placeholder={placeholder}
+            onChange={(event) => {
+              onChange(event.target.value)
+              setIsOpen(true)
+            }}
+            onFocus={() => setIsOpen(true)}
+            onKeyDown={(event) => {
+              if (event.key === 'Escape') {
+                setIsOpen(false)
+              }
+            }}
+          />
+        )}
+
+        {isOpen && filteredSuggestions.length ? (
+          <div
+            className="properties-admin-section__suggestions"
+            role="listbox"
+          >
+            {filteredSuggestions.map((suggestion) => (
+              <button
+                className="properties-admin-section__suggestion"
+                key={`${id}-${suggestion}`}
+                type="button"
+                onClick={() => {
+                  onChange(suggestion)
+                  setIsOpen(false)
+                }}
+              >
+                {prefix
+                  ? `${prefix} ${suggestion}`
+                  : suffix
+                    ? `${suggestion} ${suffix}`
+                    : suggestion}
+              </button>
+            ))}
+          </div>
+        ) : null}
+      </div>
+    </div>
+  )
+}
+
+function PropertySelectionCheckbox({ checked, label, onChange }) {
+  return (
+    <button
+      className={`properties-admin-section__select-box${
+        checked ? ' is-active' : ''
+      }`}
+      type="button"
+      role="checkbox"
+      aria-checked={checked}
+      aria-label={label}
+      onClick={onChange}
+    >
+      {checked ? <Check aria-hidden="true" size={14} strokeWidth={2.6} /> : null}
+    </button>
+  )
+}
+
 function createEmptyDraft(nextDisplayOrder) {
   return {
     type: 'buy',
@@ -67,8 +305,8 @@ function createEmptyDraft(nextDisplayOrder) {
     beds: '',
     baths: '',
     size: '',
-    imageUrls: [''],
-    coverImageIndex: 0,
+    imageUrls: [],
+    coverImageIndex: -1,
     displayOrder: nextDisplayOrder,
   }
 }
@@ -76,8 +314,21 @@ function createEmptyDraft(nextDisplayOrder) {
 function createDraftFromListing(listing) {
   return {
     ...listing,
-    imageUrls: listing.imageUrls.length ? listing.imageUrls : [''],
+    price: normalizeAdminPriceInput(listing.price),
+    size: normalizeAdminSizeInput(listing.size),
+    imageUrls: listing.imageUrls.length ? listing.imageUrls : [],
+    coverImageIndex: Number.isInteger(listing.coverImageIndex)
+      ? listing.coverImageIndex
+      : -1,
   }
+}
+
+function normalizeFileName(fileName) {
+  return String(fileName ?? 'image')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9._-]+/g, '-')
+    .replace(/-+/g, '-')
 }
 
 function PropertyTypeSelect({ disabled, onChange, options, value }) {
@@ -153,12 +404,19 @@ function Properties() {
   const [activeTab, setActiveTab] = useState('editor')
   const [selectedListingId, setSelectedListingId] = useState('')
   const [draft, setDraft] = useState(() => createEmptyDraft(1))
+  const [imageDisplayNumbers, setImageDisplayNumbers] = useState([])
   const [isCreating, setIsCreating] = useState(true)
   const [formMessage, setFormMessage] = useState('')
   const [manageFilter, setManageFilter] = useState('all')
   const [managePage, setManagePage] = useState(1)
+  const [imagePage, setImagePage] = useState(1)
   const [confirmationState, setConfirmationState] = useState(null)
   const [isConfirmingAction, setIsConfirmingAction] = useState(false)
+  const [isUploadingImages, setIsUploadingImages] = useState(false)
+  const [initialImageUrls, setInitialImageUrls] = useState([])
+  const [pendingDeletedImageUrls, setPendingDeletedImageUrls] = useState([])
+  const [selectedPropertyIds, setSelectedPropertyIds] = useState([])
+  const imageUploadInputRef = useRef(null)
 
   const nextDisplayOrder =
     propertyListings.reduce(
@@ -166,7 +424,6 @@ function Properties() {
         Math.max(highestOrder, Number(listing.displayOrder) || 0),
       0,
     ) + 1
-  const canAddMoreImages = draft.imageUrls.length < 5
 
   const filteredListings = useMemo(() => {
     if (manageFilter === 'all') return propertyListings
@@ -183,6 +440,51 @@ function Properties() {
       startIndex + MANAGE_PROPERTIES_PAGE_SIZE,
     )
   }, [filteredListings, managePage])
+  const totalImagePages = Math.max(
+    1,
+    Math.ceil(draft.imageUrls.length / PROPERTY_IMAGES_PAGE_SIZE),
+  )
+  const paginatedDraftImages = useMemo(() => {
+    const startIndex = (imagePage - 1) * PROPERTY_IMAGES_PAGE_SIZE
+
+    return draft.imageUrls
+      .map((imageUrl, index) => ({
+        imageUrl,
+        index,
+      }))
+      .slice(startIndex, startIndex + PROPERTY_IMAGES_PAGE_SIZE)
+  }, [draft.imageUrls, imagePage])
+  const selectedProperties = useMemo(
+    () => propertyListings.filter((listing) => selectedPropertyIds.includes(listing.id)),
+    [propertyListings, selectedPropertyIds],
+  )
+  const selectedPublishedProperties = useMemo(
+    () => selectedProperties.filter((listing) => listing.isPublished),
+    [selectedProperties],
+  )
+  const fieldSuggestions = useMemo(
+    () => ({
+      baths: createSuggestionList(propertyListings.map((listing) => listing.baths)),
+      beds: createSuggestionList(propertyListings.map((listing) => listing.beds)),
+      city: createSuggestionList(propertyListings.map((listing) => listing.city)),
+      price: createSuggestionList(
+        propertyListings.map((listing) => normalizeAdminPriceInput(listing.price)),
+      ),
+      size: createSuggestionList(
+        propertyListings.map((listing) =>
+          String(listing.size ?? '').replace(/\s*sqft$/i, '').trim(),
+        ),
+      ),
+      state: createSuggestionList(propertyListings.map((listing) => listing.state)),
+      streetAddress: createSuggestionList(
+        propertyListings.map((listing) => listing.streetAddress),
+      ),
+      zipCode: createSuggestionList(
+        propertyListings.map((listing) => listing.zipCode),
+      ),
+    }),
+    [propertyListings],
+  )
 
   useEffect(() => {
     if (!formMessage) return undefined
@@ -206,11 +508,29 @@ function Properties() {
     }
   }, [managePage, totalManagePages])
 
+  useEffect(() => {
+    if (imagePage > totalImagePages) {
+      setImagePage(totalImagePages)
+    }
+  }, [imagePage, totalImagePages])
+
+  useEffect(() => {
+    setSelectedPropertyIds((currentIds) =>
+      currentIds.filter((listingId) =>
+        filteredListings.some((listing) => listing.id === listingId),
+      ),
+    )
+  }, [filteredListings])
+
   function openAddProperty() {
     setActiveTab('editor')
     setIsCreating(true)
     setSelectedListingId('')
     setDraft(createEmptyDraft(nextDisplayOrder))
+    setImageDisplayNumbers([])
+    setImagePage(1)
+    setInitialImageUrls([])
+    setPendingDeletedImageUrls([])
     setFormMessage('')
   }
 
@@ -227,6 +547,10 @@ function Properties() {
     setIsCreating(false)
     setSelectedListingId(listingId)
     setDraft(createDraftFromListing(listing))
+    setImageDisplayNumbers(createImageDisplayNumbers(listing.imageUrls))
+    setImagePage(1)
+    setInitialImageUrls(listing.imageUrls)
+    setPendingDeletedImageUrls([])
     setFormMessage('')
   }
 
@@ -235,14 +559,35 @@ function Properties() {
     setIsCreating(true)
     setSelectedListingId('')
     setDraft(createEmptyDraft(nextDisplayOrder))
+    setImageDisplayNumbers([])
+    setImagePage(1)
+    setInitialImageUrls([])
+    setPendingDeletedImageUrls([])
     setFormMessage('')
   }
 
   function handleFieldChange(field, value) {
     setDraft((currentDraft) => ({
       ...currentDraft,
-      [field]: value,
+      [field]:
+        field === 'price'
+          ? normalizeAdminPriceInput(value)
+          : field === 'size'
+            ? normalizeAdminSizeInput(value)
+            : value,
     }))
+  }
+
+  function clearSelectedProperties() {
+    setSelectedPropertyIds([])
+  }
+
+  function toggleSelectedProperty(listingId) {
+    setSelectedPropertyIds((currentIds) =>
+      currentIds.includes(listingId)
+        ? currentIds.filter((currentId) => currentId !== listingId)
+        : [...currentIds, listingId],
+    )
   }
 
   function closeConfirmation() {
@@ -253,7 +598,7 @@ function Properties() {
   function requestDelete(listing) {
     setConfirmationState({
       confirmLabel: 'Delete Property',
-      description: `This will remove "${listing.address}" from Featured Properties.`,
+      description: `This will remove "${listing.address}" from Featured Properties and delete its uploaded images from Supabase storage.`,
       onConfirm: () => handleDelete(listing),
       title: 'Delete property?',
       tone: 'danger',
@@ -274,6 +619,56 @@ function Properties() {
     })
   }
 
+  function requestBulkUnpublish() {
+    if (!selectedPublishedProperties.length) return
+
+    setConfirmationState({
+      confirmLabel: `Unpublish ${selectedPublishedProperties.length} Properties`,
+      description: `This will hide ${selectedPublishedProperties.length} selected propert${
+        selectedPublishedProperties.length === 1 ? 'y' : 'ies'
+      } from the website.`,
+      onConfirm: handleBulkUnpublish,
+      title: 'Unpublish selected properties?',
+      tone: 'danger',
+    })
+  }
+
+  function requestBulkDelete() {
+    if (!selectedProperties.length) return
+
+    setConfirmationState({
+      confirmLabel: `Delete ${selectedProperties.length} Properties`,
+      description: `This will remove ${selectedProperties.length} selected propert${
+        selectedProperties.length === 1 ? 'y' : 'ies'
+      } and delete their uploaded images from Supabase storage.`,
+      onConfirm: handleBulkDelete,
+      title: 'Delete selected properties?',
+      tone: 'danger',
+    })
+  }
+
+  function requestRemoveImage(index, imageUrl) {
+    if (!String(imageUrl ?? '').trim()) {
+      handleRemoveImageField(index)
+      return
+    }
+
+    const isUploadedImage = isUploadedPropertyImage(imageUrl)
+    const existsOnSavedListing = initialImageUrls.includes(imageUrl)
+
+    setConfirmationState({
+      confirmLabel: 'Delete Image',
+      description: isUploadedImage
+        ? existsOnSavedListing
+          ? 'This will remove the image from this property. The uploaded file will be deleted from Supabase storage after you save the property.'
+          : 'This will remove the image and delete the uploaded file from Supabase storage immediately.'
+        : 'This will remove the image URL from this property.',
+      onConfirm: () => handleRemoveImageField(index),
+      title: 'Delete image?',
+      tone: 'danger',
+    })
+  }
+
   async function handleConfirmAction() {
     if (!confirmationState?.onConfirm) return
 
@@ -290,48 +685,206 @@ function Properties() {
   function handleImageChange(index, value) {
     setDraft((currentDraft) => ({
       ...currentDraft,
+      coverImageIndex:
+        currentDraft.coverImageIndex === index && !value.trim()
+          ? -1
+          : currentDraft.coverImageIndex,
       imageUrls: currentDraft.imageUrls.map((imageUrl, imageIndex) =>
         imageIndex === index ? value : imageUrl,
       ),
     }))
   }
 
-  function handleAddImageField() {
-    if (!canAddMoreImages) return
-
+  function handleSelectCoverImage(index) {
     setDraft((currentDraft) => ({
       ...currentDraft,
-      imageUrls: [...currentDraft.imageUrls, ''],
+      coverImageIndex: index,
     }))
   }
 
-  function handleRemoveImageField(index) {
+  function prependImageUrls(nextImageUrls) {
+    setImageDisplayNumbers((currentDisplayNumbers) => {
+      const nextDisplayNumbers = [...currentDisplayNumbers]
+
+      nextImageUrls.forEach(() => {
+        nextDisplayNumbers.unshift(getNextImageDisplayNumber(nextDisplayNumbers))
+      })
+
+      return nextDisplayNumbers
+    })
+
+    setDraft((currentDraft) => {
+      return {
+        ...currentDraft,
+        imageUrls: [...nextImageUrls, ...currentDraft.imageUrls],
+        coverImageIndex:
+          currentDraft.coverImageIndex >= 0
+            ? currentDraft.coverImageIndex + nextImageUrls.length
+            : -1,
+      }
+    })
+  }
+
+  function handleAddImageField() {
+    setImagePage(1)
+    setImageDisplayNumbers((currentDisplayNumbers) => [
+      getNextImageDisplayNumber(currentDisplayNumbers),
+      ...currentDisplayNumbers,
+    ])
+    setDraft((currentDraft) => ({
+      ...currentDraft,
+      imageUrls: ['', ...currentDraft.imageUrls],
+      coverImageIndex:
+        currentDraft.coverImageIndex >= 0 ? currentDraft.coverImageIndex + 1 : -1,
+    }))
+  }
+
+  async function deletePropertyImagesFromStorage(imageUrls) {
+    if (!hasSupabaseConfig || !supabase) return true
+
+    const storagePaths = imageUrls
+      .filter((imageUrl) => isUploadedPropertyImage(imageUrl))
+      .map((imageUrl) => getPropertyImageStoragePath(imageUrl))
+      .filter(Boolean)
+
+    if (!storagePaths.length) return true
+
+    const { error } = await supabase.storage
+      .from(PROPERTY_IMAGES_BUCKET)
+      .remove(storagePaths)
+
+    return !error
+  }
+
+  async function handleRemoveImageField(index) {
+    const imageUrl = draft.imageUrls[index] ?? ''
+    const isUploadedImage = isUploadedPropertyImage(imageUrl)
+    const existsOnSavedListing = initialImageUrls.includes(imageUrl)
+
+    if (isUploadedImage && !existsOnSavedListing) {
+      const didDeleteFromStorage = await deletePropertyImagesFromStorage([imageUrl])
+
+      if (!didDeleteFromStorage) {
+        setFormMessage('Image could not be deleted from Supabase storage. Try again.')
+        return
+      }
+    }
+
     setDraft((currentDraft) => {
       const nextImageUrls = currentDraft.imageUrls.filter(
         (_, imageIndex) => imageIndex !== index,
       )
+      const nextCoverImageIndex =
+        currentDraft.coverImageIndex === index
+          ? -1
+          : currentDraft.coverImageIndex > index
+            ? currentDraft.coverImageIndex - 1
+            : currentDraft.coverImageIndex
 
       return {
         ...currentDraft,
-        imageUrls: nextImageUrls.length ? nextImageUrls : [''],
-        coverImageIndex: 0,
+        imageUrls: nextImageUrls,
+        coverImageIndex: nextCoverImageIndex,
       }
     })
+    setImageDisplayNumbers((currentDisplayNumbers) =>
+      currentDisplayNumbers.filter((_, imageIndex) => imageIndex !== index),
+    )
+
+    if (isUploadedImage && existsOnSavedListing) {
+      setPendingDeletedImageUrls((currentImageUrls) =>
+        currentImageUrls.includes(imageUrl)
+          ? currentImageUrls
+          : [...currentImageUrls, imageUrl],
+      )
+    }
+  }
+
+  async function handleUploadImages(event) {
+    const files = Array.from(event.target.files ?? [])
+    event.target.value = ''
+
+    if (!files.length) return
+
+    if (!hasSupabaseConfig || !supabase) {
+      setFormMessage(
+        'Supabase is not configured yet. Add the environment variables before uploading images.',
+      )
+      return
+    }
+
+    setIsUploadingImages(true)
+    setFormMessage('')
+
+    const draftFolder = selectedListingId || `draft-${crypto.randomUUID()}`
+    const uploadedImageUrls = []
+    const failedUploads = []
+
+    for (const [index, file] of files.entries()) {
+      const filePath = `properties/${draftFolder}/${Date.now()}-${index}-${normalizeFileName(file.name)}`
+      const { error: uploadError } = await supabase.storage
+        .from(PROPERTY_IMAGES_BUCKET)
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false,
+        })
+
+      if (uploadError) {
+        failedUploads.push(file.name)
+        continue
+      }
+
+      const { data } = supabase.storage
+        .from(PROPERTY_IMAGES_BUCKET)
+        .getPublicUrl(filePath)
+
+      if (data?.publicUrl) {
+        uploadedImageUrls.push(data.publicUrl)
+      } else {
+        failedUploads.push(file.name)
+      }
+    }
+
+    if (uploadedImageUrls.length) {
+      setImagePage(1)
+      prependImageUrls(uploadedImageUrls)
+    }
+
+    if (uploadedImageUrls.length && failedUploads.length) {
+      setFormMessage(
+        `${uploadedImageUrls.length} image(s) uploaded. ${failedUploads.length} failed.`,
+      )
+    } else if (uploadedImageUrls.length) {
+      setFormMessage(`${uploadedImageUrls.length} image(s) uploaded successfully.`)
+    } else {
+      setFormMessage('Images could not be uploaded. Check the storage bucket and policies.')
+    }
+
+    setIsUploadingImages(false)
   }
 
   async function handleSave(event) {
     event.preventDefault()
 
-    const normalizedImageUrls = draft.imageUrls
-      .map((imageUrl) => imageUrl.trim())
-      .filter(Boolean)
+    const normalizedImageEntries = draft.imageUrls
+      .map((imageUrl, index) => ({
+        imageUrl: imageUrl.trim(),
+        index,
+      }))
+      .filter(({ imageUrl }) => Boolean(imageUrl))
+    const normalizedImageUrls = normalizedImageEntries.map(
+      ({ imageUrl }) => imageUrl,
+    )
+    const normalizedCoverImageIndex = normalizedImageEntries.findIndex(
+      ({ index }) => index === draft.coverImageIndex,
+    )
 
     if (
       !draft.streetAddress.trim() ||
       !draft.city.trim() ||
       !draft.state.trim() ||
       !draft.zipCode.trim() ||
-      !draft.price.trim() ||
+      !hasMeaningfulPrice(draft.price) ||
       !draft.beds.trim() ||
       !draft.baths.trim() ||
       !draft.size.trim()
@@ -341,14 +894,20 @@ function Properties() {
     }
 
     if (!normalizedImageUrls.length) {
-      setFormMessage('Add at least one image URL before saving the property.')
+      setFormMessage('Add at least one image before saving the property.')
+      return
+    }
+
+    if (normalizedCoverImageIndex === -1) {
+      setFormMessage('Choose which image should be the cover before saving.')
       return
     }
 
     const savedListing = await savePropertyListing({
       ...draft,
+      price: normalizePropertyPrice(draft.price),
       imageUrls: normalizedImageUrls,
-      coverImageIndex: 0,
+      coverImageIndex: normalizedCoverImageIndex,
     })
 
     if (!savedListing) {
@@ -356,13 +915,29 @@ function Properties() {
       return
     }
 
+    let nextMessage = isCreating
+      ? 'Property added successfully.'
+      : 'Property updated successfully.'
+
+    if (pendingDeletedImageUrls.length) {
+      const didDeletePendingImages = await deletePropertyImagesFromStorage(
+        pendingDeletedImageUrls,
+      )
+
+      if (!didDeletePendingImages) {
+        nextMessage =
+          'Property saved, but some removed images could not be deleted from Supabase storage.'
+      }
+    }
+
     setSelectedListingId(savedListing.id)
     setDraft(createEmptyDraft(nextDisplayOrder + (isCreating ? 1 : 0)))
+    setImageDisplayNumbers([])
     setIsCreating(true)
+    setInitialImageUrls([])
+    setPendingDeletedImageUrls([])
     setActiveTab('manage')
-    setFormMessage(
-      isCreating ? 'Property added successfully.' : 'Property updated successfully.',
-    )
+    setFormMessage(nextMessage)
   }
 
   async function handleDelete(listing) {
@@ -373,6 +948,8 @@ function Properties() {
       return
     }
 
+    const didDeleteImages = await deletePropertyImagesFromStorage(listing.imageUrls)
+
     if (selectedListingId === listing.id) {
       setSelectedListingId('')
     }
@@ -380,7 +957,14 @@ function Properties() {
     setActiveTab('manage')
     setIsCreating(true)
     setDraft(createEmptyDraft(nextDisplayOrder))
-    setFormMessage('Property deleted successfully.')
+    setImageDisplayNumbers([])
+    setInitialImageUrls([])
+    setPendingDeletedImageUrls([])
+    setFormMessage(
+      didDeleteImages
+        ? 'Property deleted successfully.'
+        : 'Property deleted, but some uploaded images could not be deleted from Supabase storage.',
+    )
   }
 
   async function handlePublishToggle(listing) {
@@ -396,6 +980,75 @@ function Properties() {
 
     setFormMessage(
       listing.isPublished ? 'Property unpublished.' : 'Property published.',
+    )
+  }
+
+  async function handleBulkUnpublish() {
+    if (!selectedPublishedProperties.length) return
+
+    const results = await Promise.all(
+      selectedPublishedProperties.map((listing) =>
+        setPropertyListingPublished(listing.id, false),
+      ),
+    )
+    const successCount = results.filter(Boolean).length
+
+    if (!successCount) {
+      setFormMessage('Selected properties could not be unpublished. Try again.')
+      return
+    }
+
+    clearSelectedProperties()
+    setFormMessage(
+      successCount === selectedPublishedProperties.length
+        ? `${successCount} properties unpublished.`
+        : `${successCount} properties unpublished. Some items could not be updated.`,
+    )
+  }
+
+  async function handleBulkDelete() {
+    if (!selectedProperties.length) return
+
+    let deletedCount = 0
+    let storageDeleteFailed = false
+
+    for (const listing of selectedProperties) {
+      const didDelete = await deletePropertyListing(listing.id)
+
+      if (!didDelete) continue
+
+      deletedCount += 1
+
+      const didDeleteImages = await deletePropertyImagesFromStorage(listing.imageUrls)
+      if (!didDeleteImages) {
+        storageDeleteFailed = true
+      }
+
+      if (selectedListingId === listing.id) {
+        setSelectedListingId('')
+      }
+    }
+
+    clearSelectedProperties()
+
+    if (!deletedCount) {
+      setFormMessage('Selected properties could not be deleted. Try again.')
+      return
+    }
+
+    if (selectedProperties.some((listing) => listing.id === selectedListingId)) {
+      setActiveTab('manage')
+      setIsCreating(true)
+      setDraft(createEmptyDraft(nextDisplayOrder))
+      setImageDisplayNumbers([])
+      setInitialImageUrls([])
+      setPendingDeletedImageUrls([])
+    }
+
+    setFormMessage(
+      storageDeleteFailed
+        ? `${deletedCount} properties deleted, but some uploaded images could not be deleted from Supabase storage.`
+        : `${deletedCount} properties deleted successfully.`,
     )
   }
 
@@ -438,73 +1091,59 @@ function Properties() {
 
         {activeTab === 'editor' ? (
           <section className="properties-admin-section__panel">
-          <form className="properties-admin-section__form" onSubmit={handleSave}>
-            <div className="properties-admin-section__field">
-              <label htmlFor="listing-street-address">Address</label>
-              <input
-                id="listing-street-address"
-                type="text"
-                value={draft.streetAddress}
-                placeholder="Street address"
-                onChange={(event) =>
-                  handleFieldChange('streetAddress', event.target.value)
-                }
-              />
-            </div>
+          <form
+            autoComplete="off"
+            className="properties-admin-section__form"
+            onSubmit={handleSave}
+          >
+            <BrandedSuggestionField
+              id="listing-street-address"
+              label="Address"
+              onChange={(value) => handleFieldChange('streetAddress', value)}
+              placeholder="Street address"
+              suggestions={fieldSuggestions.streetAddress}
+              value={draft.streetAddress}
+            />
 
             <div className="properties-admin-section__form-grid properties-admin-section__form-grid--address">
-              <div className="properties-admin-section__field">
-                <label htmlFor="listing-city">City</label>
-                <input
-                  id="listing-city"
-                  type="text"
-                  value={draft.city}
-                  placeholder="City"
-                  onChange={(event) =>
-                    handleFieldChange('city', event.target.value)
-                  }
-                />
-              </div>
+              <BrandedSuggestionField
+                id="listing-city"
+                label="City"
+                onChange={(value) => handleFieldChange('city', value)}
+                placeholder="City"
+                suggestions={fieldSuggestions.city}
+                value={draft.city}
+              />
 
-              <div className="properties-admin-section__field">
-                <label htmlFor="listing-state">State</label>
-                <input
-                  id="listing-state"
-                  type="text"
-                  value={draft.state}
-                  placeholder="State"
-                  onChange={(event) =>
-                    handleFieldChange('state', event.target.value)
-                  }
-                />
-              </div>
+              <BrandedSuggestionField
+                id="listing-state"
+                label="State"
+                onChange={(value) => handleFieldChange('state', value)}
+                placeholder="State"
+                suggestions={fieldSuggestions.state}
+                value={draft.state}
+              />
 
-              <div className="properties-admin-section__field">
-                <label htmlFor="listing-zip-code">ZIP code</label>
-                <input
-                  id="listing-zip-code"
-                  type="text"
-                  value={draft.zipCode}
-                  placeholder="ZIP code"
-                  onChange={(event) =>
-                    handleFieldChange('zipCode', event.target.value)
-                  }
-                />
-              </div>
-            </div>
-
-            <div className="properties-admin-section__field">
-              <label htmlFor="listing-price">Price</label>
-              <input
-                id="listing-price"
-                type="text"
-                value={draft.price}
-                placeholder="Price"
-                onChange={(event) =>
-                  handleFieldChange('price', event.target.value)
-                }
+              <BrandedSuggestionField
+                id="listing-zip-code"
+                inputMode="numeric"
+                label="ZIP code"
+                onChange={(value) => handleFieldChange('zipCode', value)}
+                placeholder="ZIP code"
+                suggestions={fieldSuggestions.zipCode}
+                value={draft.zipCode}
               />
             </div>
+
+            <BrandedSuggestionField
+              id="listing-price"
+              label="Price"
+              onChange={(value) => handleFieldChange('price', value)}
+              placeholder="Enter price"
+              prefix="$"
+              suggestions={fieldSuggestions.price}
+              value={draft.price}
+            />
 
             <div className="properties-admin-section__field">
               <label>Category</label>
@@ -517,49 +1156,39 @@ function Properties() {
             </div>
 
             <div className="properties-admin-section__form-grid">
-              <div className="properties-admin-section__field">
-                <label htmlFor="listing-beds">Beds</label>
-                <input
-                  id="listing-beds"
-                  type="text"
-                  value={draft.beds}
-                  placeholder="Beds"
-                  onChange={(event) =>
-                    handleFieldChange('beds', event.target.value)
-                  }
-                />
-              </div>
+              <BrandedSuggestionField
+                id="listing-beds"
+                label="Beds"
+                onChange={(value) => handleFieldChange('beds', value)}
+                placeholder="Beds"
+                suggestions={fieldSuggestions.beds}
+                value={draft.beds}
+              />
 
-              <div className="properties-admin-section__field">
-                <label htmlFor="listing-baths">Baths</label>
-                <input
-                  id="listing-baths"
-                  type="text"
-                  value={draft.baths}
-                  placeholder="Baths"
-                  onChange={(event) =>
-                    handleFieldChange('baths', event.target.value)
-                  }
-                />
-              </div>
+              <BrandedSuggestionField
+                id="listing-baths"
+                label="Baths"
+                onChange={(value) => handleFieldChange('baths', value)}
+                placeholder="Baths"
+                suggestions={fieldSuggestions.baths}
+                value={draft.baths}
+              />
 
-              <div className="properties-admin-section__field">
-                <label htmlFor="listing-size">Sqft</label>
-                <input
-                  id="listing-size"
-                  type="text"
-                  value={draft.size}
-                  placeholder="Sqft"
-                  onChange={(event) =>
-                    handleFieldChange('size', event.target.value)
-                  }
-                />
-              </div>
+              <BrandedSuggestionField
+                id="listing-size"
+                label="Sqft"
+                onChange={(value) => handleFieldChange('size', value)}
+                placeholder="Sqft"
+                suffix="sqft"
+                suggestions={fieldSuggestions.size}
+                value={draft.size}
+              />
             </div>
 
             <div className="properties-admin-section__field">
               <label htmlFor="listing-description">Description</label>
               <textarea
+                autoComplete="off"
                 id="listing-description"
                 rows="5"
                 value={draft.description}
@@ -573,66 +1202,181 @@ function Properties() {
             <div className="properties-admin-section__images">
               <div className="properties-admin-section__images-copy">
                 <h4>Property images</h4>
-                <p>Image 1 becomes the main cover image on the website. Max 5.</p>
+              </div>
+
+              <div className="properties-admin-section__image-tools">
+                <div className="properties-admin-section__image-tool-actions">
+                  <input
+                    className="properties-admin-section__file-input"
+                    ref={imageUploadInputRef}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleUploadImages}
+                  />
+
+                  <button
+                    className="properties-admin-section__secondary-button"
+                    type="button"
+                    disabled={isUploadingImages || isSaving}
+                    onClick={() => imageUploadInputRef.current?.click()}
+                  >
+                    <Upload aria-hidden="true" size={15} strokeWidth={2.1} />
+                    <span>{isUploadingImages ? 'Uploading...' : 'Upload Images'}</span>
+                  </button>
+
+                  <button
+                    className="properties-admin-section__secondary-button"
+                    type="button"
+                    onClick={handleAddImageField}
+                  >
+                    <Plus aria-hidden="true" size={15} strokeWidth={2.1} />
+                    <span>Add by URL</span>
+                  </button>
+                </div>
               </div>
 
               <div className="properties-admin-section__image-list">
-                {draft.imageUrls.map((imageUrl, index) => (
-                  <div
-                    className="properties-admin-section__image-row"
-                    key={`${selectedListingId || 'new'}-image-${index}`}
-                  >
-                    <div className="properties-admin-section__image-entry">
-                      <label
-                        className="properties-admin-section__field"
-                        htmlFor={`listing-image-${index}`}
-                      >
-                        <span>Image {index + 1} URL</span>
-                      </label>
+                {paginatedDraftImages.map(({ imageUrl, index }) => {
+                  const displayNumber = imageDisplayNumbers[index] ?? index + 1
 
-                      <div className="properties-admin-section__image-input-row">
-                        <input
-                          id={`listing-image-${index}`}
-                          type="url"
-                          value={imageUrl}
-                          placeholder="Image URL"
-                          onChange={(event) =>
-                            handleImageChange(index, event.target.value)
-                          }
-                        />
+                  return (
+                    <div
+                      className="properties-admin-section__image-row"
+                      key={`${selectedListingId || 'new'}-image-${index}`}
+                    >
+                      <div className="properties-admin-section__image-entry">
+                        {isUploadedPropertyImage(imageUrl) ? (
+                          <>
+                            <div className="properties-admin-section__image-card-header">
+                              <div className="properties-admin-section__image-card-copy">
+                                <span className="properties-admin-section__image-card-title">
+                                  Image {displayNumber}
+                                </span>
+                                <span className="properties-admin-section__image-card-meta">
+                                  Uploaded image
+                                </span>
+                                <span className="properties-admin-section__image-card-name">
+                                  {getUploadedPropertyImageLabel(imageUrl)}
+                                </span>
+                              </div>
 
-                        <button
-                          className="properties-admin-section__icon-button"
-                          type="button"
-                          aria-label={`Remove image ${index + 1}`}
-                          onClick={() => handleRemoveImageField(index)}
-                        >
-                          <Trash2 aria-hidden="true" size={16} strokeWidth={2.1} />
-                          <span>Delete</span>
-                        </button>
+                              <div className="properties-admin-section__image-actions">
+                                <button
+                                  className={`properties-admin-section__cover-button${
+                                    draft.coverImageIndex === index ? ' is-active' : ''
+                                  }`}
+                                  type="button"
+                                  disabled={!imageUrl.trim()}
+                                  onClick={() => handleSelectCoverImage(index)}
+                                >
+                                  <span>
+                                    {draft.coverImageIndex === index
+                                      ? 'Cover image'
+                                      : 'Set as cover'}
+                                  </span>
+                                </button>
+
+                                <button
+                                  className="properties-admin-section__icon-button"
+                                  type="button"
+                                  aria-label={`Remove image ${displayNumber}`}
+                                  onClick={() => requestRemoveImage(index, imageUrl)}
+                                >
+                                  <Trash2
+                                    aria-hidden="true"
+                                    size={16}
+                                    strokeWidth={2.1}
+                                  />
+                                  <span>Delete</span>
+                                </button>
+                              </div>
+                            </div>
+
+                            <PropertyImagePreview
+                              key={imageUrl || `preview-${index}`}
+                              imageUrl={imageUrl}
+                              label={`Preview for image ${displayNumber}`}
+                            />
+                          </>
+                        ) : (
+                          <>
+                            <label
+                              className="properties-admin-section__field"
+                              htmlFor={`listing-image-${index}`}
+                            >
+                              <span>Image {displayNumber} URL</span>
+                            </label>
+
+                            <div className="properties-admin-section__image-input-row">
+                              <input
+                                autoComplete="new-password"
+                                id={`listing-image-${index}`}
+                                type="url"
+                                value={imageUrl}
+                                placeholder="Image URL"
+                                onChange={(event) =>
+                                  handleImageChange(index, event.target.value)
+                                }
+                              />
+
+                              <div className="properties-admin-section__image-actions">
+                                <button
+                                  className={`properties-admin-section__cover-button${
+                                    draft.coverImageIndex === index ? ' is-active' : ''
+                                  }`}
+                                  type="button"
+                                  onClick={() => handleSelectCoverImage(index)}
+                                >
+                                  <span>
+                                    {draft.coverImageIndex === index
+                                      ? 'Cover image'
+                                      : 'Set as cover'}
+                                  </span>
+                                </button>
+
+                                <button
+                                  className="properties-admin-section__icon-button"
+                                  type="button"
+                                  aria-label={`Remove image ${displayNumber}`}
+                                  onClick={() => requestRemoveImage(index, imageUrl)}
+                                >
+                                  <Trash2
+                                    aria-hidden="true"
+                                    size={16}
+                                    strokeWidth={2.1}
+                                  />
+                                  <span>Delete</span>
+                                </button>
+                              </div>
+                            </div>
+
+                            <PropertyImagePreview
+                              key={imageUrl || `preview-${index}`}
+                              imageUrl={imageUrl}
+                              label={`Preview for image ${displayNumber}`}
+                            />
+                          </>
+                        )}
                       </div>
-
-                      <PropertyImagePreview
-                        key={imageUrl || `preview-${index}`}
-                        imageUrl={imageUrl}
-                        label={`Preview for image ${index + 1}`}
-                      />
                     </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
 
-              <div className="properties-admin-section__image-actions">
-                <button
-                  className="properties-admin-section__secondary-button"
-                  type="button"
-                  disabled={!canAddMoreImages}
-                  onClick={handleAddImageField}
-                >
-                  <Plus aria-hidden="true" size={15} strokeWidth={2.1} />
-                  <span>Add another</span>
-                </button>
-              </div>
+              <Pagination
+                currentPage={imagePage}
+                onPageChange={setImagePage}
+                totalItems={draft.imageUrls.length}
+                totalPages={totalImagePages}
+              />
+
+              {!draft.imageUrls.length ? (
+                <div className="properties-admin-section__empty-state">
+                  No property images added yet. Use Upload Images or Add by URL to
+                  start.
+                </div>
+              ) : null}
             </div>
 
             {formMessage ? (
@@ -690,6 +1434,47 @@ function Properties() {
             </div>
           </div>
 
+          {selectedPropertyIds.length ? (
+            <div className="properties-admin-section__bulk-actions">
+              <span className="properties-admin-section__bulk-count">
+                Selected: {selectedPropertyIds.length}
+              </span>
+
+              <div className="properties-admin-section__bulk-buttons">
+                {selectedPublishedProperties.length ? (
+                  <button
+                    className="properties-admin-section__secondary-button"
+                    type="button"
+                    onClick={requestBulkUnpublish}
+                  >
+                    <EyeOff aria-hidden="true" size={15} strokeWidth={2.1} />
+                    <span>
+                      Unpublish {selectedPublishedProperties.length} Selected
+                    </span>
+                  </button>
+                ) : null}
+
+                <button
+                  className="properties-admin-section__delete-button"
+                  type="button"
+                  onClick={requestBulkDelete}
+                >
+                  <Trash2 aria-hidden="true" size={15} strokeWidth={2.1} />
+                  <span>Delete {selectedPropertyIds.length} Selected</span>
+                </button>
+
+                <button
+                  className="properties-admin-section__secondary-button"
+                  type="button"
+                  onClick={clearSelectedProperties}
+                >
+                  <X aria-hidden="true" size={15} strokeWidth={2.1} />
+                  <span>Clear</span>
+                </button>
+              </div>
+            </div>
+          ) : null}
+
           {formMessage ? (
             <div className="properties-admin-section__message">
               {formMessage}
@@ -710,7 +1495,10 @@ function Properties() {
             <>
               <div className="properties-admin-section__list">
                 {paginatedListings.map((listing) => {
-                const images = listing.imageUrls
+                const images = orderPropertyImages(
+                  listing.imageUrls,
+                  listing.coverImageIndex,
+                )
 
                 return (
                   <article
@@ -719,6 +1507,14 @@ function Properties() {
                     }`}
                     key={listing.id}
                   >
+                    <div className="properties-admin-section__listing-select">
+                      <PropertySelectionCheckbox
+                        checked={selectedPropertyIds.includes(listing.id)}
+                        label={`Select property ${listing.address}`}
+                        onChange={() => toggleSelectedProperty(listing.id)}
+                      />
+                    </div>
+
                     <div className="properties-admin-section__listing-media">
                       <PropertyImageCarousel
                         alt={listing.address}
@@ -801,8 +1597,8 @@ function Properties() {
                       <p>{listing.price}</p>
 
                       <div className="properties-admin-section__listing-meta">
-                        <span>{listing.beds}</span>
-                        <span>{listing.baths}</span>
+                        <span>{listing.beds ? `${listing.beds} Beds` : '- Beds'}</span>
+                        <span>{listing.baths ? `${listing.baths} Baths` : '- Baths'}</span>
                         <span>{listing.size}</span>
                         <span>{listing.imageUrls.length} image(s)</span>
                       </div>

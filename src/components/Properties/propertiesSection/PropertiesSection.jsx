@@ -2,10 +2,12 @@ import { useMemo, useState } from 'react'
 import { propertyFilters } from '../../../data/properties.js'
 import usePropertyListings from '../../../context/propertyListings/usePropertyListings.js'
 import ListingCard from '../listingCard/ListingCard.jsx'
+import PropertyDetailsModal from '../propertyDetailsModal/PropertyDetailsModal.jsx'
 import './PropertiesSection.scss'
 
 function PropertiesSection() {
   const [activeFilter, setActiveFilter] = useState('all')
+  const [selectedProperty, setSelectedProperty] = useState(null)
   const { isLoading, propertyListings } = usePropertyListings()
   const publishedListings = useMemo(
     () => propertyListings.filter((property) => property.isPublished),
@@ -53,7 +55,11 @@ function PropertiesSection() {
         ) : visibleProperties.length ? (
           <div className="properties-grid">
             {visibleProperties.map((property) => (
-              <ListingCard key={property.id} listing={property} />
+              <ListingCard
+                key={property.id}
+                listing={property}
+                onSelect={setSelectedProperty}
+              />
             ))}
           </div>
         ) : (
@@ -81,6 +87,12 @@ function PropertiesSection() {
           </a>
         </div>
       </div>
+
+      <PropertyDetailsModal
+        key={selectedProperty?.id ?? 'property-details-modal'}
+        listing={selectedProperty}
+        onClose={() => setSelectedProperty(null)}
+      />
     </section>
   )
 }

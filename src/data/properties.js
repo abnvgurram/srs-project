@@ -74,32 +74,49 @@ export function normalizePropertySize(size) {
   return `${normalizedSize} sqft`
 }
 
-export function normalizePropertyPrice(price) {
+export function normalizePropertyPrice(price, type = 'buy') {
   const normalizedPrice = String(price ?? '').trim()
+  const normalizedType = normalizePropertyType(type)
 
   if (!normalizedPrice) return ''
-  if (normalizedPrice.startsWith('$')) {
-    const strippedPrice = normalizedPrice.replace(/^\$\s*/, '').trim()
-    return strippedPrice ? `$ ${strippedPrice}` : '$'
-  }
-  if (!/\d/.test(normalizedPrice)) return normalizedPrice
 
-  return `$ ${normalizedPrice}`
+  const strippedPrice = normalizedPrice
+    .replace(/^\$\s*/, '')
+    .replace(/\s*(?:\/\s*m|\/\s*mo|\/\s*month|per\s*month)$/i, '')
+    .trim()
+
+  if (!/\d/.test(strippedPrice)) {
+    return normalizedPrice
+  }
+
+  if (normalizedType === 'rent') {
+    return `$ ${strippedPrice}/m`
+  }
+
+  return `$ ${strippedPrice}`
 }
 
-export function splitPropertyPrice(price) {
-  const normalizedPrice = normalizePropertyPrice(price)
+export function splitPropertyPrice(price, type = 'buy') {
+  const normalizedPrice = normalizePropertyPrice(price, type)
 
   if (!normalizedPrice.startsWith('$')) {
     return {
       amount: normalizedPrice,
       prefix: '',
+      suffix: '',
     }
   }
 
+  const normalizedAmount = normalizedPrice.replace(/^\$\s*/, '')
+  const isRentPrice = normalizePropertyType(type) === 'rent'
+  const amount = isRentPrice
+    ? normalizedAmount.replace(/\s*\/m$/i, '')
+    : normalizedAmount
+
   return {
-    amount: normalizedPrice.replace(/^\$\s*/, ''),
+    amount,
     prefix: '$',
+    suffix: isRentPrice ? '/m' : '',
   }
 }
 
@@ -133,7 +150,7 @@ export function normalizePropertyListing(listing, fallbackIndex = 0) {
         : typeof listing.is_published === 'boolean'
           ? listing.is_published
           : true,
-    price: normalizePropertyPrice(listing.price),
+    price: normalizePropertyPrice(listing.price, type),
     streetAddress,
     city,
     state,

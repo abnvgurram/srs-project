@@ -16,6 +16,7 @@ import {
   normalizePropertyPrice,
   orderPropertyImages,
   propertyFilters,
+  propertyTypeMeta,
 } from '../../data/properties.js'
 import usePropertyListings from '../../context/propertyListings/usePropertyListings.js'
 import PropertyImageCarousel from '../../components/Properties/propertyImageCarousel/PropertyImageCarousel.jsx'
@@ -25,7 +26,7 @@ import SectionVisibilityGate from '../common/sectionVisibilityGate/SectionVisibi
 import { hasSupabaseConfig, supabase } from '../../lib/supabase.js'
 
 const propertyTypeOptions = propertyFilters.filter(
-  (filter) => filter.value !== 'all',
+  (filter) => filter.value === 'buy' || filter.value === 'rent',
 )
 
 const manageFilters = [
@@ -109,6 +110,7 @@ function getNextImageDisplayNumber(currentDisplayNumbers) {
 function normalizeAdminPriceInput(price) {
   return String(price ?? '')
     .replace(/^\$\s*/, '')
+    .replace(/\s*(?:\/\s*m|\/\s*mo|\/\s*month|per\s*month)$/i, '')
     .trimStart()
 }
 
@@ -148,18 +150,22 @@ function BrandedSuggestionField({
   value,
 }) {
   const [isOpen, setIsOpen] = useState(false)
+  const [dismissedSuggestions, setDismissedSuggestions] = useState([])
   const fieldRef = useRef(null)
   const filteredSuggestions = useMemo(() => {
     const normalizedValue = String(value ?? '').trim().toLowerCase()
+    const availableSuggestions = suggestions.filter(
+      (suggestion) => !dismissedSuggestions.includes(suggestion),
+    )
 
     if (!normalizedValue) {
-      return suggestions.slice(0, 6)
+      return availableSuggestions.slice(0, 6)
     }
 
-    const primaryMatches = suggestions.filter((suggestion) =>
+    const primaryMatches = availableSuggestions.filter((suggestion) =>
       suggestion.toLowerCase().startsWith(normalizedValue),
     )
-    const secondaryMatches = suggestions.filter((suggestion) => {
+    const secondaryMatches = availableSuggestions.filter((suggestion) => {
       const normalizedSuggestion = suggestion.toLowerCase()
 
       return (
@@ -169,7 +175,7 @@ function BrandedSuggestionField({
     })
 
     return [...primaryMatches, ...secondaryMatches].slice(0, 6)
-  }, [suggestions, value])
+  }, [dismissedSuggestions, suggestions, value])
 
   useEffect(() => {
     function handleOutsideMouseDown(event) {
@@ -193,6 +199,8 @@ function BrandedSuggestionField({
         {prefix || suffix ? (
           <div
             className={`properties-admin-section__input-with-prefix${
+              prefix ? ' has-prefix' : ''
+            }${
               suffix ? ' has-suffix' : ''
             }`}
           >
@@ -252,21 +260,42 @@ function BrandedSuggestionField({
             role="listbox"
           >
             {filteredSuggestions.map((suggestion) => (
-              <button
-                className="properties-admin-section__suggestion"
+              <div
+                className="properties-admin-section__suggestion-row"
                 key={`${id}-${suggestion}`}
-                type="button"
-                onClick={() => {
-                  onChange(suggestion)
-                  setIsOpen(false)
-                }}
               >
-                {prefix
-                  ? `${prefix} ${suggestion}`
-                  : suffix
-                    ? `${suggestion} ${suffix}`
-                    : suggestion}
-              </button>
+                <button
+                  className="properties-admin-section__suggestion"
+                  type="button"
+                  onClick={() => {
+                    onChange(suggestion)
+                    setIsOpen(false)
+                  }}
+                >
+                  {prefix
+                    ? `${prefix} ${suggestion}${suffix ? ` ${suffix}` : ''}`
+                    : suffix
+                      ? `${suggestion} ${suffix}`
+                      : suggestion}
+                </button>
+
+                <button
+                  className="properties-admin-section__suggestion-dismiss"
+                  type="button"
+                  aria-label={`Dismiss suggestion ${suggestion}`}
+                  onClick={(event) => {
+                    event.preventDefault()
+                    event.stopPropagation()
+                    setDismissedSuggestions((currentDismissedSuggestions) =>
+                      currentDismissedSuggestions.includes(suggestion)
+                        ? currentDismissedSuggestions
+                        : [...currentDismissedSuggestions, suggestion],
+                    )
+                  }}
+                >
+                  <X aria-hidden="true" size={14} strokeWidth={2.2} />
+                </button>
+              </div>
             ))}
           </div>
         ) : null}
@@ -311,6 +340,18 @@ function createEmptyDraft(nextDisplayOrder) {
   }
 }
 
+function getPriceFieldLabel(type) {
+  return type === 'rent' ? 'Rent' : 'Price'
+}
+
+function getPriceFieldSuffix(type) {
+  return type === 'rent' ? 'per month' : ''
+}
+
+function getPriceFieldPlaceholder(type) {
+  return type === 'rent' ? 'Enter monthly rent' : 'Enter amount'
+}
+
 function createDraftFromListing(listing) {
   return {
     ...listing,
@@ -335,7 +376,10 @@ function PropertyTypeSelect({ disabled, onChange, options, value }) {
   const [isOpen, setIsOpen] = useState(false)
   const selectRef = useRef(null)
   const selectedOption =
-    options.find((option) => option.value === value) ?? options[0]
+    options.find((option) => option.value === value) ?? {
+      label: propertyTypeMeta[value]?.badge ?? 'Category',
+      value,
+    }
 
   useEffect(() => {
     function handleOutsideClick(event) {
@@ -457,6 +501,10 @@ function Properties() {
   const selectedProperties = useMemo(
     () => propertyListings.filter((listing) => selectedPropertyIds.includes(listing.id)),
     [propertyListings, selectedPropertyIds],
+  )
+  const selectedMarkableAsSoldProperties = useMemo(
+    () => selectedProperties.filter((listing) => listing.type !== 'sold'),
+    [selectedProperties],
   )
   const selectedPublishedProperties = useMemo(
     () => selectedProperties.filter((listing) => listing.isPublished),
@@ -629,6 +677,32 @@ function Properties() {
       } from the website.`,
       onConfirm: handleBulkUnpublish,
       title: 'Unpublish selected properties?',
+      tone: 'danger',
+    })
+  }
+
+  function requestMarkAsSold(listing) {
+    if (listing.type === 'sold') return
+
+    setConfirmationState({
+      confirmLabel: 'Mark as Sold',
+      description: `This will move "${listing.address}" into Sold properties.`,
+      onConfirm: () => handleMarkAsSold(listing),
+      title: 'Mark property as sold?',
+      tone: 'danger',
+    })
+  }
+
+  function requestBulkMarkAsSold() {
+    if (!selectedMarkableAsSoldProperties.length) return
+
+    setConfirmationState({
+      confirmLabel: `Mark ${selectedMarkableAsSoldProperties.length} Properties as Sold`,
+      description: `This will move ${selectedMarkableAsSoldProperties.length} selected propert${
+        selectedMarkableAsSoldProperties.length === 1 ? 'y' : 'ies'
+      } into Sold properties.`,
+      onConfirm: handleBulkMarkAsSold,
+      title: 'Mark selected properties as sold?',
       tone: 'danger',
     })
   }
@@ -905,7 +979,7 @@ function Properties() {
 
     const savedListing = await savePropertyListing({
       ...draft,
-      price: normalizePropertyPrice(draft.price),
+      price: normalizePropertyPrice(draft.price, draft.type),
       imageUrls: normalizedImageUrls,
       coverImageIndex: normalizedCoverImageIndex,
     })
@@ -983,6 +1057,20 @@ function Properties() {
     )
   }
 
+  async function handleMarkAsSold(listing) {
+    const savedListing = await savePropertyListing({
+      ...listing,
+      type: 'sold',
+    })
+
+    if (!savedListing) {
+      setFormMessage('Property could not be marked as sold. Try again.')
+      return
+    }
+
+    setFormMessage('Property marked as sold.')
+  }
+
   async function handleBulkUnpublish() {
     if (!selectedPublishedProperties.length) return
 
@@ -1003,6 +1091,35 @@ function Properties() {
       successCount === selectedPublishedProperties.length
         ? `${successCount} properties unpublished.`
         : `${successCount} properties unpublished. Some items could not be updated.`,
+    )
+  }
+
+  async function handleBulkMarkAsSold() {
+    if (!selectedMarkableAsSoldProperties.length) return
+
+    let successCount = 0
+
+    for (const listing of selectedMarkableAsSoldProperties) {
+      const savedListing = await savePropertyListing({
+        ...listing,
+        type: 'sold',
+      })
+
+      if (savedListing) {
+        successCount += 1
+      }
+    }
+
+    if (!successCount) {
+      setFormMessage('Selected properties could not be marked as sold. Try again.')
+      return
+    }
+
+    clearSelectedProperties()
+    setFormMessage(
+      successCount === selectedMarkableAsSoldProperties.length
+        ? `${successCount} properties marked as sold.`
+        : `${successCount} properties marked as sold. Some items could not be updated.`,
     )
   }
 
@@ -1135,16 +1252,6 @@ function Properties() {
               />
             </div>
 
-            <BrandedSuggestionField
-              id="listing-price"
-              label="Price"
-              onChange={(value) => handleFieldChange('price', value)}
-              placeholder="Enter price"
-              prefix="$"
-              suggestions={fieldSuggestions.price}
-              value={draft.price}
-            />
-
             <div className="properties-admin-section__field">
               <label>Category</label>
               <PropertyTypeSelect
@@ -1154,6 +1261,17 @@ function Properties() {
                 value={draft.type}
               />
             </div>
+
+            <BrandedSuggestionField
+              id="listing-price"
+              label={getPriceFieldLabel(draft.type)}
+              onChange={(value) => handleFieldChange('price', value)}
+              placeholder={getPriceFieldPlaceholder(draft.type)}
+              prefix="$"
+              suffix={getPriceFieldSuffix(draft.type)}
+              suggestions={fieldSuggestions.price}
+              value={draft.price}
+            />
 
             <div className="properties-admin-section__form-grid">
               <BrandedSuggestionField
@@ -1441,6 +1559,19 @@ function Properties() {
               </span>
 
               <div className="properties-admin-section__bulk-buttons">
+                {selectedMarkableAsSoldProperties.length ? (
+                  <button
+                    className="properties-admin-section__secondary-button"
+                    type="button"
+                    onClick={requestBulkMarkAsSold}
+                  >
+                    <Check aria-hidden="true" size={15} strokeWidth={2.4} />
+                    <span>
+                      Mark {selectedMarkableAsSoldProperties.length} Selected as Sold
+                    </span>
+                  </button>
+                ) : null}
+
                 {selectedPublishedProperties.length ? (
                   <button
                     className="properties-admin-section__secondary-button"
@@ -1577,6 +1708,21 @@ function Properties() {
                               {listing.isPublished ? 'Unpublish' : 'Publish'}
                             </span>
                           </button>
+
+                          {listing.type !== 'sold' ? (
+                            <button
+                              className="properties-admin-section__listing-action"
+                              type="button"
+                              onClick={() => requestMarkAsSold(listing)}
+                            >
+                              <Check
+                                aria-hidden="true"
+                                size={14}
+                                strokeWidth={2.4}
+                              />
+                              <span>Mark Sold</span>
+                            </button>
+                          ) : null}
 
                           <button
                             className="properties-admin-section__listing-action properties-admin-section__listing-action--danger"

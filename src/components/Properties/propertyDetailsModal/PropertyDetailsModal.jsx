@@ -54,8 +54,13 @@ function PropertyDetailsModal({ listing, onClose }) {
   const currentIndex =
     availableImages[activeIndex] !== undefined ? activeIndex : 0
   const currentImage = availableImages[currentIndex] ?? ''
-  const { amount: priceAmount, prefix: pricePrefix } = splitPropertyPrice(
+  const {
+    amount: priceAmount,
+    prefix: pricePrefix,
+    suffix: priceSuffix,
+  } = splitPropertyPrice(
     listing?.price,
+    listing?.type,
   )
   const mapsUrl = listing?.address
     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(listing.address)}`
@@ -188,7 +193,14 @@ function PropertyDetailsModal({ listing, onClose }) {
                 <span className="property-details-modal__price-prefix">
                   {pricePrefix}
                 </span>
-                <span>{priceAmount}</span>
+                <span className="property-details-modal__price-value">
+                  <span>{priceAmount}</span>
+                  {priceSuffix ? (
+                    <span className="property-details-modal__price-suffix">
+                      {priceSuffix}
+                    </span>
+                  ) : null}
+                </span>
               </>
             ) : (
               listing.price

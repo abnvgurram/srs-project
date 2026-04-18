@@ -209,6 +209,19 @@
   flex: 0 0 auto;
 }
 
+.property-details-modal__price-value {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0;
+}
+
+.property-details-modal__price-suffix {
+  font-size: 0.42em;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+}
+
 .property-details-modal__address {
   display: inline-flex;
   align-items: flex-start;

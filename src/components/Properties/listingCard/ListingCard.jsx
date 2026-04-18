@@ -9,8 +9,13 @@ import './ListingCard.scss'
 function ListingCard({ listing, onSelect }) {
   const images = orderPropertyImages(listing.imageUrls, listing.coverImageIndex)
   const isInteractive = typeof onSelect === 'function'
-  const { amount: priceAmount, prefix: pricePrefix } = splitPropertyPrice(
+  const {
+    amount: priceAmount,
+    prefix: pricePrefix,
+    suffix: priceSuffix,
+  } = splitPropertyPrice(
     listing.price,
+    listing.type,
   )
 
   function handleKeyDown(event) {
@@ -46,7 +51,12 @@ function ListingCard({ listing, onSelect }) {
           {pricePrefix ? (
             <>
               <span className="listing-card__price-prefix">{pricePrefix}</span>
-              <span>{priceAmount}</span>
+              <span className="listing-card__price-value">
+                <span>{priceAmount}</span>
+                {priceSuffix ? (
+                  <span className="listing-card__price-suffix">{priceSuffix}</span>
+                ) : null}
+              </span>
             </>
           ) : (
             listing.price

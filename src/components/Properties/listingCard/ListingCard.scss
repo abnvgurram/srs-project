@@ -84,6 +84,18 @@
   flex: 0 0 auto;
 }
 
+.listing-card__price-value {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0;
+}
+
+.listing-card__price-suffix {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
 .listing-card__address {
   display: inline-flex;
   align-items: flex-start;

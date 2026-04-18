@@ -1,7 +1,10 @@
 import { useMemo, useState } from 'react'
 import { Eye, EyeOff } from 'lucide-react'
 import './Dashboard.scss'
-import { siteSections } from '../../config/siteSections.js'
+import {
+  isSiteSectionEditable,
+  siteSections,
+} from '../../config/siteSections.js'
 import useSiteSections from '../../context/siteSections/useSiteSections.js'
 
 function Dashboard() {
@@ -34,6 +37,8 @@ function Dashboard() {
   const hasAnySelection = selectedKeys.length > 0
 
   function handleCheckboxChange(sectionKey, isChecked) {
+    if (!isSiteSectionEditable(sectionKey) || isBusy) return
+
     setSelectedKeys((currentSelectedKeys) => {
       if (isChecked) {
         return currentSelectedKeys.includes(sectionKey)
@@ -46,19 +51,21 @@ function Dashboard() {
   }
 
   async function handleBulkUpdate(sectionKeys, isEnabled) {
-    if (!sectionKeys.length || isBusy) return
+    const editableSectionKeys = sectionKeys.filter(isSiteSectionEditable)
 
-    const didSave = await setMultipleSectionsEnabled(sectionKeys, isEnabled)
+    if (!editableSectionKeys.length || isBusy) return
+
+    const didSave = await setMultipleSectionsEnabled(editableSectionKeys, isEnabled)
 
     if (didSave) {
       setSelectedKeys((currentSelectedKeys) =>
-        currentSelectedKeys.filter((key) => !sectionKeys.includes(key)),
+        currentSelectedKeys.filter((key) => !editableSectionKeys.includes(key)),
       )
     }
   }
 
   async function handleSingleToggle(sectionKey, isEnabled) {
-    if (isBusy) return
+    if (isBusy || !isSiteSectionEditable(sectionKey)) return
 
     await setSectionEnabled(sectionKey, isEnabled)
   }
@@ -72,6 +79,7 @@ function Dashboard() {
           <div className="dashboard-admin-section__list">
             {sections.map((section) => {
               const isEnabled = sectionVisibility[section.key]
+              const isEditable = isSiteSectionEditable(section.key)
 
               return (
                 <article className="dashboard-admin-section__row" key={section.key}>
@@ -80,7 +88,7 @@ function Dashboard() {
                     id={`dashboard-section-${section.key}`}
                     type="checkbox"
                     checked={selectedKeySet.has(section.key)}
-                    disabled={isBusy}
+                    disabled={isBusy || !isEditable}
                     onChange={(event) =>
                       handleCheckboxChange(section.key, event.target.checked)
                     }
@@ -101,7 +109,7 @@ function Dashboard() {
                     role="switch"
                     aria-checked={isEnabled}
                     aria-label={`Toggle ${section.label}`}
-                    disabled={isBusy}
+                    disabled={isBusy || !isEditable}
                     onClick={() => handleSingleToggle(section.key, !isEnabled)}
                   >
                     <span className="dashboard-admin-section__toggle-thumb"></span>
@@ -125,8 +133,8 @@ function Dashboard() {
         <p className="dashboard-admin-section__eyebrow">Dashboard</p>
         <h2 className="dashboard-admin-section__title">Section Visibility</h2>
         <p className="dashboard-admin-section__copy">
-          Select rows for bulk actions, or use the row toggle to change a single
-          section immediately.
+          Properties visibility is editable here. Other section toggles are shown
+          as read-only for now.
         </p>
       </div>
 

@@ -646,7 +646,7 @@ function Properties() {
   function requestDelete(listing) {
     setConfirmationState({
       confirmLabel: 'Delete Property',
-      description: `This will remove "${listing.address}" from Featured Properties and delete its uploaded images from Supabase storage.`,
+      description: `This will remove "${listing.address}" from Properties and delete its uploaded images from Supabase storage.`,
       onConfirm: () => handleDelete(listing),
       title: 'Delete property?',
       tone: 'danger',
@@ -1173,7 +1173,7 @@ function Properties() {
     <SectionVisibilityGate sectionKey="properties">
       <div className="properties-admin-section">
         <div className="properties-admin-section__header">
-          <p className="properties-admin-section__eyebrow">Featured Properties</p>
+          <p className="properties-admin-section__eyebrow">Properties</p>
           <h2 className="properties-admin-section__title">Properties Control Panel</h2>
           <p className="properties-admin-section__copy">
             Manage property content, media, category, publishing state, and listing

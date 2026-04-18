@@ -1,4 +1,5 @@
 import useSiteSections from '../../../context/siteSections/useSiteSections.js'
+import { isSiteSectionEditable } from '../../../config/siteSections.js'
 import './SectionVisibilityGate.scss'
 
 function SectionVisibilityGate({ children, sectionKey }) {
@@ -6,9 +7,10 @@ function SectionVisibilityGate({ children, sectionKey }) {
     useSiteSections()
   const isEnabled = Boolean(sectionVisibility[sectionKey])
   const isBusy = isLoading || isSaving
+  const isEditable = isSiteSectionEditable(sectionKey)
 
   async function handleToggle() {
-    if (isBusy) return
+    if (isBusy || !isEditable) return
     await setSectionEnabled(sectionKey, !isEnabled)
   }
 
@@ -27,7 +29,7 @@ function SectionVisibilityGate({ children, sectionKey }) {
           role="switch"
           aria-checked={isEnabled}
           aria-label="Show on website"
-          disabled={isBusy}
+          disabled={isBusy || !isEditable}
           onClick={handleToggle}
         >
           <span className="section-visibility-gate__thumb"></span>

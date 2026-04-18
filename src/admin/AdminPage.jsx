@@ -31,6 +31,7 @@ import {
 const ADMIN_SESSION_KEY = 'siris-admin-session'
 const WEBSITE_TITLE =
   'Siris Realty Group - Real Estate With Common Sense | Glen Allen, Richmond, Henrico VA'
+const enabledSidebarSectionIds = new Set(['dashboard', 'properties'])
 
 const adminSections = [
   {
@@ -38,6 +39,12 @@ const adminSections = [
     label: 'Dashboard',
     icon: LayoutDashboard,
     Component: Dashboard,
+  },
+  {
+    id: 'properties',
+    label: 'Properties',
+    icon: Building2,
+    Component: Properties,
   },
   {
     id: 'header',
@@ -62,12 +69,6 @@ const adminSections = [
     label: 'Services',
     icon: BriefcaseBusiness,
     Component: Services,
-  },
-  {
-    id: 'properties',
-    label: 'Featured Properties',
-    icon: Building2,
-    Component: Properties,
   },
   {
     id: 'why',
@@ -167,6 +168,8 @@ function AdminPage() {
   }
 
   function handleSectionChange(sectionId) {
+    if (!enabledSidebarSectionIds.has(sectionId)) return
+
     setActiveSectionId(sectionId)
     setMenuOpen(false)
   }
@@ -217,14 +220,18 @@ function AdminPage() {
         <nav className="admin-sidebar__nav" aria-label="Admin sections">
           {adminSections.map((section) => {
             const Icon = section.icon
+            const isEnabled = enabledSidebarSectionIds.has(section.id)
 
             return (
               <button
                 className={`admin-sidebar__item${
                   activeSection.id === section.id ? ' is-active' : ''
+                }${
+                  !isEnabled ? ' is-disabled' : ''
                 }`}
                 key={section.id}
                 type="button"
+                disabled={!isEnabled}
                 onClick={() => handleSectionChange(section.id)}
               >
                 <Icon aria-hidden="true" size={18} strokeWidth={2.1} />

@@ -8,12 +8,6 @@ import useSiteSections from '../../../context/siteSections/useSiteSections.js'
 import ServiceFaqAccordion from '../common/ServiceFaqAccordion.jsx'
 import './BuyAHome.scss'
 
-const listingFilters = [
-  { label: 'All', value: 'all' },
-  { label: 'For Sale', value: 'buy' },
-  { label: 'For Rent', value: 'rent' },
-]
-
 const buyerSteps = [
   {
     title: 'Start with a clear budget and timeline',
@@ -34,38 +28,32 @@ const buyerSteps = [
 
 const buyerFaqs = [
   {
-    question: 'Why are both for-sale and rental properties shown here?',
+    question: 'What should buyers do before they start touring seriously?',
     answer:
-      'Not every visitor is ready to purchase immediately. Showing both options keeps this page useful for people comparing neighborhoods, timing, and budget before making a final decision.',
+      'Start with the basics that shape every later decision: payment comfort, pre-approval readiness, timeline, preferred neighborhoods, and the features that are truly non-negotiable.',
   },
   {
-    question: 'What should buyers have in place before touring seriously?',
+    question: 'How should I compare multiple homes without getting overwhelmed?',
     answer:
-      'A realistic budget, a lender conversation, and a clear list of must-haves versus nice-to-haves. That usually prevents the search from drifting.',
+      'Use the same decision framework on every showing. Layout, condition, location, resale strength, monthly carrying cost, and required updates should all be reviewed the same way each time.',
   },
   {
-    question: 'What makes a buyer strategy stronger in a competitive market?',
+    question: 'What helps a buyer make a stronger offer in a competitive market?',
     answer:
-      'Preparation. Buyers who understand their limits, know their preferred areas, and can compare homes consistently usually make better decisions under pressure.',
+      'Preparation and clarity. Buyers who understand their financing, know their walk-away points, and can recognize true fit quickly usually respond with better timing and fewer emotional mistakes.',
   },
 ]
 
 function BuyAHome({ currentPath }) {
-  const [activeFilter, setActiveFilter] = useState('all')
   const [selectedProperty, setSelectedProperty] = useState(null)
   const { sectionVisibility } = useSiteSections()
   const { isLoading, propertyListings } = usePropertyListings()
 
   const visibleListings = useMemo(() => {
-    const filteredListings = propertyListings.filter(
-      (listing) =>
-        listing.isPublished && (listing.type === 'buy' || listing.type === 'rent'),
+    return propertyListings.filter(
+      (listing) => listing.isPublished && listing.type === 'buy',
     )
-
-    if (activeFilter === 'all') return filteredListings
-
-    return filteredListings.filter((listing) => listing.type === activeFilter)
-  }, [activeFilter, propertyListings])
+  }, [propertyListings])
 
   return (
     <div className="buy-home-page-shell">
@@ -100,7 +88,11 @@ function BuyAHome({ currentPath }) {
                 Buyers usually get better results when the search is narrowed by
                 budget, location, layout, and long-term fit before the touring
                 calendar fills up. That produces cleaner comparisons and more
-                confident decisions.
+                confident decisions. It also helps buyers avoid the usual trap
+                of chasing every new listing without a real framework for what
+                actually belongs on the shortlist. A smaller, better-qualified
+                pool of homes usually leads to stronger decisions and less
+                second-guessing once offers become real.
               </p>
             </article>
 
@@ -111,6 +103,10 @@ function BuyAHome({ currentPath }) {
                 A strong buying experience should help you understand what you
                 can comfortably afford, where to focus, how to evaluate tradeoffs,
                 and what it takes to move from touring into a competitive offer.
+                That means looking beyond list price into monthly cost,
+                condition, neighborhood momentum, resale strength, and the
+                timing pressures of the current market so the final decision is
+                based on fit and leverage, not just urgency.
               </p>
             </article>
           </div>
@@ -120,22 +116,6 @@ function BuyAHome({ currentPath }) {
           <div className="buy-home-page__inner">
             <div className="buy-home-page__section-head">
               <p className="buy-home-page__card-label">Available Properties</p>
-              <h2>Published properties tagged for sale or for rent.</h2>
-            </div>
-
-            <div className="buy-home-page__filters" role="tablist" aria-label="Buyer listing filters">
-              {listingFilters.map((filter) => (
-                <button
-                  className={`buy-home-page__filter${
-                    activeFilter === filter.value ? ' is-active' : ''
-                  }`}
-                  key={filter.value}
-                  type="button"
-                  onClick={() => setActiveFilter(filter.value)}
-                >
-                  {filter.label}
-                </button>
-              ))}
             </div>
 
             {isLoading ? (
@@ -152,7 +132,7 @@ function BuyAHome({ currentPath }) {
               </div>
             ) : (
               <div className="buy-home-page__status">
-                No published sale or rent listings are available right now.
+                No published sale listings are available right now.
               </div>
             )}
 

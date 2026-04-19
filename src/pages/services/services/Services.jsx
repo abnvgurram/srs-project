@@ -24,8 +24,8 @@ const serviceCards = [
     path: '/services/property-management',
     title: 'Property Management',
     description:
-      'Give owners a cleaner operating system for leasing, tenant communication, maintenance, and ongoing oversight.',
-    highlights: ['Tenant handling', 'Maintenance flow', 'Owner reporting'],
+      'Browse rental opportunities and understand how leasing support, maintenance coordination, and property oversight should work in practice.',
+    highlights: ['Rental listings', 'Leasing support', 'Management clarity'],
   },
 ]
 
@@ -38,7 +38,7 @@ const serviceFaqs = [
   {
     question: 'Why break the services into separate pages?',
     answer:
-      'Each service comes with different questions. Buyers want search and offer guidance, sellers want pricing and launch strategy, and owners want leasing, maintenance, and reporting clarity.',
+      'Each service comes with different questions. Buyers want search and offer guidance, sellers want pricing and launch strategy, and rental or management clients want leasing, maintenance, and oversight clarity.',
   },
   {
     question: 'What should I expect from Siris Realty Group across all services?',

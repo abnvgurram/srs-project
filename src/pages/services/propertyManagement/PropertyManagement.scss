@@ -3,7 +3,7 @@
   padding-top: 92px;
   background:
     radial-gradient(circle at top, rgba(200, 168, 75, 0.12), transparent 24%),
-    linear-gradient(180deg, #f7f3ea 0%, #edf0ea 100%);
+    linear-gradient(180deg, #f8f5ee 0%, #edf0ea 100%);
 }
 
 .property-management-page__hero,
@@ -32,7 +32,7 @@
 }
 
 .property-management-page__eyebrow,
-.property-management-page__section-label {
+.property-management-page__card-label {
   margin: 0 0 12px;
   color: var(--gold-dark);
   font-size: 0.78rem;
@@ -41,17 +41,13 @@
   text-transform: uppercase;
 }
 
-.property-management-page__content-card .property-management-page__section-label {
-  margin-bottom: 20px;
-}
-
 .property-management-page__title {
   margin: 0;
   max-width: 16ch;
   margin-inline: auto;
   color: var(--navy);
   font-family: 'Playfair Display', serif;
-  font-size: clamp(2.5rem, 6vw, 4.3rem);
+  font-size: clamp(2.5rem, 6vw, 4.4rem);
   line-height: 0.98;
 }
 
@@ -76,14 +72,15 @@
   padding-top: 40px;
 }
 
-.property-management-page__primary,
-.property-management-page__secondary {
+.property-management-page__primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: 48px;
   padding: 0 22px;
   border-radius: 999px;
+  background: var(--gold);
+  color: var(--navy);
   font-weight: 700;
   transition:
     transform 0.2s ease,
@@ -91,34 +88,13 @@
     border-color 0.2s ease;
 }
 
-.property-management-page__primary {
-  background: var(--gold);
-  color: var(--navy);
-}
-
-.property-management-page__secondary {
-  border: 1px solid rgba(5, 13, 31, 0.12);
-  background: #fff;
-  color: var(--navy);
-}
-
-.property-management-page__grid,
-.property-management-page__scenario-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
-}
-
-.property-management-page__benefits {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 20px;
+.property-management-page__primary:hover,
+.property-management-page__step:hover {
+  transform: translateY(-1px);
 }
 
 .property-management-page__card,
-.property-management-page__content-card,
-.property-management-page__benefit,
-.property-management-page__scenario-card {
+.property-management-page__step {
   padding: 28px;
   border: 1px solid rgba(5, 13, 31, 0.08);
   border-radius: 26px;
@@ -126,157 +102,96 @@
   box-shadow: 0 18px 42px rgba(5, 13, 31, 0.07);
 }
 
-.property-management-page__section-head {
-  margin-bottom: 24px;
-}
-
-.property-management-page__card h3,
-.property-management-page__content-card h2,
+.property-management-page__card h2,
 .property-management-page__section-head h2,
-.property-management-page__scenario-card h3,
-.property-management-page__list-item h3,
-.property-management-page__benefit h3 {
+.property-management-page__step h3 {
   margin: 0;
   color: var(--navy);
   font-family: 'Playfair Display', serif;
 }
 
 .property-management-page__card p,
-.property-management-page__content-card p,
 .property-management-page__section-head p,
-.property-management-page__benefit p,
-.property-management-page__scenario-card p,
-.property-management-page__list-item p {
-  margin: 0;
+.property-management-page__step p {
+  margin: 16px 0 0;
   color: var(--muted);
   line-height: 1.8;
 }
 
-.property-management-page__card,
-.property-management-page__scenario-card {
-  display: grid;
-  gap: 14px;
-}
-
-.property-management-page__benefit {
-  display: grid;
-  gap: 14px;
-}
-
-.property-management-page__meta-list {
-  display: grid;
-  gap: 6px;
-}
-
-.property-management-page__meta-line {
-  color: var(--navy);
-  font-weight: 600;
-}
-
-.property-management-page__meta-line strong {
-  color: var(--gold-dark);
-}
-
-.property-management-page__list {
-  display: grid;
-  gap: 18px;
-  margin-top: 26px;
-}
-
-.property-management-page__list-item {
-  display: grid;
-  gap: 12px;
-  padding-top: 18px;
-  border-top: 1px solid rgba(5, 13, 31, 0.08);
-}
-
-.property-management-page__list-item:first-child {
-  padding-top: 0;
-  border-top: 0;
-}
-
-.property-management-page__scenario-value {
-  color: var(--gold-dark);
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2rem, 4vw, 2.8rem);
-  line-height: 1;
-}
-
-.property-management-page__benefit-icon,
-.property-management-page__scenario-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 16px;
-  background: rgba(244, 236, 214, 0.9);
-  color: var(--gold-dark);
-}
-
-.property-management-page__scenario-controls {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
+.property-management-page__section-head {
   margin-bottom: 24px;
 }
 
-.property-management-page__scenario-field {
+.property-management-page__grid {
   display: grid;
-  gap: 8px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
 }
 
-.property-management-page__scenario-field span {
-  color: var(--navy);
-  font-weight: 700;
+.property-management-page__status {
+  padding: 22px;
+  border: 1px dashed rgba(5, 13, 31, 0.14);
+  border-radius: 22px;
+  color: var(--muted);
+  line-height: 1.7;
 }
 
-.property-management-page__scenario-input {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+.property-management-page__listing-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 30px;
+}
+
+.property-management-page__listing-button {
+  display: inline-flex;
   align-items: center;
-  gap: 12px;
-  min-height: 56px;
-  padding: 0 16px;
-  border: 1px solid rgba(5, 13, 31, 0.12);
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.94);
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 20px;
+  border-radius: 999px;
+  background: var(--navy);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
 }
 
-.property-management-page__scenario-input span {
-  color: var(--gold-dark);
-  font-size: 1rem;
-  font-weight: 800;
+.property-management-page__listing-button:hover {
+  transform: translateY(-1px);
+  background: #0f2143;
 }
 
-.property-management-page__scenario-input input {
-  width: 100%;
-  padding: 0;
-  border: 0;
-  background: transparent;
+.property-management-page__steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.property-management-page__step {
+  display: grid;
+  gap: 14px;
+}
+
+.property-management-page__step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(244, 236, 214, 0.9);
   color: var(--navy);
-  font: inherit;
-}
-
-.property-management-page__scenario-input input:focus {
-  outline: none;
-}
-
-.property-management-page__scenario-input input::-webkit-outer-spin-button,
-.property-management-page__scenario-input input::-webkit-inner-spin-button {
-  margin: 0;
-  -webkit-appearance: none;
-}
-
-.property-management-page__scenario-input input[type='number'] {
-  -moz-appearance: textfield;
+  font-weight: 800;
 }
 
 @media (max-width: 1100px) {
   .property-management-page__grid,
-  .property-management-page__benefits,
-  .property-management-page__scenario-grid {
-    grid-template-columns: 1fr;
+  .property-management-page__steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -291,10 +206,6 @@
   }
 
   .property-management-page__inner--split {
-    grid-template-columns: 1fr;
-  }
-
-  .property-management-page__scenario-controls {
     grid-template-columns: 1fr;
   }
 }
@@ -318,8 +229,21 @@
     grid-template-columns: 1fr;
   }
 
-  .property-management-page__primary,
-  .property-management-page__secondary {
+  .property-management-page__primary {
     width: 100%;
+  }
+
+  .property-management-page__listing-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .property-management-page__listing-button {
+    width: 100%;
+  }
+
+  .property-management-page__grid,
+  .property-management-page__steps {
+    grid-template-columns: 1fr;
   }
 }

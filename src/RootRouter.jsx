@@ -2,17 +2,20 @@ import { useEffect, useState } from 'react'
 import App from './App.jsx'
 import AdminPage from './admin/AdminPage.jsx'
 import { getServicePageByPath } from './data/servicePages.js'
+import Pricing from './pages/pricing/Pricing.jsx'
 import BuyAHome from './pages/services/buyAHome/BuyAHome.jsx'
 import PropertyManagement from './pages/services/propertyManagement/PropertyManagement.jsx'
 import SellYourHome from './pages/services/sellYourHome/SellYourHome.jsx'
 import Services from './pages/services/services/Services.jsx'
 
 const ADMIN_PATH = '/admin'
+const PRICING_PATH = '/pricing'
 
 function normalizePath(pathname) {
   const cleanPath = pathname.replace(/\/+$/, '') || '/'
 
   if (cleanPath === ADMIN_PATH) return ADMIN_PATH
+  if (cleanPath === PRICING_PATH) return PRICING_PATH
   if (getServicePageByPath(cleanPath)) return cleanPath
   return '/'
 }
@@ -43,6 +46,10 @@ function RootRouter() {
 
   if (pathname === ADMIN_PATH) {
     return <AdminPage />
+  }
+
+  if (pathname === PRICING_PATH) {
+    return <Pricing currentPath={pathname} />
   }
 
   const servicePage = getServicePageByPath(pathname)

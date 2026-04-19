@@ -34,12 +34,12 @@ const services = [
   {
     title: 'Property Management',
     description:
-      'Sit back and earn. We handle tenant placement, rent collection, maintenance, and full compliance for your rental.',
+      'Explore rental opportunities with a clearer view of leasing support, maintenance coordination, and day-to-day management expectations.',
     features: [
-      'Tenant Placement',
-      'Rent Collection',
-      'Maintenance & Compliance',
-      'Landlord Consulting',
+      'Rental Listings',
+      'Leasing Support',
+      'Maintenance Coordination',
+      'Management Guidance',
     ],
     linkLabel: 'Learn More',
     href: serviceChildPages[2].path,
@@ -57,8 +57,8 @@ function ServicesSection() {
             Full-Service Real Estate, Simplified
           </h2>
           <p className="services-section__copy">
-            From your first home search to long-term property management, Siris
-            Realty handles it all with expertise and care.
+            From home search and sale prep to rental and management support,
+            Siris Realty keeps the next step clear and practical.
           </p>
         </header>
 

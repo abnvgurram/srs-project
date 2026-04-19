@@ -8,6 +8,7 @@ import { resolveSiteHref } from '../../utils/siteNavigation.js'
 import './Header.scss'
 
 const navItems = [
+  { label: 'About Us', href: '#why', sectionKey: 'why' },
   {
     label: 'Services',
     href: '/services',
@@ -17,11 +18,9 @@ const navItems = [
       href: page.path,
     })),
   },
+  { label: 'Pricing', href: '/pricing' },
   { label: 'Properties', href: '#properties', sectionKey: 'properties' },
-  { label: 'Why Us', href: '#why', sectionKey: 'why' },
-  { label: 'Reviews', href: '#testimonials', sectionKey: 'testimonials' },
   { label: 'Blog', href: '#blog', sectionKey: 'blog' },
-  { label: 'Contact Us', href: '#inquiry', sectionKey: 'inquiry' },
 ]
 
 const TABLET_NAV_BREAKPOINT = 1120
@@ -34,8 +33,8 @@ function Header({ currentPath = '/' }) {
   const { sectionVisibility } = useSiteSections()
   const servicesMenuRef = useRef(null)
 
-  const visibleNavItems = navItems.filter(
-    (item) => sectionVisibility[item.sectionKey],
+  const visibleNavItems = navItems.filter((item) =>
+    item.sectionKey ? sectionVisibility[item.sectionKey] : true,
   )
 
   useEffect(() => {

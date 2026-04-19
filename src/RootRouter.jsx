@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import App from './App.jsx'
 import AdminPage from './admin/AdminPage.jsx'
+import SupportFab from './components/SupportFab/SupportFab.jsx'
 import { getServicePageByPath } from './data/servicePages.js'
 import Pricing from './pages/pricing/Pricing.jsx'
 import BuyAHome from './pages/services/buyAHome/BuyAHome.jsx'
@@ -48,29 +49,31 @@ function RootRouter() {
     return <AdminPage />
   }
 
+  let page = <App currentPath={pathname} />
+
   if (pathname === PRICING_PATH) {
-    return <Pricing currentPath={pathname} />
+    page = <Pricing currentPath={pathname} />
+  }
+  else {
+    const servicePage = getServicePageByPath(pathname)
+
+    if (servicePage?.key === 'services') {
+      page = <Services currentPath={pathname} />
+    } else if (servicePage?.key === 'buy-a-home') {
+      page = <BuyAHome currentPath={pathname} />
+    } else if (servicePage?.key === 'sell-your-home') {
+      page = <SellYourHome currentPath={pathname} />
+    } else if (servicePage?.key === 'property-management') {
+      page = <PropertyManagement currentPath={pathname} />
+    }
   }
 
-  const servicePage = getServicePageByPath(pathname)
-
-  if (servicePage?.key === 'services') {
-    return <Services currentPath={pathname} />
-  }
-
-  if (servicePage?.key === 'buy-a-home') {
-    return <BuyAHome currentPath={pathname} />
-  }
-
-  if (servicePage?.key === 'sell-your-home') {
-    return <SellYourHome currentPath={pathname} />
-  }
-
-  if (servicePage?.key === 'property-management') {
-    return <PropertyManagement currentPath={pathname} />
-  }
-
-  return <App currentPath={pathname} />
+  return (
+    <>
+      {page}
+      <SupportFab />
+    </>
+  )
 }
 
 export default RootRouter

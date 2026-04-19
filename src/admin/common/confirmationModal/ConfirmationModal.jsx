@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import './ConfirmationModal.scss'
 
 function ConfirmationModal({
+  cancelLabel = 'Cancel',
   confirmLabel = 'Confirm',
   description,
   isLoading = false,
@@ -66,7 +67,7 @@ function ConfirmationModal({
             disabled={isLoading}
             onClick={onCancel}
           >
-            Cancel
+            {cancelLabel}
           </button>
 
           <button

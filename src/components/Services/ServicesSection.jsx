@@ -1,4 +1,5 @@
 import { BadgeDollarSign, House, KeyRound } from 'lucide-react'
+import { serviceChildPages } from '../../data/servicePages.js'
 import './ServicesSection.scss'
 
 const services = [
@@ -13,6 +14,7 @@ const services = [
       'First-Time Buyer Support',
     ],
     linkLabel: 'Start Your Search',
+    href: serviceChildPages[0].path,
     icon: House,
   },
   {
@@ -26,6 +28,7 @@ const services = [
       'Max Value Strategy',
     ],
     linkLabel: 'Get a Free CMA',
+    href: serviceChildPages[1].path,
     icon: BadgeDollarSign,
   },
   {
@@ -39,6 +42,7 @@ const services = [
       'Landlord Consulting',
     ],
     linkLabel: 'Learn More',
+    href: serviceChildPages[2].path,
     icon: KeyRound,
   },
 ]
@@ -79,7 +83,7 @@ function ServicesSection() {
                   ))}
                 </ul>
 
-                <a className="service-card-react__link" href="#agent-section">
+                <a className="service-card-react__link" href={service.href}>
                   {service.linkLabel} {'->'}
                 </a>
               </article>

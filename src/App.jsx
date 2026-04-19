@@ -11,12 +11,12 @@ import TestimonialsSection from './components/Testimonials/TestimonialsSection.j
 import WhySection from './components/Why/WhySection.jsx'
 import useSiteSections from './context/siteSections/useSiteSections.js'
 
-function App() {
+function App({ currentPath = '/' }) {
   const { sectionVisibility } = useSiteSections()
 
   return (
     <div className="app-shell">
-      {sectionVisibility.header && <Header />}
+      {sectionVisibility.header && <Header currentPath={currentPath} />}
       {sectionVisibility.hero && <HeroSection />}
       {sectionVisibility.agent && <AgentSection />}
       {sectionVisibility.services && <ServicesSection />}
@@ -26,7 +26,7 @@ function App() {
       {sectionVisibility.blog && <BlogSection />}
       {sectionVisibility.cta && <CtaSection />}
       {sectionVisibility.inquiry && <InquirySection />}
-      {sectionVisibility.footer && <Footer />}
+      {sectionVisibility.footer && <Footer currentPath={currentPath} />}
     </div>
   )
 }

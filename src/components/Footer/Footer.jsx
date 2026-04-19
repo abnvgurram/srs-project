@@ -7,12 +7,16 @@ import {
 } from '@fortawesome/free-brands-svg-icons'
 import { Calendar, Globe, Mail, MapPin, Phone } from 'lucide-react'
 import useSiteSections from '../../context/siteSections/useSiteSections.js'
+import { serviceChildPages } from '../../data/servicePages.js'
+import { resolveSiteHref } from '../../utils/siteNavigation.js'
 import './Footer.scss'
 
 const serviceLinks = [
-  { label: 'Buy a Home', href: '#services', sectionKey: 'services' },
-  { label: 'Sell Your Home', href: '#services', sectionKey: 'services' },
-  { label: 'Property Management', href: '#services', sectionKey: 'services' },
+  ...serviceChildPages.map((page) => ({
+    label: page.label,
+    href: page.path,
+    sectionKey: 'services',
+  })),
   { label: 'Relocation', href: '#services', sectionKey: 'services' },
   { label: 'Foreclosures', href: '#services', sectionKey: 'services' },
   { label: 'Landlord Consulting', href: '#services', sectionKey: 'services' },
@@ -73,15 +77,18 @@ const socialLinks = [
   { label: 'X', href: 'https://twitter.com', icon: faXTwitter },
 ]
 
-function FooterLink({ href, label, external = false }) {
+function FooterLink({ currentPath, href, label, external = false }) {
   return (
-    <a href={href} {...(external ? { target: '_blank', rel: 'noreferrer' } : {})}>
+    <a
+      href={resolveSiteHref(href, currentPath)}
+      {...(external ? { target: '_blank', rel: 'noreferrer' } : {})}
+    >
       {label}
     </a>
   )
 }
 
-function Footer() {
+function Footer({ currentPath = '/' }) {
   const { sectionVisibility } = useSiteSections()
   const visibleServiceLinks = serviceLinks.filter(
     (link) => !link.sectionKey || sectionVisibility[link.sectionKey],
@@ -136,7 +143,11 @@ function Footer() {
             <ul className="site-footer__links">
               {visibleServiceLinks.map((link) => (
                 <li key={link.label}>
-                  <FooterLink href={link.href} label={link.label} />
+                  <FooterLink
+                    currentPath={currentPath}
+                    href={link.href}
+                    label={link.label}
+                  />
                 </li>
               ))}
             </ul>
@@ -148,6 +159,7 @@ function Footer() {
               {visibleResourceLinks.map((link) => (
                 <li key={link.label}>
                   <FooterLink
+                    currentPath={currentPath}
                     href={link.href}
                     label={link.label}
                     external={link.external}
@@ -166,7 +178,7 @@ function Footer() {
                 return (
                   <li key={link.label}>
                     <a
-                      href={link.href}
+                      href={resolveSiteHref(link.href, currentPath)}
                       {...(link.external
                         ? { target: '_blank', rel: 'noreferrer' }
                         : {})}

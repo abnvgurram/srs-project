@@ -46,15 +46,15 @@ const contactLinks = [
     icon: Phone,
   },
   {
-    label: 'vijay@sirisrealtygroup.com',
-    href: 'mailto:vijay@sirisrealtygroup.com',
+    label: 'info@sirisrealtygroup.com',
+    href: 'mailto:info@sirisrealtygroup.com',
     icon: Mail,
   },
   {
-    label: 'Glen Allen, VA 23060',
-    href: '#why',
+    label: '11549 Nuckold Rd, Ste B, Glenn Allen, VA 23059',
+    href: 'https://www.google.com/maps/search/?api=1&query=11549+Nuckold+Rd%2C+Ste+B%2C+Glenn+Allen%2C+VA+23059',
     icon: MapPin,
-    sectionKey: 'why',
+    external: true,
   },
   {
     label: 'sirisrealtygroup.com',

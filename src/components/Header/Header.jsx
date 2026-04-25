@@ -1,6 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPhone } from '@fortawesome/free-solid-svg-icons'
 import { ChevronDown } from 'lucide-react'
 import useSiteSections from '../../context/siteSections/useSiteSections.js'
 import { serviceChildPages } from '../../data/servicePages.js'
@@ -158,13 +156,11 @@ function Header({ currentPath = '/' }) {
               ),
             )}
 
-            <a className="site-header__cta" href="tel:8044266495">
-              <FontAwesomeIcon
-                className="site-header__cta-icon"
-                icon={faPhone}
-                aria-hidden="true"
-              />
-              <span>804-426-6495</span>
+            <a
+              className="site-header__cta"
+              href={resolveSiteHref('#inquiry', currentPath)}
+            >
+              <span>Contact Us</span>
             </a>
           </nav>
 
@@ -234,15 +230,10 @@ function Header({ currentPath = '/' }) {
 
         <a
           className="mobile-nav-panel__cta"
-          href="tel:8044266495"
+          href={resolveSiteHref('#inquiry', currentPath)}
           onClick={() => setMenuOpen(false)}
         >
-          <FontAwesomeIcon
-            className="mobile-nav-panel__cta-icon"
-            icon={faPhone}
-            aria-hidden="true"
-          />
-          <span>804-426-6495</span>
+          <span>Contact Us</span>
         </a>
       </div>
     </>

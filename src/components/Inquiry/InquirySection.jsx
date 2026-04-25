@@ -1,8 +1,9 @@
-import { useState } from 'react'
-import { Mail, MapPin, Phone } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { ChevronDown, Mail, MapPin, Phone } from 'lucide-react'
 import './InquirySection.scss'
 
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mjgpqowr'
+const serviceOptions = ['Buy', 'Sell', 'Rent']
 
 const contactPoints = [
   {
@@ -14,32 +15,66 @@ const contactPoints = [
   {
     title: 'Email',
     icon: Mail,
-    href: 'mailto:vijay@sirisrealtygroup.com',
-    label: 'vijay@sirisrealtygroup.com',
+    href: 'mailto:info@sirisrealtygroup.com',
+    label: 'info@sirisrealtygroup.com',
   },
   {
     title: 'Address',
     icon: MapPin,
-    href: 'https://www.google.com/maps/search/?api=1&query=Glen+Allen+VA+23060',
-    label: 'Glen Allen, VA 23060',
+    href: 'https://www.google.com/maps/search/?api=1&query=11549+Nuckold+Rd%2C+Ste+B%2C+Glenn+Allen%2C+VA+23059',
+    label: '11549 Nuckold Rd, Ste B, Glenn Allen, VA 23059',
   },
 ]
 
 function InquirySection() {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [selectedService, setSelectedService] = useState('')
+  const [isServiceMenuOpen, setIsServiceMenuOpen] = useState(false)
   const [submissionState, setSubmissionState] = useState({
     type: 'idle',
     message: '',
   })
+  const serviceMenuRef = useRef(null)
+
+  useEffect(() => {
+    function handlePointerDown(event) {
+      if (!serviceMenuRef.current?.contains(event.target)) {
+        setIsServiceMenuOpen(false)
+      }
+    }
+
+    function handleEscape(event) {
+      if (event.key === 'Escape') {
+        setIsServiceMenuOpen(false)
+      }
+    }
+
+    window.addEventListener('mousedown', handlePointerDown)
+    window.addEventListener('keydown', handleEscape)
+
+    return () => {
+      window.removeEventListener('mousedown', handlePointerDown)
+      window.removeEventListener('keydown', handleEscape)
+    }
+  }, [])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
     setIsSubmitting(true)
     setSubmissionState({ type: 'idle', message: '' })
 
+    if (!selectedService) {
+      setIsSubmitting(false)
+      setSubmissionState({
+        type: 'error',
+        message: 'Please choose a service before sending your inquiry.',
+      })
+      return
+    }
+
     const form = event.currentTarget
     const formData = new FormData(form)
-    const selectedService = formData.get('service')
+    formData.set('service', selectedService)
 
     formData.append(
       'subject',
@@ -66,6 +101,8 @@ function InquirySection() {
       }
 
       form.reset()
+      setSelectedService('')
+      setIsServiceMenuOpen(false)
       setSubmissionState({
         type: 'success',
         message: 'Thank You! Your inquiry was sent successfully.',
@@ -161,17 +198,58 @@ function InquirySection() {
                 </div>
               </label>
 
-              <label className="inquiry-field">
+              <div className="inquiry-field">
                 <span>Type of Service</span>
-                <select name="service" defaultValue="" required>
-                  <option value="" disabled>
-                    Select service
-                  </option>
-                  <option value="Buy">Buy</option>
-                  <option value="Sell">Sell</option>
-                  <option value="Rent">Rent</option>
-                </select>
-              </label>
+                <div
+                  className={`inquiry-select${isServiceMenuOpen ? ' is-open' : ''}`}
+                  ref={serviceMenuRef}
+                >
+                  <input type="hidden" name="service" value={selectedService} />
+                  <button
+                    className="inquiry-select__trigger"
+                    type="button"
+                    aria-haspopup="listbox"
+                    aria-expanded={isServiceMenuOpen}
+                    onClick={() => setIsServiceMenuOpen((open) => !open)}
+                  >
+                    <span
+                      className={`inquiry-select__value${
+                        selectedService ? '' : ' is-placeholder'
+                      }`}
+                    >
+                      {selectedService || 'Select service'}
+                    </span>
+                    <ChevronDown
+                      className="inquiry-select__chevron"
+                      aria-hidden="true"
+                      size={18}
+                    />
+                  </button>
+
+                  {isServiceMenuOpen ? (
+                    <div className="inquiry-select__menu" role="listbox">
+                      {serviceOptions.map((option) => (
+                        <button
+                          key={option}
+                          className={`inquiry-select__option${
+                            selectedService === option ? ' is-selected' : ''
+                          }`}
+                          type="button"
+                          role="option"
+                          aria-selected={selectedService === option}
+                          onClick={() => {
+                            setSelectedService(option)
+                            setIsServiceMenuOpen(false)
+                            setSubmissionState({ type: 'idle', message: '' })
+                          }}
+                        >
+                          {option}
+                        </button>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              </div>
 
               <label className="inquiry-field inquiry-field--message">
                 <span>Message</span>

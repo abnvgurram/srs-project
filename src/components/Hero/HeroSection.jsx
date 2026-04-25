@@ -25,7 +25,8 @@ const heroSlides = [
       'Siris Realty Group brings expert guidance on buying, selling, and managing property - with the personalized care only a dedicated full-time agent can provide.',
     primaryAction: {
       label: 'Talk to Our AI Agent',
-      href: '#agent-section',
+      mode: 'support-chat',
+      prompt: 'I want to buy a home',
       icon: MessageCircle,
     },
     secondaryAction: {
@@ -58,7 +59,8 @@ const heroSlides = [
       "From accurate CMA pricing to high-impact marketing and strong negotiation - we maximize your home's value and get it sold on your terms.",
     primaryAction: {
       label: 'Get a Free Home Valuation',
-      href: '#agent-section',
+      mode: 'support-chat',
+      prompt: 'I want to sell my home',
       icon: BadgeDollarSign,
     },
     secondaryAction: {
@@ -91,7 +93,8 @@ const heroSlides = [
       'Let Siris Realty handle everything - from screening tenants to collecting rent and managing maintenance. You invest; we manage.',
     primaryAction: {
       label: 'Start Managing Today',
-      href: '#agent-section',
+      mode: 'support-chat',
+      prompt: 'I need property management',
       icon: KeyRound,
     },
     secondaryAction: {
@@ -124,7 +127,8 @@ const heroSlides = [
       'Relocating to the Richmond area? Our specialists guide you through every neighborhood, school district, and community so your transition feels like coming home.',
     primaryAction: {
       label: 'Plan My Relocation',
-      href: '#agent-section',
+      mode: 'support-chat',
+      prompt: 'I need relocation help',
       icon: MapPin,
     },
     secondaryAction: {
@@ -226,6 +230,17 @@ function HeroSection() {
     handleSlideChange(activeIndex + 1)
   }
 
+  function openSupportChat(prompt) {
+    window.dispatchEvent(
+      new CustomEvent('siris-support:open', {
+        detail: {
+          prompt,
+          view: 'chat',
+        },
+      }),
+    )
+  }
+
   return (
     <section className="hero-section-react" id="hero">
       <div className="hero-carousel-react">
@@ -265,13 +280,32 @@ function HeroSection() {
                   <p className="hero-carousel-react__copy">{slide.copy}</p>
 
                   <div className="hero-carousel-react__actions">
-                    <a
-                      className="hero-carousel-react__button hero-carousel-react__button--primary"
-                      href={slide.primaryAction.href}
-                    >
-                      <PrimaryIcon aria-hidden="true" size={18} strokeWidth={2.1} />
-                      <span>{slide.primaryAction.label}</span>
-                    </a>
+                    {slide.primaryAction.mode === 'support-chat' ? (
+                      <button
+                        className="hero-carousel-react__button hero-carousel-react__button--primary"
+                        type="button"
+                        onClick={() => openSupportChat(slide.primaryAction.prompt)}
+                      >
+                        <PrimaryIcon
+                          aria-hidden="true"
+                          size={18}
+                          strokeWidth={2.1}
+                        />
+                        <span>{slide.primaryAction.label}</span>
+                      </button>
+                    ) : (
+                      <a
+                        className="hero-carousel-react__button hero-carousel-react__button--primary"
+                        href={slide.primaryAction.href}
+                      >
+                        <PrimaryIcon
+                          aria-hidden="true"
+                          size={18}
+                          strokeWidth={2.1}
+                        />
+                        <span>{slide.primaryAction.label}</span>
+                      </a>
+                    )}
 
                     <a
                       className="hero-carousel-react__button hero-carousel-react__button--ghost"

@@ -50,7 +50,7 @@
   max-width: 16ch;
   margin-inline: auto;
   color: var(--navy);
-  font-family: 'Playfair Display', serif;
+  font-family: 'Lora', serif;
   font-size: clamp(2.5rem, 6vw, 4.3rem);
   line-height: 0.98;
 }
@@ -128,7 +128,7 @@
 .pricing-page__benefit h3 {
   margin: 0;
   color: var(--navy);
-  font-family: 'Playfair Display', serif;
+  font-family: 'Lora', serif;
 }
 
 .pricing-page__card p,
@@ -187,7 +187,7 @@
 
 .pricing-page__scenario-value {
   color: var(--gold-dark);
-  font-family: 'Playfair Display', serif;
+  font-family: 'Lora', serif;
   font-size: clamp(2rem, 4vw, 2.8rem);
   line-height: 1;
 }

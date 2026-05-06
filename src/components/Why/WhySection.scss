@@ -52,9 +52,10 @@
 .why-section__title {
   margin: 0;
   color: #fff;
-  font-family: 'Playfair Display', serif;
+  font-family: 'Lora', serif;
   font-size: clamp(2.2rem, 4vw, 3.4rem);
   line-height: 1.08;
+  font-weight: 500;
 }
 
 .why-section__copy {
@@ -137,7 +138,7 @@
 .why-stat-react__value {
   margin: 0;
   color: var(--gold);
-  font-family: 'Playfair Display', serif;
+  font-family: 'Lora', serif;
   font-size: 36px;
   font-weight: 900;
   line-height: 1;

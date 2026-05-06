@@ -3,8 +3,10 @@ import Footer from '../../../components/Footer/Footer.jsx'
 import Header from '../../../components/Header/Header.jsx'
 import ListingCard from '../../../components/Properties/listingCard/ListingCard.jsx'
 import PropertyDetailsModal from '../../../components/Properties/propertyDetailsModal/PropertyDetailsModal.jsx'
+import { getPropertyPath } from '../../../data/properties.js'
 import usePropertyListings from '../../../context/propertyListings/usePropertyListings.js'
 import useSiteSections from '../../../context/siteSections/useSiteSections.js'
+import { navigateToPath } from '../../../utils/siteNavigation.js'
 import ServiceFaqAccordion from '../common/ServiceFaqAccordion.jsx'
 import './PropertyManagement.scss'
 
@@ -193,6 +195,10 @@ function PropertyManagement({ currentPath }) {
         key={selectedProperty?.id ?? 'property-management-property-modal'}
         listing={selectedProperty}
         onClose={() => setSelectedProperty(null)}
+        onViewMore={(property) => {
+          setSelectedProperty(null)
+          navigateToPath(getPropertyPath(property))
+        }}
       />
 
       {sectionVisibility.footer ? <Footer currentPath={currentPath} /> : null}

@@ -26,9 +26,10 @@
 .services-section__title {
   margin: 0;
   color: var(--text);
-  font-family: 'Playfair Display', serif;
+  font-family: 'Lora', serif;
   font-size: clamp(2.2rem, 4vw, 3.35rem);
   line-height: 1.08;
+  font-weight: 500;
 }
 
 .services-section__copy {
@@ -91,7 +92,7 @@
 .service-card-react__title {
   margin: 0 0 12px;
   color: var(--navy);
-  font-family: 'Playfair Display', serif;
+  font-family: 'Lora', serif;
   font-size: 22px;
   line-height: 1.2;
 }

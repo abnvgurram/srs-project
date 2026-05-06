@@ -9,3 +9,12 @@ export function resolveSiteHref(href, currentPath = '/') {
 
   return normalizedHref
 }
+
+export function navigateToPath(pathname) {
+  const nextPath = String(pathname ?? '').trim()
+
+  if (!nextPath) return
+
+  window.history.pushState(window.history.state, '', nextPath)
+  window.dispatchEvent(new PopStateEvent('popstate'))
+}

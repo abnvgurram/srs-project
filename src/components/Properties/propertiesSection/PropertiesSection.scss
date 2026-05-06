@@ -28,8 +28,9 @@
 .properties-section__title {
   margin: 0;
   color: var(--navy);
-  font-family: 'Playfair Display', serif;
+  font-family: 'Lora', serif;
   font-size: clamp(2.2rem, 3.6vw, 3.4rem);
+  font-weight: 500;
 }
 
 .properties-section__copy {

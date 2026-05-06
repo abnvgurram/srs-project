@@ -2,6 +2,7 @@ import AgentSection from './components/Agent/AgentSection.jsx'
 import BlogSection from './components/Blog/BlogSection.jsx'
 import CtaSection from './components/Cta/CtaSection.jsx'
 import InquirySection from './components/Inquiry/InquirySection.jsx'
+import MetricsSection from './components/Metrics/MetricsSection.jsx'
 import Footer from './components/Footer/Footer.jsx'
 import Header from './components/Header/Header.jsx'
 import HeroSection from './components/Hero/HeroSection.jsx'
@@ -18,6 +19,7 @@ function App({ currentPath = '/' }) {
     <div className="app-shell">
       {sectionVisibility.header && <Header currentPath={currentPath} />}
       {sectionVisibility.hero && <HeroSection />}
+      {sectionVisibility.hero && <MetricsSection />}
       {sectionVisibility.agent && <AgentSection />}
       {sectionVisibility.services && <ServicesSection />}
       {sectionVisibility.properties && <PropertiesSection />}

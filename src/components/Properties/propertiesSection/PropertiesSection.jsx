@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
-import { propertyFilters } from '../../../data/properties.js'
+import { getPropertyPath, propertyFilters } from '../../../data/properties.js'
 import usePropertyListings from '../../../context/propertyListings/usePropertyListings.js'
+import { navigateToPath } from '../../../utils/siteNavigation.js'
 import ListingCard from '../listingCard/ListingCard.jsx'
 import PropertyDetailsModal from '../propertyDetailsModal/PropertyDetailsModal.jsx'
 import './PropertiesSection.scss'
@@ -92,6 +93,10 @@ function PropertiesSection() {
         key={selectedProperty?.id ?? 'property-details-modal'}
         listing={selectedProperty}
         onClose={() => setSelectedProperty(null)}
+        onViewMore={(property) => {
+          setSelectedProperty(null)
+          navigateToPath(getPropertyPath(property))
+        }}
       />
     </section>
   )

@@ -66,18 +66,14 @@
 .hero-carousel-react__inner {
   position: relative;
   z-index: 2;
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 60px;
-  align-items: center;
   width: 100%;
-  max-width: 1300px;
+  max-width: 1180px;
   margin: 0 auto;
   padding: 132px 5% 60px;
 }
 
 .hero-carousel-react__content {
-  max-width: 620px;
+  max-width: 760px;
 }
 
 .hero-carousel-react__badge {
@@ -123,10 +119,10 @@
 .hero-carousel-react__title {
   margin: 0 0 20px;
   color: #fff;
-  font-family: 'Playfair Display', serif;
+  font-family: 'Lora', serif;
   font-size: clamp(2.4rem, 5.5vw, 4.5rem);
-  font-weight: 900;
-  line-height: 1.08;
+  font-weight: 700;
+  line-height: 1.04;
 }
 
 .hero-carousel-react__title em {
@@ -146,7 +142,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
-  margin-bottom: 56px;
+  margin-bottom: 0;
 }
 
 .hero-carousel-react__button {
@@ -185,108 +181,6 @@
 .hero-carousel-react__button--ghost:hover {
   border-color: var(--gold);
   color: var(--gold);
-}
-
-.hero-carousel-react__stats {
-  display: flex;
-  gap: 40px;
-}
-
-.hero-carousel-react__stat-value {
-  color: var(--gold);
-  font-family: 'Playfair Display', serif;
-  font-size: 36px;
-  font-weight: 900;
-  line-height: 1;
-}
-
-.hero-carousel-react__stat-label {
-  margin-top: 4px;
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.hero-carousel-react__visual {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.hero-carousel-react__card {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  width: 100%;
-  max-width: 340px;
-  padding: 36px 32px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.3);
-  animation: heroFloatCard 5s ease-in-out infinite;
-  backdrop-filter: blur(20px);
-}
-
-@keyframes heroFloatCard {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.hero-carousel-react__card-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 62px;
-  height: 62px;
-  border-radius: 18px;
-  background: rgba(200, 168, 75, 0.16);
-  color: var(--gold-light);
-}
-
-.hero-carousel-react__card-tag {
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  padding: 5px 14px;
-  border-radius: 999px;
-  background: var(--gold);
-  color: var(--navy);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.hero-carousel-react__card-copy {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 14px;
-  line-height: 1.65;
-}
-
-.hero-carousel-react__card-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 4px;
-  color: var(--gold);
-  font-size: 13px;
-  font-weight: 700;
-  transition:
-    gap 0.2s ease,
-    color 0.2s ease;
-}
-
-.hero-carousel-react__card-link:hover {
-  gap: 10px;
-  color: var(--gold-light);
 }
 
 .hero-carousel-react__arrow {
@@ -386,13 +280,6 @@
 }
 
 @media (max-width: 1100px) {
-  .hero-carousel-react__inner {
-    gap: 42px;
-  }
-
-  .hero-carousel-react__stats {
-    gap: 28px;
-  }
 }
 
 @media (max-width: 900px) {
@@ -401,17 +288,7 @@
   }
 
   .hero-carousel-react__inner {
-    grid-template-columns: 1fr;
-    gap: 32px;
     padding: 118px 5% 88px;
-  }
-
-  .hero-carousel-react__visual {
-    justify-content: flex-start;
-  }
-
-  .hero-carousel-react__card {
-    max-width: 100%;
   }
 
   .hero-carousel-react__arrow {
@@ -440,11 +317,6 @@
     width: 100%;
     justify-content: center;
     padding-inline: 20px;
-  }
-
-  .hero-carousel-react__stats {
-    flex-wrap: wrap;
-    gap: 24px;
   }
 
   .hero-carousel-react__dots {

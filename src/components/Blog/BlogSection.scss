@@ -26,9 +26,10 @@
 .blog-section__title {
   margin: 0;
   color: var(--text);
-  font-family: 'Playfair Display', serif;
+  font-family: 'Lora', serif;
   font-size: clamp(2.2rem, 4vw, 3.35rem);
   line-height: 1.08;
+  font-weight: 500;
 }
 
 .blog-section__copy {
@@ -88,7 +89,7 @@
 .blog-featured-card__title {
   margin: 0 0 12px;
   color: var(--navy);
-  font-family: 'Playfair Display', serif;
+  font-family: 'Lora', serif;
   font-size: 24px;
   line-height: 1.3;
 }
@@ -154,7 +155,7 @@
 .blog-sidebar-card__title {
   margin: 0 0 6px;
   color: var(--navy);
-  font-family: 'Playfair Display', serif;
+  font-family: 'Lora', serif;
   font-size: 14px;
   line-height: 1.3;
 }

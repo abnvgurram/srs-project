@@ -5,6 +5,8 @@ export const propertyFilters = [
   { label: 'Recently Sold', value: 'sold' },
 ]
 
+export const PROPERTY_PATH_PREFIX = '/properties'
+
 export const propertyTypeMeta = {
   buy: {
     badge: 'For Sale',
@@ -90,7 +92,7 @@ export function normalizePropertyPrice(price, type = 'buy') {
   }
 
   if (normalizedType === 'rent') {
-    return `$ ${strippedPrice}/m`
+    return `$ ${strippedPrice}/month`
   }
 
   return `$ ${strippedPrice}`
@@ -110,14 +112,23 @@ export function splitPropertyPrice(price, type = 'buy') {
   const normalizedAmount = normalizedPrice.replace(/^\$\s*/, '')
   const isRentPrice = normalizePropertyType(type) === 'rent'
   const amount = isRentPrice
-    ? normalizedAmount.replace(/\s*\/m$/i, '')
+    ? normalizedAmount.replace(/\s*\/month$/i, '')
     : normalizedAmount
 
   return {
     amount,
     prefix: '$',
-    suffix: isRentPrice ? '/m' : '',
+    suffix: isRentPrice ? '/month' : '',
   }
+}
+
+function buildPropertySlugValue(value) {
+  return String(value ?? '')
+    .trim()
+    .toLowerCase()
+    .replace(/['’]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
 }
 
 export function normalizePropertyListing(listing, fallbackIndex = 0) {
@@ -173,6 +184,40 @@ export function normalizePropertyListing(listing, fallbackIndex = 0) {
         ? Number(listing.displayOrder ?? listing.display_order)
         : fallbackIndex + 1,
   }
+}
+
+export function getPropertyPath(propertyOrId) {
+  const slug =
+    typeof propertyOrId === 'string'
+      ? buildPropertySlugValue(propertyOrId)
+      : buildPropertySlugValue(
+          propertyOrId?.streetAddress || propertyOrId?.address || propertyOrId?.id,
+        )
+
+  if (!slug) return PROPERTY_PATH_PREFIX
+
+  return `${PROPERTY_PATH_PREFIX}/${slug}`
+}
+
+export function isPropertyPath(pathname) {
+  const normalizedPath = String(pathname ?? '').replace(/\/+$/, '') || '/'
+
+  return normalizedPath.startsWith(`${PROPERTY_PATH_PREFIX}/`)
+}
+
+export function getPropertyIdFromPath(pathname) {
+  const normalizedPath = String(pathname ?? '').replace(/\/+$/, '') || '/'
+
+  if (!isPropertyPath(normalizedPath)) return ''
+
+  const [, , propertyId] = normalizedPath.split('/')
+  return decodeURIComponent(String(propertyId ?? '').trim())
+}
+
+export function getPropertySlug(property) {
+  return buildPropertySlugValue(
+    property?.streetAddress || property?.address || property?.id,
+  )
 }
 
 export function toPropertyRecord(listing) {

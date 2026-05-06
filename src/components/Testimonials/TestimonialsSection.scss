@@ -26,9 +26,10 @@
 .testimonials-section__title {
   margin: 0;
   color: var(--text);
-  font-family: 'Playfair Display', serif;
+  font-family: 'Lora', serif;
   font-size: clamp(2.2rem, 4vw, 3.35rem);
   line-height: 1.08;
+  font-weight: 500;
 }
 
 .testimonials-section__copy {
@@ -75,7 +76,7 @@
   top: 24px;
   right: 24px;
   color: rgba(201, 168, 76, 0.12);
-  font-family: 'Playfair Display', serif;
+  font-family: 'Lora', serif;
   font-size: 60px;
   line-height: 1;
 }
@@ -116,7 +117,7 @@
   border-radius: 50%;
   background: linear-gradient(135deg, var(--navy), #1a2f6b);
   color: #fff;
-  font-family: 'Playfair Display', serif;
+  font-family: 'Lora', serif;
   font-size: 14px;
   font-weight: 700;
 }

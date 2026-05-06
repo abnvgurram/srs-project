@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react'
 import App from './App.jsx'
 import AdminPage from './admin/AdminPage.jsx'
 import SupportFab from './components/SupportFab/SupportFab.jsx'
+import { isPropertyPath } from './data/properties.js'
 import { getServicePageByPath } from './data/servicePages.js'
+import PropertyDetails from './pages/properties/propertyDetails/PropertyDetails.jsx'
 import Pricing from './pages/pricing/Pricing.jsx'
 import BuyAHome from './pages/services/buyAHome/BuyAHome.jsx'
 import PropertyManagement from './pages/services/propertyManagement/PropertyManagement.jsx'
@@ -17,6 +19,7 @@ function normalizePath(pathname) {
 
   if (cleanPath === ADMIN_PATH) return ADMIN_PATH
   if (cleanPath === PRICING_PATH) return PRICING_PATH
+  if (isPropertyPath(cleanPath)) return cleanPath
   if (getServicePageByPath(cleanPath)) return cleanPath
   return '/'
 }
@@ -53,6 +56,9 @@ function RootRouter() {
 
   if (pathname === PRICING_PATH) {
     page = <Pricing currentPath={pathname} />
+  }
+  else if (isPropertyPath(pathname)) {
+    page = <PropertyDetails currentPath={pathname} />
   }
   else {
     const servicePage = getServicePageByPath(pathname)

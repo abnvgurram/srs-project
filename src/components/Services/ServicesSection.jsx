@@ -53,9 +53,7 @@ function ServicesSection() {
       <div className="services-section__inner">
         <header className="services-section__header">
           <p className="services-section__eyebrow">What We Do</p>
-          <h2 className="services-section__title">
-            Full-Service Real Estate, Simplified
-          </h2>
+          <h2 className="services-section__title">Full-Service Real Estate</h2>
           <p className="services-section__copy">
             From home search and sale prep to rental and management support,
             Siris Realty keeps the next step clear and practical.

@@ -15,7 +15,7 @@ import {
 } from '../../../data/properties.js'
 import './PropertyDetailsModal.scss'
 
-function PropertyDetailsModal({ listing, onClose }) {
+function PropertyDetailsModal({ listing, onClose, onViewMore }) {
   const [activeIndex, setActiveIndex] = useState(0)
   const [failedImages, setFailedImages] = useState([])
   const titleId = useId()
@@ -62,11 +62,18 @@ function PropertyDetailsModal({ listing, onClose }) {
     listing?.price,
     listing?.type,
   )
+  const title = listing?.streetAddress || listing?.address || 'Property Listing'
   const mapsUrl = listing?.address
     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(listing.address)}`
     : ''
 
   if (!listing) return null
+
+  function handleViewMore() {
+    if (typeof onViewMore === 'function') {
+      onViewMore(listing)
+    }
+  }
 
   function handleBackdropClick(event) {
     if (event.target === event.currentTarget) {
@@ -114,6 +121,12 @@ function PropertyDetailsModal({ listing, onClose }) {
 
         <div className="property-details-modal__media">
           <div className="property-details-modal__image-wrap">
+            <span
+              className={`property-details-modal__badge property-details-modal__badge--${listing.badgeVariant}`}
+            >
+              {listing.badge}
+            </span>
+
             {currentImage ? (
               <img
                 className="property-details-modal__image"
@@ -155,39 +168,26 @@ function PropertyDetailsModal({ listing, onClose }) {
               </div>
             ) : null}
           </div>
-
-          {photoCount > 1 ? (
-            <div
-              className="property-details-modal__thumbs"
-              aria-label="Property gallery thumbnails"
-            >
-              {availableImages.map((imageUrl, index) => (
-                <button
-                  key={`${listing.id}-thumb-${index}`}
-                  className={
-                    index === currentIndex
-                      ? 'property-details-modal__thumb is-active'
-                      : 'property-details-modal__thumb'
-                  }
-                  type="button"
-                  onClick={() => goToIndex(index)}
-                  aria-label={`Show property photo ${index + 1}`}
-                >
-                  <img src={imageUrl} alt="" />
-                </button>
-              ))}
-            </div>
-          ) : null}
         </div>
 
         <div className="property-details-modal__content">
-          <span
-            className={`property-details-modal__badge property-details-modal__badge--${listing.badgeVariant}`}
-          >
-            {listing.badge}
-          </span>
+          <div className="property-details-modal__heading">
+            <h2 className="property-details-modal__title" id={titleId}>
+              {title}
+            </h2>
 
-          <h2 className="property-details-modal__price" id={titleId}>
+            <a
+              className="property-details-modal__address"
+              href={mapsUrl || undefined}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <MapPin aria-hidden="true" size={16} strokeWidth={2.1} />
+              <span>{listing.address}</span>
+            </a>
+          </div>
+
+          <p className="property-details-modal__price">
             {pricePrefix ? (
               <>
                 <span className="property-details-modal__price-prefix">
@@ -205,26 +205,16 @@ function PropertyDetailsModal({ listing, onClose }) {
             ) : (
               listing.price
             )}
-          </h2>
-
-          <a
-            className="property-details-modal__address"
-            href={mapsUrl || undefined}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <MapPin aria-hidden="true" size={16} strokeWidth={2.1} />
-            <span>{listing.address}</span>
-          </a>
+          </p>
 
           <div className="property-details-modal__stats">
             <span className="property-details-modal__stat">
               <BedDouble aria-hidden="true" size={16} strokeWidth={2.1} />
-              <span>{listing.beds ? `${listing.beds} Beds` : '- Beds'}</span>
+              <span>{listing.beds || '-'}</span>
             </span>
             <span className="property-details-modal__stat">
               <Bath aria-hidden="true" size={16} strokeWidth={2.1} />
-              <span>{listing.baths ? `${listing.baths} Baths` : '- Baths'}</span>
+              <span>{listing.baths || '-'}</span>
             </span>
             <span className="property-details-modal__stat">
               <Ruler aria-hidden="true" size={16} strokeWidth={2.1} />
@@ -233,13 +223,21 @@ function PropertyDetailsModal({ listing, onClose }) {
           </div>
 
           <div className="property-details-modal__copy">
-            <h3 className="property-details-modal__copy-title">Overview</h3>
-
             <div className="property-details-modal__copy-body">
               <p className="property-details-modal__description">
                 {listing.description || 'Property details will be updated soon.'}
               </p>
             </div>
+          </div>
+
+          <div className="property-details-modal__actions">
+            <button
+              className="property-details-modal__view-more"
+              type="button"
+              onClick={handleViewMore}
+            >
+              View More
+            </button>
           </div>
         </div>
       </div>

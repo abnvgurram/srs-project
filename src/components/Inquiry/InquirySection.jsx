@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { ChevronDown, Mail, MapPin, Phone } from 'lucide-react'
+import { ChevronDown, Compass, Mail, MapPin, Phone } from 'lucide-react'
 import './InquirySection.scss'
 
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mjgpqowr'
@@ -11,18 +11,27 @@ const contactPoints = [
     icon: Phone,
     href: 'tel:8044266495',
     label: '804-426-6495',
+    detail: 'Available for client inquiries',
+  },
+  {
+    title: 'Office',
+    icon: MapPin,
+    href: 'https://www.google.com/maps/search/?api=1&query=11549+Nuckold+Rd%2C+Ste+B%2C+Glenn+Allen%2C+VA+23059',
+    label: '11549 Nuckold Rd, Ste B, Glenn Allen, VA 23059',
+    detail: 'Open by appointment in Glen Allen',
   },
   {
     title: 'Email',
     icon: Mail,
     href: 'mailto:info@sirisrealtygroup.com',
     label: 'info@sirisrealtygroup.com',
+    detail: 'Confidential inquiries welcome',
   },
   {
-    title: 'Address',
-    icon: MapPin,
-    href: 'https://www.google.com/maps/search/?api=1&query=11549+Nuckold+Rd%2C+Ste+B%2C+Glenn+Allen%2C+VA+23059',
-    label: '11549 Nuckold Rd, Ste B, Glenn Allen, VA 23059',
+    title: 'Service Areas',
+    icon: Compass,
+    label: 'Glen Allen, Richmond, Henrico',
+    detail: 'And nearby Central Virginia markets',
   },
 ]
 
@@ -121,32 +130,34 @@ function InquirySection() {
   return (
     <section className="inquiry-section" id="inquiry">
       <div className="inquiry-section__inner">
-        <div className="inquiry-section__header">
-          <p className="inquiry-section__eyebrow">Inquiry Form</p>
-          <h2 className="inquiry-section__title">Start the Conversation</h2>
-          <p className="inquiry-section__copy">
-            Buying, selling, or renting in Virginia? Share the basics and we will
-            shape the right next step around your timeline, budget, and goals.
-          </p>
-        </div>
-
         <div className="inquiry-section__grid">
           <aside className="inquiry-panel inquiry-panel--info">
             <div className="inquiry-panel__intro">
-              <h3>Tell us what you need.</h3>
+              <p className="inquiry-panel__eyebrow">Inquiry Form</p>
+              <h2 className="inquiry-panel__title">Contact us</h2>
+              <p className="inquiry-panel__copy">
+                Buying, selling, renting, or management support. Tell us what you
+                need and we will shape the right next step around your goals.
+              </p>
             </div>
 
             <div className="inquiry-panel__points">
               {contactPoints.map((point) => {
                 const Icon = point.icon
+                const PointTag = point.href ? 'a' : 'div'
+                const pointProps = point.href
+                  ? {
+                      href: point.href,
+                      target: point.href.startsWith('http') ? '_blank' : undefined,
+                      rel: point.href.startsWith('http') ? 'noreferrer' : undefined,
+                    }
+                  : {}
 
                 return (
-                  <a
+                  <PointTag
                     key={point.title}
                     className="inquiry-point"
-                    href={point.href}
-                    target={point.href.startsWith('http') ? '_blank' : undefined}
-                    rel={point.href.startsWith('http') ? 'noreferrer' : undefined}
+                    {...pointProps}
                   >
                     <span className="inquiry-point__icon" aria-hidden="true">
                       <Icon size={18} />
@@ -155,108 +166,117 @@ function InquirySection() {
                     <span className="inquiry-point__body">
                       <span className="inquiry-point__title">{point.title}</span>
                       <span className="inquiry-point__link">{point.label}</span>
+                      {point.detail ? (
+                        <span className="inquiry-point__detail">{point.detail}</span>
+                      ) : null}
                     </span>
-                  </a>
+                  </PointTag>
                 )
               })}
             </div>
           </aside>
 
           <div className="inquiry-panel inquiry-panel--form">
+            <div className="inquiry-panel__form-intro">
+              <h3>Send An Inquiry</h3>
+            </div>
+
             <form className="inquiry-form" onSubmit={handleSubmit}>
-              <label className="inquiry-field">
-                <span>Name</span>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Your full name"
-                  required
-                />
-              </label>
-
-              <label className="inquiry-field">
-                <span>Email</span>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="you@example.com"
-                  required
-                />
-              </label>
-
-              <label className="inquiry-field">
-                <span>Phone Number</span>
-                <div className="inquiry-phone">
-                  <span className="inquiry-phone__prefix">+1</span>
+              <div className="inquiry-form__columns">
+                <label className="inquiry-field">
+                  <span>Full Name</span>
                   <input
-                    type="tel"
-                    name="phone"
-                    inputMode="tel"
-                    placeholder="Phone No."
+                    type="text"
+                    name="name"
+                    placeholder="Your full name"
                     required
                   />
-                </div>
-              </label>
+                </label>
 
-              <div className="inquiry-field">
-                <span>Type of Service</span>
-                <div
-                  className={`inquiry-select${isServiceMenuOpen ? ' is-open' : ''}`}
-                  ref={serviceMenuRef}
-                >
-                  <input type="hidden" name="service" value={selectedService} />
-                  <button
-                    className="inquiry-select__trigger"
-                    type="button"
-                    aria-haspopup="listbox"
-                    aria-expanded={isServiceMenuOpen}
-                    onClick={() => setIsServiceMenuOpen((open) => !open)}
-                  >
-                    <span
-                      className={`inquiry-select__value${
-                        selectedService ? '' : ' is-placeholder'
-                      }`}
-                    >
-                      {selectedService || 'Select service'}
-                    </span>
-                    <ChevronDown
-                      className="inquiry-select__chevron"
-                      aria-hidden="true"
-                      size={18}
+                <label className="inquiry-field">
+                  <span>Email Address</span>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="you@example.com"
+                    required
+                  />
+                </label>
+
+                <label className="inquiry-field">
+                  <span>Phone Number</span>
+                  <div className="inquiry-phone">
+                    <span className="inquiry-phone__prefix">+1</span>
+                    <input
+                      type="tel"
+                      name="phone"
+                      inputMode="tel"
+                      placeholder="Phone number"
+                      required
                     />
-                  </button>
+                  </div>
+                </label>
 
-                  {isServiceMenuOpen ? (
-                    <div className="inquiry-select__menu" role="listbox">
-                      {serviceOptions.map((option) => (
-                        <button
-                          key={option}
-                          className={`inquiry-select__option${
-                            selectedService === option ? ' is-selected' : ''
-                          }`}
-                          type="button"
-                          role="option"
-                          aria-selected={selectedService === option}
-                          onClick={() => {
-                            setSelectedService(option)
-                            setIsServiceMenuOpen(false)
-                            setSubmissionState({ type: 'idle', message: '' })
-                          }}
-                        >
-                          {option}
-                        </button>
-                      ))}
-                    </div>
-                  ) : null}
+                <div className="inquiry-field">
+                  <span>Type of Service</span>
+                  <div
+                    className={`inquiry-select${isServiceMenuOpen ? ' is-open' : ''}`}
+                    ref={serviceMenuRef}
+                  >
+                    <input type="hidden" name="service" value={selectedService} />
+                    <button
+                      className="inquiry-select__trigger"
+                      type="button"
+                      aria-haspopup="listbox"
+                      aria-expanded={isServiceMenuOpen}
+                      onClick={() => setIsServiceMenuOpen((open) => !open)}
+                    >
+                      <span
+                        className={`inquiry-select__value${
+                          selectedService ? '' : ' is-placeholder'
+                        }`}
+                      >
+                        {selectedService || 'Select service'}
+                      </span>
+                      <ChevronDown
+                        className="inquiry-select__chevron"
+                        aria-hidden="true"
+                        size={18}
+                      />
+                    </button>
+
+                    {isServiceMenuOpen ? (
+                      <div className="inquiry-select__menu" role="listbox">
+                        {serviceOptions.map((option) => (
+                          <button
+                            key={option}
+                            className={`inquiry-select__option${
+                              selectedService === option ? ' is-selected' : ''
+                            }`}
+                            type="button"
+                            role="option"
+                            aria-selected={selectedService === option}
+                            onClick={() => {
+                              setSelectedService(option)
+                              setIsServiceMenuOpen(false)
+                              setSubmissionState({ type: 'idle', message: '' })
+                            }}
+                          >
+                            {option}
+                          </button>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
                 </div>
               </div>
 
               <label className="inquiry-field inquiry-field--message">
-                <span>Message</span>
+                <span>How can we help you?</span>
                 <textarea
                   name="message"
                   rows="6"
-                  placeholder="Tell us what kind of property support you need."
+                  placeholder="Tell us about your property goals or the support you need."
                   required
                 ></textarea>
               </label>

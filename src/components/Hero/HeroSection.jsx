@@ -34,18 +34,6 @@ const heroSlides = [
       href: '#properties',
       icon: House,
     },
-    stats: [
-      { value: '128+', label: 'Closed Sales' },
-      { value: '8+', label: 'Years Experience' },
-      { value: '5-Star', label: 'Zillow Rating' },
-    ],
-    card: {
-      tag: 'Buy a Home',
-      body: 'Personalized search, off-market access, and expert negotiation - all for you.',
-      href: '#services',
-      label: 'Explore Buying',
-      icon: House,
-    },
     image:
       'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80',
   },
@@ -67,18 +55,6 @@ const heroSlides = [
       label: 'How We Sell',
       href: '#services',
       icon: ArrowRight,
-    },
-    stats: [
-      { value: '$1.3M', label: 'Top Sale Value' },
-      { value: 'High', label: 'Impact Marketing' },
-      { value: 'CMA', label: 'Accurate Pricing' },
-    ],
-    card: {
-      tag: 'Sell Your Home',
-      body: 'Professional staging advice, MLS listing, Zillow marketing, and max-value negotiation.',
-      href: '#services',
-      label: 'Explore Selling',
-      icon: BadgeDollarSign,
     },
     image:
       'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1600&q=80',
@@ -102,18 +78,6 @@ const heroSlides = [
       href: '#services',
       icon: ArrowRight,
     },
-    stats: [
-      { value: 'Full', label: 'Tenant Screening' },
-      { value: '24/7', label: 'Maintenance' },
-      { value: '100%', label: 'Compliance' },
-    ],
-    card: {
-      tag: 'Property Management',
-      body: 'End-to-end rental management for landlords and investors across the Richmond metro.',
-      href: '#services',
-      label: 'Explore Management',
-      icon: KeyRound,
-    },
     image:
       'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1600&q=80',
   },
@@ -135,18 +99,6 @@ const heroSlides = [
       label: 'Explore Neighborhoods',
       href: '#properties',
       icon: ArrowRight,
-    },
-    stats: [
-      { value: '7+', label: 'Service Areas' },
-      { value: 'Local', label: 'Expert Knowledge' },
-      { value: 'E2E', label: 'Support' },
-    ],
-    card: {
-      tag: 'Relocation Services',
-      body: 'School districts, commute planning, and community tours - we make Virginia feel like home.',
-      href: '#services',
-      label: 'Explore Relocation',
-      icon: MapPin,
     },
     image:
       'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600&q=80',
@@ -249,7 +201,6 @@ function HeroSection() {
           const isExiting = index === exitingIndex
           const PrimaryIcon = slide.primaryAction.icon
           const SecondaryIcon = slide.secondaryAction.icon
-          const CardIcon = slide.card.icon
           const TitleTag = isActive ? 'h1' : 'h2'
 
           return (
@@ -317,40 +268,6 @@ function HeroSection() {
                         strokeWidth={2.1}
                       />
                       <span>{slide.secondaryAction.label}</span>
-                    </a>
-                  </div>
-
-                  <div className="hero-carousel-react__stats">
-                    {slide.stats.map((stat) => (
-                      <div className="hero-carousel-react__stat" key={stat.label}>
-                        <div className="hero-carousel-react__stat-value">
-                          {stat.value}
-                        </div>
-                        <div className="hero-carousel-react__stat-label">
-                          {stat.label}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="hero-carousel-react__visual">
-                  <div className="hero-carousel-react__card">
-                    <div className="hero-carousel-react__card-icon" aria-hidden="true">
-                      <CardIcon size={34} strokeWidth={1.9} />
-                    </div>
-                    <div className="hero-carousel-react__card-tag">
-                      {slide.card.tag}
-                    </div>
-                    <p className="hero-carousel-react__card-copy">
-                      {slide.card.body}
-                    </p>
-                    <a
-                      className="hero-carousel-react__card-link"
-                      href={slide.card.href}
-                    >
-                      <span>{slide.card.label}</span>
-                      <ArrowRight aria-hidden="true" size={16} strokeWidth={2.2} />
                     </a>
                   </div>
                 </div>

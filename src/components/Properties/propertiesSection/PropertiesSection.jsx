@@ -40,7 +40,7 @@ function PropertiesSection() {
           {propertyFilters.map((filter) => (
             <button
               key={filter.value}
-              className={`properties-filter${
+              className={`properties-filter properties-filter--${filter.value}${
                 activeFilter === filter.value ? ' is-active' : ''
               }`}
               type="button"

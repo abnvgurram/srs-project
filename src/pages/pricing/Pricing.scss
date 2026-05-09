@@ -14,12 +14,12 @@
 }
 
 .pricing-page__inner {
-  width: min(1200px, 100%);
+  width: min(1720px, 100%);
   margin: 0 auto;
 }
 
 .pricing-page__hero .pricing-page__inner {
-  width: min(860px, 100%);
+  width: min(1500px, 100%);
   text-align: center;
 }
 
@@ -45,7 +45,7 @@
 
 .pricing-page__title {
   margin: 0;
-  max-width: 16ch;
+  max-width: 20ch;
   margin-inline: auto;
   color: var(--navy);
   font-family: 'Lora', serif;
@@ -91,11 +91,17 @@
     border-color 0.2s ease;
 }
 
-.pricing-page__grid,
 .pricing-page__scenario-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 20px;
+}
+
+.pricing-page__fee-groups {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  align-items: stretch;
 }
 
 .pricing-page__benefits {
@@ -104,7 +110,6 @@
   gap: 20px;
 }
 
-.pricing-page__card,
 .pricing-page__content-card,
 .pricing-page__benefit,
 .pricing-page__scenario-card {
@@ -119,7 +124,6 @@
   margin-bottom: 24px;
 }
 
-.pricing-page__card h3,
 .pricing-page__content-card h2,
 .pricing-page__section-head h2,
 .pricing-page__scenario-card h3,
@@ -130,7 +134,6 @@
   font-family: 'Lora', serif;
 }
 
-.pricing-page__card p,
 .pricing-page__content-card p,
 .pricing-page__section-head p,
 .pricing-page__benefit p,
@@ -141,10 +144,20 @@
   line-height: 1.8;
 }
 
-.pricing-page__card,
 .pricing-page__scenario-card {
   display: grid;
   gap: 14px;
+}
+
+.pricing-page__content-card {
+  display: grid;
+  align-content: start;
+}
+
+.pricing-page__content-card > h2 + p {
+  margin-top: 14px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(5, 13, 31, 0.08);
 }
 
 .pricing-page__benefit {
@@ -262,7 +275,15 @@
 }
 
 @media (max-width: 1100px) {
-  .pricing-page__grid,
+  .pricing-page__fee-groups,
+  .pricing-page__benefits,
+  .pricing-page__scenario-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .pricing-page__fee-groups,
   .pricing-page__benefits,
   .pricing-page__scenario-grid {
     grid-template-columns: 1fr;

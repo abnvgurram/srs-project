@@ -108,6 +108,31 @@ const additionalServices = [
   },
 ]
 
+const pricingFeeGroups = [
+  {
+    label: 'Core Management Fees',
+    title: 'Fee structure for ongoing management and leasing support.',
+    intro:
+      'This structure shows owners what is included in day-to-day management, where leasing support is priced separately, and how renewals and onboarding are handled.',
+    items: coreManagementFees,
+  },
+  {
+    label: 'Maintenance & Inspections',
+    title: 'Repair coordination and preventive oversight.',
+    items: maintenanceServices,
+  },
+  {
+    label: 'Legal & Compliance',
+    title: 'Operational support with compliance in view.',
+    items: legalAndCompliance,
+  },
+  {
+    label: 'Additional Services',
+    title: 'Optional support and transaction-based charges.',
+    items: additionalServices,
+  },
+]
+
 const pricingBenefits = [
   {
     title: 'Licensed Brokerage Oversight',
@@ -252,85 +277,35 @@ function Pricing({ currentPath }) {
         <section className="pricing-page__section">
           <div className="pricing-page__inner">
             <div className="pricing-page__section-head">
-              <p className="pricing-page__section-label">Core Management Fees</p>
-              <h2>Fee structure for ongoing management and leasing support.</h2>
-              <p>
-                This structure is designed to show owners what is included in
-                day-to-day management, where leasing support is priced
-                separately, and how renewals and onboarding are handled.
-              </p>
+              <p className="pricing-page__section-label">Fee Structure</p>
+              <h2>Management pricing organized by service area.</h2>
             </div>
 
-            <div className="pricing-page__grid">
-              {coreManagementFees.map((item) => (
-                <article className="pricing-page__card" key={item.title}>
-                  <h3>{item.title}</h3>
-                  <div className="pricing-page__meta-list">
-                    <p className="pricing-page__meta-line">
-                      <strong>Fee:</strong> {item.fee}
-                    </p>
-                    <p className="pricing-page__meta-line">
-                      <strong>Details:</strong> {item.note}
-                    </p>
+            <div className="pricing-page__fee-groups">
+              {pricingFeeGroups.map((group) => (
+                <article className="pricing-page__content-card" key={group.label}>
+                  <p className="pricing-page__section-label">{group.label}</p>
+                  <h2>{group.title}</h2>
+                  {group.intro ? <p>{group.intro}</p> : null}
+
+                  <div className="pricing-page__list">
+                    {group.items.map((item) => (
+                      <div className="pricing-page__list-item" key={item.title}>
+                        <h3>{item.title}</h3>
+                        <div className="pricing-page__meta-list">
+                          <p className="pricing-page__meta-line">
+                            <strong>Fee:</strong> {item.fee}
+                          </p>
+                          {item.note ? (
+                            <p className="pricing-page__meta-line">
+                              <strong>Details:</strong> {item.note}
+                            </p>
+                          ) : null}
+                        </div>
+                        <p>{item.description}</p>
+                      </div>
+                    ))}
                   </div>
-                  <p>{item.description}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="pricing-page__section pricing-page__section--soft">
-          <div className="pricing-page__inner pricing-page__inner--split">
-            <article className="pricing-page__content-card">
-              <p className="pricing-page__section-label">Maintenance & Inspections</p>
-              <h2>Repair coordination and preventive oversight.</h2>
-              <div className="pricing-page__list">
-                {maintenanceServices.map((item) => (
-                  <div className="pricing-page__list-item" key={item.title}>
-                    <h3>{item.title}</h3>
-                    <p className="pricing-page__meta-line">
-                      <strong>Fee:</strong> {item.fee}
-                    </p>
-                    <p>{item.description}</p>
-                  </div>
-                ))}
-              </div>
-            </article>
-
-            <article className="pricing-page__content-card">
-              <p className="pricing-page__section-label">Legal & Compliance</p>
-              <h2>Operational support with compliance in view.</h2>
-              <div className="pricing-page__list">
-                {legalAndCompliance.map((item) => (
-                  <div className="pricing-page__list-item" key={item.title}>
-                    <h3>{item.title}</h3>
-                    <p className="pricing-page__meta-line">
-                      <strong>Fee:</strong> {item.fee}
-                    </p>
-                    <p>{item.description}</p>
-                  </div>
-                ))}
-              </div>
-            </article>
-          </div>
-        </section>
-
-        <section className="pricing-page__section">
-          <div className="pricing-page__inner">
-            <div className="pricing-page__section-head">
-              <p className="pricing-page__section-label">Additional Services</p>
-              <h2>Optional support and transaction-based charges.</h2>
-            </div>
-
-            <div className="pricing-page__grid">
-              {additionalServices.map((item) => (
-                <article className="pricing-page__card" key={item.title}>
-                  <h3>{item.title}</h3>
-                  <p className="pricing-page__meta-line">
-                    <strong>Fee:</strong> {item.fee}
-                  </p>
-                  <p>{item.description}</p>
                 </article>
               ))}
             </div>

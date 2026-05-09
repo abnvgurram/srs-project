@@ -1,10 +1,10 @@
 .site-footer {
   background: #070f22;
-  padding: 64px 5% 32px;
+  padding: 64px 0 32px;
 }
 
 .site-footer__inner {
-  max-width: 1200px;
+  width: min(1200px, calc(100vw - 48px));
   margin: 0 auto;
 }
 
@@ -191,9 +191,8 @@
 }
 
 @media (max-width: 640px) {
-  .site-footer {
-    padding-left: 24px;
-    padding-right: 24px;
+  .site-footer__inner {
+    width: min(1200px, calc(100vw - 32px));
   }
 
   .site-footer__brand-title {

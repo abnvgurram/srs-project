@@ -1,10 +1,10 @@
 .inquiry-section {
-  padding: 84px 5%;
+  padding: 84px 0;
   background: #f7f8fa;
 }
 
 .inquiry-section__inner {
-  max-width: 1200px;
+  width: min(1200px, calc(100vw - 48px));
   margin: 0 auto;
 }
 
@@ -368,7 +368,11 @@
 
 @media (max-width: 720px) {
   .inquiry-section {
-    padding: 68px 24px;
+    padding: 68px 0;
+  }
+
+  .inquiry-section__inner {
+    width: min(1200px, calc(100vw - 32px));
   }
 
   .inquiry-panel--form {

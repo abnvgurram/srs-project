@@ -1,10 +1,10 @@
 .properties-section {
-  padding: 88px 0;
+  padding: 80px 0;
   background: #fff;
 }
 
 .properties-section__inner {
-  width: min(1120px, calc(100vw - 48px));
+  width: min(1200px, calc(100vw - 48px));
   margin: 0 auto;
 }
 
@@ -51,10 +51,11 @@
   min-height: 42px;
   padding: 0 18px;
   border: 1px solid rgba(5, 13, 31, 0.08);
-  border-radius: 999px;
+  border-radius: 2px;
   background: #fff;
   color: var(--muted);
   font-weight: 700;
+  letter-spacing: 0.02em;
   cursor: pointer;
   transition:
     transform 0.2s ease,
@@ -68,16 +69,35 @@
 }
 
 .properties-filter.is-active {
-  border-color: rgba(192, 154, 57, 0.22);
-  background: rgba(212, 178, 72, 0.16);
+  border-color: rgba(192, 154, 57, 0.36);
+  background: var(--gold);
   color: var(--navy);
+}
+
+.properties-filter--buy.is-active {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: var(--navy);
+}
+
+.properties-filter--rent.is-active {
+  border-color: #b83025;
+  background: #b83025;
+  color: #fff;
+}
+
+.properties-filter--sold.is-active {
+  border-color: #6b7280;
+  background: #6b7280;
+  color: #fff;
 }
 
 .properties-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 22px;
+  gap: 28px;
   margin-top: 28px;
+  align-items: stretch;
 }
 
 .properties-section__status {
@@ -127,11 +147,11 @@
 
 @media (max-width: 720px) {
   .properties-section {
-    padding: 72px 0;
+    padding: 68px 0;
   }
 
   .properties-section__inner {
-    width: min(1120px, calc(100vw - 32px));
+    width: min(1200px, calc(100vw - 32px));
   }
 
   .properties-grid {

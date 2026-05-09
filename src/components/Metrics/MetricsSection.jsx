@@ -24,19 +24,19 @@ const metrics = [
   {
     label: 'Zillow Rating',
     value: 5,
-    suffix: '-Star',
+    suffix: '★',
     decimals: 0,
   },
 ]
 
-function formatMetric(metric, progress) {
+function formatMetricValue(metric, progress) {
   const value = metric.value * progress
 
   if (metric.decimals > 0) {
-    return `${metric.prefix ?? ''}${value.toFixed(metric.decimals)}${metric.suffix ?? ''}`
+    return value.toFixed(metric.decimals)
   }
 
-  return `${metric.prefix ?? ''}${Math.round(value)}${metric.suffix ?? ''}`
+  return String(Math.round(value))
 }
 
 function MetricsSection() {
@@ -97,7 +97,19 @@ function MetricsSection() {
           {metrics.map((metric) => (
             <article className="metric-card" key={metric.label}>
               <div className="metric-card__value">
-                {formatMetric(metric, progress)}
+                {metric.prefix ? (
+                  <span className="metric-card__value-part metric-card__value-part--prefix">
+                    {metric.prefix}
+                  </span>
+                ) : null}
+                <span className="metric-card__value-part">
+                  {formatMetricValue(metric, progress)}
+                </span>
+                {metric.suffix ? (
+                  <span className="metric-card__value-part metric-card__value-part--suffix">
+                    {metric.suffix}
+                  </span>
+                ) : null}
               </div>
               <div className="metric-card__label">{metric.label}</div>
             </article>

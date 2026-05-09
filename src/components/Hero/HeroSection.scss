@@ -55,12 +55,9 @@
 }
 
 .hero-carousel-react__overlay {
-  background: linear-gradient(
-    105deg,
-    rgba(5, 13, 31, 0.78) 0%,
-    rgba(5, 13, 31, 0.55) 55%,
-    rgba(5, 13, 31, 0.25) 100%
-  );
+  background:
+    radial-gradient(circle at center, rgba(5, 13, 31, 0.3) 0%, rgba(5, 13, 31, 0.42) 46%, rgba(5, 13, 31, 0.54) 100%),
+    linear-gradient(180deg, rgba(5, 13, 31, 0.18) 0%, rgba(5, 13, 31, 0.34) 100%);
 }
 
 .hero-carousel-react__inner {
@@ -73,7 +70,9 @@
 }
 
 .hero-carousel-react__content {
-  max-width: 760px;
+  max-width: 1040px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .hero-carousel-react__badge {
@@ -117,12 +116,19 @@
 }
 
 .hero-carousel-react__title {
-  margin: 0 0 20px;
+  margin: 0 auto 20px;
+  max-width: min(100%, 1180px);
   color: #fff;
   font-family: 'Lora', serif;
-  font-size: clamp(2.4rem, 5.5vw, 4.5rem);
-  font-weight: 700;
+  font-size: clamp(2.4rem, 4.4vw, 4.2rem);
+  font-weight: 400;
   line-height: 1.04;
+  white-space: nowrap;
+  text-shadow: 0 2px 18px rgba(5, 13, 31, 0.38);
+}
+
+.hero-carousel-react__title-part {
+  display: inline;
 }
 
 .hero-carousel-react__title em {
@@ -131,16 +137,18 @@
 }
 
 .hero-carousel-react__copy {
-  max-width: 480px;
-  margin: 0 0 40px;
+  max-width: 760px;
+  margin: 0 auto 40px;
   color: rgba(255, 255, 255, 0.78);
   font-size: 17px;
   line-height: 1.7;
+  text-shadow: 0 2px 14px rgba(5, 13, 31, 0.42);
 }
 
 .hero-carousel-react__actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 16px;
   margin-bottom: 0;
 }
@@ -294,6 +302,11 @@
   .hero-carousel-react__arrow {
     display: none;
   }
+
+  .hero-carousel-react__title {
+    max-width: 12ch;
+    white-space: normal;
+  }
 }
 
 @media (max-width: 640px) {
@@ -302,6 +315,7 @@
   }
 
   .hero-carousel-react__title {
+    max-width: 10ch;
     font-size: clamp(2rem, 12vw, 3.15rem);
   }
 

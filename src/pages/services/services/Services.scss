@@ -1,9 +1,7 @@
 .services-page {
   min-height: 100vh;
   padding-top: 92px;
-  background:
-    radial-gradient(circle at top, rgba(200, 168, 75, 0.14), transparent 24%),
-    linear-gradient(180deg, #f8f5ee 0%, #f1ede4 100%);
+  background: #fff;
 }
 
 .services-page__hero,
@@ -12,7 +10,7 @@
 }
 
 .services-page__section--soft {
-  background: rgba(255, 255, 255, 0.56);
+  background: #f7f8fa;
 }
 
 .services-page__inner {
@@ -35,7 +33,7 @@
 .services-page__section-label {
   margin: 0 0 12px;
   color: var(--gold-dark);
-  font-size: 0.78rem;
+  font-size: 0.86rem;
   font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -48,6 +46,7 @@
   color: var(--navy);
   font-family: 'Lora', serif;
   font-size: clamp(2.6rem, 6vw, 4.7rem);
+  font-weight: 400;
   line-height: 0.98;
 }
 

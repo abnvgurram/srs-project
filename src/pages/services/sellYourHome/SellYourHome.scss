@@ -1,9 +1,7 @@
 .sell-home-page {
   min-height: 100vh;
   padding-top: 92px;
-  background:
-    radial-gradient(circle at top, rgba(200, 168, 75, 0.12), transparent 24%),
-    linear-gradient(180deg, #f7f3ea 0%, #efe8dc 100%);
+  background: #fff;
 }
 
 .sell-home-page__hero,
@@ -12,7 +10,7 @@
 }
 
 .sell-home-page__section--soft {
-  background: rgba(255, 255, 255, 0.56);
+  background: #f7f8fa;
 }
 
 .sell-home-page__inner {
@@ -42,7 +40,7 @@
 .sell-home-page__pillar-label {
   margin: 0 0 12px;
   color: var(--gold-dark);
-  font-size: 0.78rem;
+  font-size: 0.86rem;
   font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -55,6 +53,7 @@
   color: var(--navy);
   font-family: 'Lora', serif;
   font-size: clamp(2.5rem, 6vw, 4.4rem);
+  font-weight: 400;
   line-height: 0.98;
 }
 

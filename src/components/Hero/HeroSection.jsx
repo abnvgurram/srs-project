@@ -107,7 +107,10 @@ const heroSlides = [
 
 function renderHeading(lines) {
   return lines.map((line, index) => (
-    <span key={`${line.text ?? line.highlight ?? line.prefix ?? 'line'}-${index}`}>
+    <span
+      className="hero-carousel-react__title-part"
+      key={`${line.text ?? line.highlight ?? line.prefix ?? 'line'}-${index}`}
+    >
       {line.text ? line.text : null}
       {!line.text ? (
         <>
@@ -116,7 +119,7 @@ function renderHeading(lines) {
           {line.suffix ?? ''}
         </>
       ) : null}
-      {index < lines.length - 1 ? <br /> : null}
+      {index < lines.length - 1 ? ' ' : null}
     </span>
   ))
 }

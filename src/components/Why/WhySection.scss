@@ -1,8 +1,8 @@
 .why-section {
   position: relative;
   overflow: hidden;
-  padding: 100px 5%;
-  background: #050d1f;
+  padding: 80px 5%;
+  background: #f7f8fa;
 }
 
 .why-section__inner {
@@ -36,14 +36,14 @@
 .why-section__content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 80px;
+  gap: 56px;
   align-items: center;
 }
 
 .why-section__eyebrow {
   margin: 0 0 16px;
   color: var(--gold);
-  font-size: 11px;
+  font-size: 0.86rem;
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
@@ -51,16 +51,16 @@
 
 .why-section__title {
   margin: 0;
-  color: #fff;
+  color: var(--text);
   font-family: 'Lora', serif;
-  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  font-size: clamp(1.7rem, 3vw, 2.5rem);
   line-height: 1.08;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .why-section__copy {
-  margin: 18px 0 40px;
-  color: rgba(255, 255, 255, 0.68);
+  margin: 16px 0 30px;
+  color: var(--muted);
   line-height: 1.8;
 }
 
@@ -91,13 +91,13 @@
 
 .why-feature-react__body h3 {
   margin: 0;
-  color: #fff;
+  color: var(--text);
   font-size: 1rem;
 }
 
 .why-feature-react__body p {
   margin: 8px 0 0;
-  color: rgba(255, 255, 255, 0.66);
+  color: var(--muted);
   font-size: 0.95rem;
   line-height: 1.75;
 }
@@ -113,9 +113,9 @@
   align-items: center;
   gap: 20px;
   padding: 28px 24px;
-  border: 1px solid rgba(201, 168, 76, 0.15);
+  border: 1px solid rgba(5, 13, 31, 0.08);
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.05);
+  background: #fff;
   transition:
     background-color 0.2s ease,
     border-color 0.2s ease,
@@ -123,7 +123,7 @@
 }
 
 .why-stat-react:hover {
-  background: rgba(201, 168, 76, 0.08);
+  background: rgba(200, 168, 75, 0.08);
   border-color: rgba(201, 168, 76, 0.3);
   transform: translateX(6px);
 }
@@ -146,7 +146,7 @@
 
 .why-stat-react__label {
   margin: 4px 0 0;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--muted);
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -161,6 +161,6 @@
 
 @media (max-width: 768px) {
   .why-section {
-    padding: 84px 24px;
+    padding: 68px 24px;
   }
 }

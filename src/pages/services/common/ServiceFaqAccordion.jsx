@@ -3,7 +3,7 @@ import { ChevronDown } from 'lucide-react'
 import './ServiceFaqAccordion.scss'
 
 function ServiceFaqAccordion({ items = [] }) {
-  const [openIndex, setOpenIndex] = useState(items.length ? 0 : -1)
+  const [openIndex, setOpenIndex] = useState(-1)
 
   return (
     <div className="service-faq-accordion">

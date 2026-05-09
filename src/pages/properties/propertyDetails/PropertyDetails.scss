@@ -1,9 +1,7 @@
 .property-detail-page {
   min-height: 100vh;
   padding-top: 92px;
-  background:
-    radial-gradient(circle at top, rgba(200, 168, 75, 0.12), transparent 24%),
-    linear-gradient(180deg, #f8f5ee 0%, #f2eee6 100%);
+  background: #fff;
 }
 
 .property-detail-page__section {
@@ -312,7 +310,7 @@
 .property-detail-page__section-label {
   margin: 0;
   color: var(--gold-dark);
-  font-size: 0.76rem;
+  font-size: 0.86rem;
   font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;

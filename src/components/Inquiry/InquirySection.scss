@@ -1,8 +1,6 @@
 .inquiry-section {
-  padding: 108px 5%;
-  background:
-    radial-gradient(circle at top left, rgba(200, 168, 75, 0.12), transparent 28%),
-    linear-gradient(180deg, #faf8f2 0%, var(--canvas) 100%);
+  padding: 84px 5%;
+  background: #f7f8fa;
 }
 
 .inquiry-section__inner {
@@ -13,7 +11,7 @@
 .inquiry-section__grid {
   display: grid;
   grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
-  gap: 48px;
+  gap: 36px;
   align-items: start;
 }
 
@@ -28,7 +26,7 @@
 .inquiry-panel__eyebrow {
   margin: 0 0 14px;
   color: var(--gold);
-  font-size: 11px;
+  font-size: 0.86rem;
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
@@ -38,13 +36,13 @@
   margin: 0;
   color: var(--text);
   font-family: 'Lora', serif;
-  font-size: clamp(2.25rem, 3.6vw, 3.35rem);
+  font-size: clamp(1.7rem, 2.9vw, 2.35rem);
   line-height: 1.06;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .inquiry-panel__copy {
-  margin: 20px 0 0;
+  margin: 16px 0 0;
   max-width: 520px;
   color: var(--muted);
   font-size: 1rem;
@@ -53,13 +51,13 @@
 
 .inquiry-panel__points {
   display: grid;
-  gap: 22px;
-  margin-top: 44px;
+  gap: 18px;
+  margin-top: 32px;
 }
 
 .inquiry-point {
   display: flex;
-  gap: 16px;
+  gap: 0;
   align-items: flex-start;
   padding: 0;
   border: 0;
@@ -72,19 +70,6 @@
 
 .inquiry-point:hover {
   transform: translateY(-1px);
-}
-
-.inquiry-point__icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 46px;
-  height: 46px;
-  flex: 0 0 46px;
-  border-radius: 999px;
-  color: var(--gold);
-  background: rgba(200, 168, 75, 0.14);
-  border: 1px solid rgba(200, 168, 75, 0.18);
 }
 
 .inquiry-point__body {
@@ -131,14 +116,6 @@
   overflow: hidden;
 }
 
-.inquiry-panel--form::before {
-  content: '';
-  position: absolute;
-  inset: 0 0 auto;
-  height: 1px;
-  background: rgba(200, 168, 75, 0.9);
-}
-
 .inquiry-panel__form-intro {
   margin-bottom: 28px;
 }
@@ -147,8 +124,9 @@
   margin: 0;
   color: var(--text);
   font-family: 'Lora', serif;
-  font-size: clamp(1.8rem, 2.6vw, 2.25rem);
-  line-height: 1.12;
+  font-size: clamp(1.7rem, 2.9vw, 2.35rem);
+  line-height: 1.06;
+  font-weight: 400;
 }
 
 .inquiry-form {
@@ -390,7 +368,7 @@
 
 @media (max-width: 720px) {
   .inquiry-section {
-    padding: 84px 24px;
+    padding: 68px 24px;
   }
 
   .inquiry-panel--form {
@@ -410,12 +388,6 @@
 
   .inquiry-panel--form {
     padding: 22px 18px;
-  }
-
-  .inquiry-point__icon {
-    width: 42px;
-    height: 42px;
-    flex-basis: 42px;
   }
 
   .inquiry-phone {

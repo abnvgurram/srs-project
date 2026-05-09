@@ -1,6 +1,6 @@
 .blog-section {
-  padding: 100px 5%;
-  background: #f0ede5;
+  padding: 80px 5%;
+  background: #f7f8fa;
 }
 
 .blog-section__inner {
@@ -9,7 +9,7 @@
 }
 
 .blog-section__header {
-  margin: 0 auto 64px;
+  margin: 0 auto 44px;
   max-width: 760px;
   text-align: center;
 }
@@ -17,7 +17,7 @@
 .blog-section__eyebrow {
   margin: 0 0 16px;
   color: var(--gold);
-  font-size: 11px;
+  font-size: 0.86rem;
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
@@ -27,9 +27,9 @@
   margin: 0;
   color: var(--text);
   font-family: 'Lora', serif;
-  font-size: clamp(2.2rem, 4vw, 3.35rem);
+  font-size: clamp(1.7rem, 3vw, 2.45rem);
   line-height: 1.08;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .blog-section__copy {
@@ -174,7 +174,7 @@
 
 @media (max-width: 720px) {
   .blog-section {
-    padding: 84px 24px;
+    padding: 68px 24px;
   }
 
   .blog-featured-card__body {

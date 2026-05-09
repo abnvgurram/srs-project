@@ -1,6 +1,6 @@
 .properties-section {
-  padding: 110px 0;
-  background: #f7f4ee;
+  padding: 88px 0;
+  background: #fff;
 }
 
 .properties-section__inner {
@@ -19,7 +19,7 @@
 .properties-section__eyebrow {
   margin: 0;
   color: var(--gold);
-  font-size: 11px;
+  font-size: 0.86rem;
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -29,8 +29,8 @@
   margin: 0;
   color: var(--navy);
   font-family: 'Lora', serif;
-  font-size: clamp(2.2rem, 3.6vw, 3.4rem);
-  font-weight: 500;
+  font-size: clamp(1.7rem, 2.8vw, 2.35rem);
+  font-weight: 400;
 }
 
 .properties-section__copy {
@@ -44,7 +44,7 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
-  margin-top: 34px;
+  margin-top: 24px;
 }
 
 .properties-filter {
@@ -77,7 +77,7 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 22px;
-  margin-top: 38px;
+  margin-top: 28px;
 }
 
 .properties-section__status {
@@ -95,7 +95,7 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 14px;
-  margin-top: 30px;
+  margin-top: 24px;
 }
 
 .properties-section__button {
@@ -127,7 +127,7 @@
 
 @media (max-width: 720px) {
   .properties-section {
-    padding: 90px 0;
+    padding: 72px 0;
   }
 
   .properties-section__inner {

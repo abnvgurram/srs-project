@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { ChevronDown, Compass, Mail, MapPin, Phone } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 import './InquirySection.scss'
 
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mjgpqowr'
@@ -8,28 +8,24 @@ const serviceOptions = ['Buy', 'Sell', 'Rent']
 const contactPoints = [
   {
     title: 'Phone',
-    icon: Phone,
     href: 'tel:8044266495',
     label: '804-426-6495',
     detail: 'Available for client inquiries',
   },
   {
     title: 'Office',
-    icon: MapPin,
     href: 'https://www.google.com/maps/search/?api=1&query=11549+Nuckold+Rd%2C+Ste+B%2C+Glenn+Allen%2C+VA+23059',
     label: '11549 Nuckold Rd, Ste B, Glenn Allen, VA 23059',
     detail: 'Open by appointment in Glen Allen',
   },
   {
     title: 'Email',
-    icon: Mail,
     href: 'mailto:info@sirisrealtygroup.com',
     label: 'info@sirisrealtygroup.com',
     detail: 'Confidential inquiries welcome',
   },
   {
     title: 'Service Areas',
-    icon: Compass,
     label: 'Glen Allen, Richmond, Henrico',
     detail: 'And nearby Central Virginia markets',
   },
@@ -143,7 +139,6 @@ function InquirySection() {
 
             <div className="inquiry-panel__points">
               {contactPoints.map((point) => {
-                const Icon = point.icon
                 const PointTag = point.href ? 'a' : 'div'
                 const pointProps = point.href
                   ? {
@@ -159,10 +154,6 @@ function InquirySection() {
                     className="inquiry-point"
                     {...pointProps}
                   >
-                    <span className="inquiry-point__icon" aria-hidden="true">
-                      <Icon size={18} />
-                    </span>
-
                     <span className="inquiry-point__body">
                       <span className="inquiry-point__title">{point.title}</span>
                       <span className="inquiry-point__link">{point.label}</span>

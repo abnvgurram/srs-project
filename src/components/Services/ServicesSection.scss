@@ -1,6 +1,6 @@
 .services-section {
-  padding: 100px 5%;
-  background: var(--canvas);
+  padding: 80px 5%;
+  background: #f7f8fa;
 }
 
 .services-section__inner {
@@ -10,14 +10,14 @@
 
 .services-section__header {
   max-width: 760px;
-  margin: 0 auto 64px;
+  margin: 0 auto 44px;
   text-align: center;
 }
 
 .services-section__eyebrow {
   margin: 0 0 16px;
   color: var(--gold);
-  font-size: 11px;
+  font-size: 0.86rem;
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
@@ -27,9 +27,9 @@
   margin: 0;
   color: var(--text);
   font-family: 'Lora', serif;
-  font-size: clamp(2.2rem, 4vw, 3.35rem);
+  font-size: clamp(1.7rem, 3vw, 2.45rem);
   line-height: 1.08;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .services-section__copy {
@@ -47,44 +47,23 @@
 
 .service-card-react {
   position: relative;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr auto;
+  justify-items: start;
   overflow: hidden;
-  padding: 40px 32px;
+  min-height: 330px;
+  padding: 38px 32px 34px;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 16px;
   background: #fff;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease,
-    border-color 0.3s ease;
-}
-
-.service-card-react::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--gold), var(--gold-light));
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s ease;
-}
-
-.service-card-react:hover::before {
-  transform: scaleX(1);
-}
-
-.service-card-react:hover {
-  transform: translateY(-4px);
-  border-color: rgba(201, 168, 76, 0.3);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 24px rgba(5, 13, 31, 0.04);
 }
 
 .service-card-react__icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  justify-self: start;
   margin-bottom: 20px;
   color: var(--gold);
 }
@@ -108,7 +87,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin: 0 0 28px;
+  margin: 0 0 24px;
   padding: 0;
   list-style: none;
 }
@@ -130,6 +109,7 @@
 .service-card-react__link {
   display: inline-flex;
   align-items: center;
+  align-self: end;
   gap: 6px;
   color: var(--navy);
   font-size: 13px;
@@ -151,10 +131,14 @@
 
 @media (max-width: 768px) {
   .services-section {
-    padding: 84px 24px;
+    padding: 68px 24px;
   }
 
   .services-grid-react {
     grid-template-columns: 1fr;
+  }
+
+  .service-card-react {
+    min-height: 300px;
   }
 }

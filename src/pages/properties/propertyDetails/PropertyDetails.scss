@@ -13,7 +13,7 @@
 }
 
 .property-detail-page__inner {
-  width: min(1240px, 100%);
+  width: min(var(--section-width), calc(100vw - 48px));
   margin: 0 auto;
 }
 
@@ -376,6 +376,10 @@
 
   .property-detail-page__section {
     padding: 34px 24px 52px;
+  }
+
+  .property-detail-page__inner {
+    width: min(var(--section-width), calc(100vw - 32px));
   }
 
   .property-detail-page__panel,

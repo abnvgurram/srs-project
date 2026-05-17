@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
-import { faHeadset } from '@fortawesome/free-solid-svg-icons'
+import { faCommentDots } from '@fortawesome/free-solid-svg-icons'
 import {
   ArrowLeft,
   Mail,
@@ -481,7 +481,7 @@ function SupportFab() {
         {isOpen ? (
           <X aria-hidden="true" size={22} strokeWidth={2.5} />
         ) : (
-          <FontAwesomeIcon icon={faHeadset} aria-hidden="true" />
+          <FontAwesomeIcon icon={faCommentDots} aria-hidden="true" />
         )}
       </button>
     </div>

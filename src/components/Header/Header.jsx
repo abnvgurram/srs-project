@@ -97,9 +97,7 @@ function Header({ currentPath = '/' }) {
             <span className="site-header__brand-copy">
               <span className="site-header__title">Siris Realty Group</span>
               <span className="site-header__subtitle">
-                <span>Dream big</span>
-                <span>.</span>
-                <span>Buy with courage</span>
+                <span>Workflow of Wealth</span>
               </span>
             </span>
           </a>

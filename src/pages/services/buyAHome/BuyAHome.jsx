@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import Footer from '../../../components/Footer/Footer.jsx'
 import Header from '../../../components/Header/Header.jsx'
+import InquirySection from '../../../components/Inquiry/InquirySection.jsx'
 import ListingCard from '../../../components/Properties/listingCard/ListingCard.jsx'
 import PropertyDetailsModal from '../../../components/Properties/propertyDetailsModal/PropertyDetailsModal.jsx'
 import { getPropertyPath } from '../../../data/properties.js'
@@ -74,7 +75,7 @@ function BuyAHome({ currentPath }) {
             </p>
 
             <div className="buy-home-page__actions">
-              <a className="buy-home-page__primary" href="/#inquiry">
+              <a className="buy-home-page__primary" href="#inquiry">
                 Talk About Your Search
               </a>
             </div>
@@ -188,6 +189,12 @@ function BuyAHome({ currentPath }) {
           </div>
         </section>
       </main>
+
+      <InquirySection
+        defaultService="Buy"
+        isServiceFixed
+        introCopy="Tell us what you are looking for, and we will help shape a focused buying plan around your budget, timing, and priorities."
+      />
 
       <PropertyDetailsModal
         key={selectedProperty?.id ?? 'buy-a-home-property-modal'}

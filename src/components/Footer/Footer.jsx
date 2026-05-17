@@ -51,8 +51,8 @@ const contactLinks = [
     icon: Mail,
   },
   {
-    label: '11549 Nuckold Rd, Ste B, Glenn Allen, VA 23059',
-    href: 'https://www.google.com/maps/search/?api=1&query=11549+Nuckold+Rd%2C+Ste+B%2C+Glenn+Allen%2C+VA+23059',
+    label: '11549 Nuckold Rd, Ste B, Glen Allen, VA 23059',
+    href: 'https://www.google.com/maps/search/?api=1&query=11549+Nuckold+Rd%2C+Ste+B%2C+Glen+Allen%2C+VA+23059',
     icon: MapPin,
     external: true,
   },

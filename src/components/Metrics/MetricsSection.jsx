@@ -9,7 +9,7 @@ const metrics = [
     decimals: 0,
   },
   {
-    label: 'Yrs Experience',
+    label: 'Years Experience',
     value: 8,
     suffix: '+',
     decimals: 0,
@@ -24,7 +24,7 @@ const metrics = [
   {
     label: 'Zillow Rating',
     value: 5,
-    suffix: '★',
+    suffix: '\u2605',
     decimals: 0,
   },
 ]
@@ -41,7 +41,7 @@ function formatMetricValue(metric, progress) {
 
 function MetricsSection() {
   const [progress, setProgress] = useState(0)
-  const [hasStarted, setHasStarted] = useState(false)
+  const [animationRun, setAnimationRun] = useState(0)
   const sectionRef = useRef(null)
 
   useEffect(() => {
@@ -51,8 +51,9 @@ function MetricsSection() {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return
-        setHasStarted(true)
-        observer.disconnect()
+
+        setProgress(0)
+        setAnimationRun((currentRun) => currentRun + 1)
       },
       {
         threshold: 0.35,
@@ -65,7 +66,7 @@ function MetricsSection() {
   }, [])
 
   useEffect(() => {
-    if (!hasStarted) return
+    if (!animationRun) return
 
     let frameId = null
     const duration = 1400
@@ -88,7 +89,7 @@ function MetricsSection() {
         window.cancelAnimationFrame(frameId)
       }
     }
-  }, [hasStarted])
+  }, [animationRun])
 
   return (
     <section className="metrics-section" ref={sectionRef} aria-label="Company metrics">

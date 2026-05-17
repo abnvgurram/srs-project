@@ -4,7 +4,7 @@
 }
 
 .services-section__inner {
-  max-width: 1200px;
+  width: min(var(--section-width), calc(100vw - 48px));
   margin: 0 auto;
 }
 
@@ -132,6 +132,10 @@
 @media (max-width: 768px) {
   .services-section {
     padding: 68px 24px;
+  }
+
+  .services-section__inner {
+    width: min(var(--section-width), calc(100vw - 32px));
   }
 
   .services-grid-react {

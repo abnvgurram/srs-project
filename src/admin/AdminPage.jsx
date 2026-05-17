@@ -545,9 +545,7 @@ function AdminPage() {
                   Siris Realty Group
                 </span>
                 <span className="admin-topbar__brand-subtitle">
-                  <span>Dream big</span>
-                  <span>.</span>
-                  <span>Buy with courage</span>
+                  Workflow of Wealth
                 </span>
               </span>
             </a>

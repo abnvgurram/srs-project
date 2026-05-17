@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import Footer from '../../../components/Footer/Footer.jsx'
 import Header from '../../../components/Header/Header.jsx'
+import InquirySection from '../../../components/Inquiry/InquirySection.jsx'
 import ListingCard from '../../../components/Properties/listingCard/ListingCard.jsx'
 import PropertyDetailsModal from '../../../components/Properties/propertyDetailsModal/PropertyDetailsModal.jsx'
 import { getPropertyPath } from '../../../data/properties.js'
@@ -78,7 +79,7 @@ function PropertyManagement({ currentPath }) {
             </p>
 
             <div className="property-management-page__actions">
-              <a className="property-management-page__primary" href="/#inquiry">
+              <a className="property-management-page__primary" href="#inquiry">
                 Ask About Property Management
               </a>
             </div>
@@ -190,6 +191,12 @@ function PropertyManagement({ currentPath }) {
           </div>
         </section>
       </main>
+
+      <InquirySection
+        defaultService="Property Management"
+        isServiceFixed
+        introCopy="Tell us about the property or support you need, and we will help clarify the right management next step."
+      />
 
       <PropertyDetailsModal
         key={selectedProperty?.id ?? 'property-management-property-modal'}

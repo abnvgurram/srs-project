@@ -4,7 +4,7 @@
 }
 
 .site-footer__inner {
-  width: min(1200px, calc(100vw - 48px));
+  width: min(var(--section-width), calc(100vw - 48px));
   margin: 0 auto;
 }
 
@@ -26,7 +26,7 @@
   height: 52px;
   flex: 0 0 52px;
   border-radius: 50%;
-  background-image: url('/logo.png');
+  background-image: url('/logo_updated.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -47,7 +47,7 @@
 
 .site-footer__brand-subtitle {
   margin-top: 4px;
-  color: var(--gold);
+  color: var(--brand-red);
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.3em;
@@ -192,7 +192,7 @@
 
 @media (max-width: 640px) {
   .site-footer__inner {
-    width: min(1200px, calc(100vw - 32px));
+    width: min(var(--section-width), calc(100vw - 32px));
   }
 
   .site-footer__brand-title {

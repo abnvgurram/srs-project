@@ -54,7 +54,7 @@ function Pagination({ currentPage, onPageChange, totalItems, totalPages }) {
               </button>
             ) : (
               <span className="admin-pagination__ellipsis" key={item}>
-                â€¦
+                ...
               </span>
             ),
           )}

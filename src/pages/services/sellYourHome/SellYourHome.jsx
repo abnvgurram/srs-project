@@ -1,5 +1,6 @@
 import Footer from '../../../components/Footer/Footer.jsx'
 import Header from '../../../components/Header/Header.jsx'
+import InquirySection from '../../../components/Inquiry/InquirySection.jsx'
 import useSiteSections from '../../../context/siteSections/useSiteSections.js'
 import ServiceFaqAccordion from '../common/ServiceFaqAccordion.jsx'
 import './SellYourHome.scss'
@@ -62,7 +63,7 @@ function SellYourHome({ currentPath }) {
             </p>
 
             <div className="sell-home-page__actions">
-              <a className="sell-home-page__primary" href="/#inquiry">
+              <a className="sell-home-page__primary" href="#inquiry">
                 Request a Seller Consultation
               </a>
             </div>
@@ -115,6 +116,12 @@ function SellYourHome({ currentPath }) {
           </div>
         </section>
       </main>
+
+      <InquirySection
+        defaultService="Sell"
+        isServiceFixed
+        introCopy="Tell us about your property and timeline, and we will help you plan pricing, preparation, and the next selling steps."
+      />
 
       {sectionVisibility.footer ? <Footer currentPath={currentPath} /> : null}
     </div>

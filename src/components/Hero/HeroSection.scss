@@ -81,9 +81,9 @@
   gap: 8px;
   margin-bottom: 28px;
   padding: 6px 16px;
-  border: 1px solid rgba(226, 201, 122, 0.72);
+  border: 0;
   border-radius: 999px;
-  background: rgba(200, 168, 75, 0.32);
+  background: var(--navy);
 }
 
 .hero-carousel-react__badge span:last-child {

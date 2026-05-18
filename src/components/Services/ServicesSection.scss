@@ -1,5 +1,5 @@
 .services-section {
-  padding: 80px 5%;
+  padding: 80px 0;
   background: #f7f8fa;
 }
 
@@ -16,9 +16,9 @@
 
 .services-section__eyebrow {
   margin: 0 0 16px;
-  color: var(--gold);
+  color: var(--gold-dark);
   font-size: 0.86rem;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.28em;
   text-transform: uppercase;
 }
@@ -41,7 +41,7 @@
 
 .services-grid-react {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(280px, 1fr));
   gap: 28px;
 }
 
@@ -101,7 +101,7 @@
 }
 
 .service-card-react__features li::before {
-  content: '✓';
+  content: '\2713';
   color: var(--gold);
   font-weight: 700;
 }
@@ -123,15 +123,29 @@
   color: var(--gold);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1180px) {
   .services-grid-react {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .service-card-react {
+    padding: 34px 28px 32px;
+  }
+}
+
+@media (max-width: 860px) {
+  .services-grid-react {
+    gap: 22px;
+  }
+
+  .service-card-react {
+    min-height: 300px;
   }
 }
 
 @media (max-width: 768px) {
   .services-section {
-    padding: 68px 24px;
+    padding: 68px 0;
   }
 
   .services-section__inner {
@@ -143,6 +157,17 @@
   }
 
   .service-card-react {
-    min-height: 300px;
+    min-height: auto;
+    padding: 30px 24px 28px;
+  }
+}
+
+@media (max-width: 420px) {
+  .services-section__inner {
+    width: min(var(--section-width), calc(100vw - 24px));
+  }
+
+  .service-card-react {
+    padding: 28px 22px 26px;
   }
 }

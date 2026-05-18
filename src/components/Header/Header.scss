@@ -34,19 +34,21 @@
 }
 
 .site-header__logo {
-  width: 59px;
-  height: 59px;
-  flex: 0 0 59px;
+  width: 79px;
+  height: 79px;
+  flex: 0 0 79px;
   border-radius: 50%;
-  background-image: url('/logo_updated.png');
+  background-image: url('/srg-logo.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
 }
 
 .site-header__brand-copy {
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
+  align-items: stretch;
+  width: fit-content;
 }
 
 .site-header__title {
@@ -58,13 +60,14 @@
 }
 
 .site-header__subtitle {
-  display: flex;
-  gap: 0;
+  display: block;
+  width: 100%;
   color: var(--brand-red);
-  font-size: 10px;
+  font-size: 16px;
   font-weight: 500;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
+  letter-spacing: 0.19em;
+  text-align: center;
+  text-transform: none;
 }
 
 .site-header__links {
@@ -168,7 +171,6 @@
 }
 
 .site-header__dropdown a:hover {
-  background: rgba(200, 168, 75, 0.1);
   color: var(--gold);
 }
 
@@ -341,9 +343,9 @@
   }
 
   .site-header__logo {
-    width: 50px;
-    height: 50px;
-    flex-basis: 50px;
+    width: 64px;
+    height: 64px;
+    flex-basis: 64px;
   }
 
   .site-header__title {
@@ -352,9 +354,8 @@
   }
 
   .site-header__subtitle {
-    gap: 6px;
-    font-size: 9px;
-    letter-spacing: 0.2em;
+    font-size: 14px;
+    letter-spacing: 0.12em;
   }
 
   .mobile-nav-panel {

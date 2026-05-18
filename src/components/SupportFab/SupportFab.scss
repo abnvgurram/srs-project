@@ -364,8 +364,8 @@
   padding: 0;
   border: 0;
   border-radius: 999px;
-  background: linear-gradient(135deg, var(--navy-mid), var(--navy));
-  color: var(--gold-light);
+  background: linear-gradient(135deg, #14734a, var(--brand-green));
+  color: #fff;
   cursor: pointer;
   box-shadow: 0 22px 40px rgba(7, 17, 36, 0.22);
   transition:
@@ -384,7 +384,7 @@
 }
 
 .support-fab.is-open .support-fab__toggle {
-  background: linear-gradient(135deg, var(--navy-soft), var(--navy));
+  background: linear-gradient(135deg, #14734a, var(--brand-green));
 }
 
 @keyframes supportFabPanelIn {

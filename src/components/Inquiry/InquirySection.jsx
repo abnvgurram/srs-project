@@ -8,8 +8,8 @@ const serviceOptions = ['Buy', 'Sell', 'Rent', 'Property Management']
 const contactPoints = [
   {
     title: 'Phone',
-    href: 'tel:8044266495',
-    label: '804-426-6495',
+    href: 'tel:+18046146454',
+    label: '+1 804-614-6454',
     detail: 'Available for client inquiries',
   },
   {

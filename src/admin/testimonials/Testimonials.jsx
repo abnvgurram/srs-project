@@ -17,7 +17,6 @@ import {
   getTestimonialSourceMeta,
   testimonialSourceOptions,
 } from '../../data/testimonials.js'
-import { hasSupabaseConfig, supabase } from '../../lib/supabase.js'
 import Pagination from '../common/pagination/Pagination.jsx'
 import './Testimonials.scss'
 
@@ -25,7 +24,6 @@ const manageFilters = [
   { label: 'All', value: 'all' },
   { label: 'Published', value: 'published' },
   { label: 'Unpublished', value: 'unpublished' },
-  ...testimonialSourceOptions,
 ]
 const MANAGE_REVIEWS_PAGE_SIZE = 4
 
@@ -127,20 +125,6 @@ function Testimonials() {
   const [managePage, setManagePage] = useState(1)
   const [confirmationState, setConfirmationState] = useState(null)
   const [isConfirmingAction, setIsConfirmingAction] = useState(false)
-  const [googleConfig, setGoogleConfig] = useState({
-    accountId: '',
-    locationId: '',
-    connectionStatus: 'disconnected',
-    connectedIdentity: '',
-    lastSyncedAt: '',
-    lastError: '',
-  })
-  const [googleMessage, setGoogleMessage] = useState('')
-  const [isGoogleBusy, setIsGoogleBusy] = useState(false)
-  const [zillowConfig, setZillowConfig] = useState({
-    apiKey: '',
-    profileId: '',
-  })
 
   const nextDisplayOrder =
     testimonials.reduce(
@@ -150,14 +134,14 @@ function Testimonials() {
     ) + 1
 
   const filteredTestimonials = useMemo(() => {
-    if (manageFilter === 'all') return testimonials
     if (manageFilter === 'published') {
       return testimonials.filter((testimonial) => testimonial.isPublished)
     }
     if (manageFilter === 'unpublished') {
       return testimonials.filter((testimonial) => !testimonial.isPublished)
     }
-    return testimonials.filter((testimonial) => testimonial.source === manageFilter)
+
+    return testimonials
   }, [manageFilter, testimonials])
   const totalManagePages = Math.max(
     1,
@@ -170,55 +154,6 @@ function Testimonials() {
       startIndex + MANAGE_REVIEWS_PAGE_SIZE,
     )
   }, [filteredTestimonials, managePage])
-
-  useEffect(() => {
-    if (!hasSupabaseConfig) return
-
-    async function loadGoogleIntegration() {
-      const { data } = await supabase
-        .from('review_integrations')
-        .select('*')
-        .eq('provider', 'google')
-        .maybeSingle()
-
-      if (data) {
-        setGoogleConfig((currentConfig) => ({
-          ...currentConfig,
-          accountId: data.account_id || '',
-          locationId: data.location_id || '',
-          connectionStatus: data.connection_status || 'disconnected',
-          connectedIdentity: data.connected_identity || '',
-          lastSyncedAt: data.last_synced_at || '',
-          lastError: data.last_error || '',
-        }))
-      }
-    }
-
-    loadGoogleIntegration()
-
-    const params = new URLSearchParams(window.location.search)
-    const googleStatus = params.get('google')
-
-    if (googleStatus === 'connected') {
-      setGoogleMessage('Google connected successfully. You can now fetch reviews.')
-      setActiveTab('google')
-      window.history.replaceState({}, '', '/admin')
-    } else if (googleStatus === 'env-missing') {
-      setGoogleMessage(
-        'Google connection is not configured on the server. Add the Netlify environment variables first.',
-      )
-      setActiveTab('google')
-      window.history.replaceState({}, '', '/admin')
-    } else if (googleStatus === 'cancelled') {
-      setGoogleMessage('Google connection was cancelled.')
-      setActiveTab('google')
-      window.history.replaceState({}, '', '/admin')
-    } else if (googleStatus === 'state-mismatch' || googleStatus === 'error') {
-      setGoogleMessage('Google authentication could not be completed.')
-      setActiveTab('google')
-      window.history.replaceState({}, '', '/admin')
-    }
-  }, [])
 
   useEffect(() => {
     if (!formMessage) return undefined
@@ -252,14 +187,6 @@ function Testimonials() {
 
   function openManageReviews() {
     setActiveTab('manage')
-  }
-
-  function openGoogleReviews() {
-    setActiveTab('google')
-  }
-
-  function openZillowReviews() {
-    setActiveTab('zillow')
   }
 
   function handleSelectTestimonial(testimonialId) {
@@ -424,92 +351,6 @@ function Testimonials() {
     )
   }
 
-  async function saveGoogleSettings() {
-    if (!hasSupabaseConfig) {
-      setGoogleMessage(
-        'Supabase is not configured in the browser. Add the VITE Supabase variables first.',
-      )
-      return false
-    }
-
-    if (!googleConfig.accountId.trim() || !googleConfig.locationId.trim()) {
-      setGoogleMessage('Enter both Google Account ID and Location ID first.')
-      return false
-    }
-
-    setIsGoogleBusy(true)
-    setGoogleMessage('')
-
-    const { error } = await supabase.from('review_integrations').upsert(
-      {
-        provider: 'google',
-        account_id: googleConfig.accountId.trim(),
-        location_id: googleConfig.locationId.trim(),
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: 'provider' },
-    )
-
-    setIsGoogleBusy(false)
-
-    if (error) {
-      setGoogleMessage('Google settings could not be saved to Supabase.')
-      return false
-    }
-
-    setGoogleMessage('Google settings saved.')
-    return true
-  }
-
-  async function handleConnectGoogle() {
-    const didSave = await saveGoogleSettings()
-
-    if (!didSave) return
-
-    window.location.assign('/.netlify/functions/google-reviews-connect')
-  }
-
-  async function handleFetchGoogleReviews() {
-    const didSave = await saveGoogleSettings()
-
-    if (!didSave) return
-
-    setIsGoogleBusy(true)
-
-    try {
-      const response = await fetch('/.netlify/functions/google-reviews-sync', {
-        method: 'POST',
-      })
-      const payload = await response.json()
-
-      setGoogleMessage(payload.message || 'Google reviews sync finished.')
-
-      const { data } = await supabase
-        .from('review_integrations')
-        .select('*')
-        .eq('provider', 'google')
-        .maybeSingle()
-
-      if (data) {
-        setGoogleConfig((currentConfig) => ({
-          ...currentConfig,
-          accountId: data.account_id || currentConfig.accountId,
-          locationId: data.location_id || currentConfig.locationId,
-          connectionStatus: data.connection_status || currentConfig.connectionStatus,
-          connectedIdentity: data.connected_identity || currentConfig.connectedIdentity,
-          lastSyncedAt: data.last_synced_at || '',
-          lastError: data.last_error || '',
-        }))
-      }
-    } catch {
-      setGoogleMessage(
-        'Google reviews could not be fetched from this environment. Use the deployed site after Netlify variables are set.',
-      )
-    } finally {
-      setIsGoogleBusy(false)
-    }
-  }
-
   return (
     <SectionVisibilityGate sectionKey="testimonials">
       <div className="testimonials-admin-section">
@@ -544,28 +385,6 @@ function Testimonials() {
             onClick={openManageReviews}
           >
             Manage Reviews
-          </button>
-          <button
-            className={`testimonials-admin-section__tab${
-              activeTab === 'google' ? ' is-active' : ''
-            }`}
-            type="button"
-            role="tab"
-            aria-selected={activeTab === 'google'}
-            onClick={openGoogleReviews}
-          >
-            Google Reviews API
-          </button>
-          <button
-            className={`testimonials-admin-section__tab${
-              activeTab === 'zillow' ? ' is-active' : ''
-            }`}
-            type="button"
-            role="tab"
-            aria-selected={activeTab === 'zillow'}
-            onClick={openZillowReviews}
-          >
-            Zillow Reviews API
           </button>
         </div>
 
@@ -830,190 +649,7 @@ function Testimonials() {
               </div>
             )}
           </section>
-        ) : activeTab === 'google' ? (
-          <section className="testimonials-admin-section__panel">
-            <div className="testimonials-admin-section__integration">
-              <div className="testimonials-admin-section__integration-copy">
-                <h3>Google Reviews connection</h3>
-                <p>
-                  Google reviews now use a server-side OAuth flow. Save your
-                  Business Profile account and location IDs here, connect Google,
-                  then fetch reviews directly into Supabase.
-                </p>
-              </div>
-
-              <div className="testimonials-admin-section__field">
-                <label htmlFor="google-account-id">Google Account ID</label>
-                <input
-                  id="google-account-id"
-                  type="text"
-                  value={googleConfig.accountId}
-                  placeholder="Google Business Profile account ID"
-                  onChange={(event) =>
-                    setGoogleConfig((currentConfig) => ({
-                      ...currentConfig,
-                      accountId: event.target.value,
-                    }))
-                  }
-                />
-              </div>
-
-              <div className="testimonials-admin-section__field">
-                <label htmlFor="google-location-id">
-                  Business Profile Location ID
-                </label>
-                <input
-                  id="google-location-id"
-                  type="text"
-                  value={googleConfig.locationId}
-                  placeholder="Business Profile Location ID"
-                  onChange={(event) =>
-                    setGoogleConfig((currentConfig) => ({
-                      ...currentConfig,
-                      locationId: event.target.value,
-                    }))
-                  }
-                />
-              </div>
-
-              <div className="testimonials-admin-section__integration-status">
-                <div className="testimonials-admin-section__integration-pill">
-                  Status: {googleConfig.connectionStatus}
-                </div>
-                {googleConfig.connectedIdentity ? (
-                  <div className="testimonials-admin-section__integration-meta">
-                    Connected as {googleConfig.connectedIdentity}
-                  </div>
-                ) : null}
-                {googleConfig.lastSyncedAt ? (
-                  <div className="testimonials-admin-section__integration-meta">
-                    Last sync:{' '}
-                    {new Date(googleConfig.lastSyncedAt).toLocaleString('en-US')}
-                  </div>
-                ) : null}
-                {googleConfig.lastError ? (
-                  <div className="testimonials-admin-section__integration-meta testimonials-admin-section__integration-meta--error">
-                    {googleConfig.lastError}
-                  </div>
-                ) : null}
-              </div>
-
-              {googleMessage ? (
-                <div className="testimonials-admin-section__message">
-                  {googleMessage}
-                </div>
-              ) : null}
-
-              <div className="testimonials-admin-section__integration-actions">
-                <button
-                  className="testimonials-admin-section__delete-button"
-                  type="button"
-                  disabled={isGoogleBusy}
-                  onClick={saveGoogleSettings}
-                >
-                  <span>Save Settings</span>
-                </button>
-
-                <button
-                  className="testimonials-admin-section__save-button"
-                  type="button"
-                  disabled={isGoogleBusy}
-                  onClick={handleConnectGoogle}
-                >
-                  <span>Connect Google</span>
-                </button>
-
-                <button
-                  className="testimonials-admin-section__save-button testimonials-admin-section__save-button--secondary"
-                  type="button"
-                  disabled={isGoogleBusy}
-                  onClick={handleFetchGoogleReviews}
-                >
-                  <span>Fetch Reviews</span>
-                </button>
-              </div>
-
-              <div className="testimonials-admin-section__integration-note">
-                This flow writes fetched Google reviews directly into your
-                existing testimonials table in Supabase.
-              </div>
-
-              <div className="testimonials-admin-section__integration-steps">
-                <h4>Setup checklist</h4>
-                <ol>
-                  <li>
-                    In Netlify environment variables, add `SUPABASE_URL`,
-                    `SUPABASE_SERVICE_ROLE_KEY`, `GOOGLE_CLIENT_ID`, and
-                    `GOOGLE_CLIENT_SECRET`.
-                  </li>
-                  <li>
-                    In Google Cloud Console, add the OAuth redirect URI:
-                    `https://your-domain/.netlify/functions/google-reviews-callback`
-                  </li>
-                  <li>
-                    Redeploy the Netlify site after adding those environment
-                    variables.
-                  </li>
-                  <li>
-                    Use the deployed site for `Connect Google` and `Fetch Reviews`.
-                    This flow does not complete correctly from plain Vite local dev.
-                  </li>
-                </ol>
-              </div>
-            </div>
-          </section>
-        ) : (
-          <section className="testimonials-admin-section__panel">
-            <div className="testimonials-admin-section__integration">
-              <div className="testimonials-admin-section__integration-copy">
-                <h3>Zillow Reviews connection</h3>
-                <p>
-                  Zillow review sync depends on approved Zillow or Bridge access.
-                  This tab prepares the admin inputs, but secure sync still needs
-                  backend implementation.
-                </p>
-              </div>
-
-              <div className="testimonials-admin-section__field">
-                <label htmlFor="zillow-api-key">Bridge / Zillow API Key</label>
-                <input
-                  id="zillow-api-key"
-                  type="text"
-                  value={zillowConfig.apiKey}
-                  placeholder="Bridge or Zillow API key"
-                  onChange={(event) =>
-                    setZillowConfig((currentConfig) => ({
-                      ...currentConfig,
-                      apiKey: event.target.value,
-                    }))
-                  }
-                />
-              </div>
-
-              <div className="testimonials-admin-section__field">
-                <label htmlFor="zillow-profile-id">Agent / Profile ID</label>
-                <input
-                  id="zillow-profile-id"
-                  type="text"
-                  value={zillowConfig.profileId}
-                  placeholder="Agent or profile identifier"
-                  onChange={(event) =>
-                    setZillowConfig((currentConfig) => ({
-                      ...currentConfig,
-                      profileId: event.target.value,
-                    }))
-                  }
-                />
-              </div>
-
-              <div className="testimonials-admin-section__integration-note">
-                Zillow syncing is not wired yet. The next step is a secure server
-                integration that fetches approved review data and writes it into
-                your testimonials table.
-              </div>
-            </div>
-          </section>
-        )}
+        ) : null}
       </div>
 
       <ConfirmationModal

@@ -28,9 +28,9 @@ function CtaSection() {
         </p>
 
         <div className="react-cta__actions">
-          <a className="react-cta__button react-cta__button--primary" href="tel:8044266495">
+          <a className="react-cta__button react-cta__button--primary" href="tel:+18046146454">
             <Phone size={16} />
-            <span>804-426-6495</span>
+            <span>+1 804-614-6454</span>
           </a>
 
           <a

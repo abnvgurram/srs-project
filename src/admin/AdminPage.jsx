@@ -35,7 +35,11 @@ import { hasSupabaseConfig, supabase } from '../lib/supabase.js'
 const WEBSITE_TITLE =
   'Siris Realty Group - Real Estate With Common Sense | Glen Allen, Richmond, Henrico VA'
 const ADMIN_USERS_TABLE = 'admin_users'
-const enabledSidebarSectionIds = new Set(['dashboard', 'properties'])
+const enabledSidebarSectionIds = new Set([
+  'dashboard',
+  'properties',
+  'testimonials',
+])
 
 const adminSections = [
   {
@@ -49,6 +53,12 @@ const adminSections = [
     label: 'Properties',
     icon: Building2,
     Component: Properties,
+  },
+  {
+    id: 'testimonials',
+    label: 'Testimonials',
+    icon: MessageSquareQuote,
+    Component: Testimonials,
   },
   {
     id: 'header',
@@ -79,12 +89,6 @@ const adminSections = [
     label: 'Why Us',
     icon: Sparkles,
     Component: Why,
-  },
-  {
-    id: 'testimonials',
-    label: 'Testimonials',
-    icon: MessageSquareQuote,
-    Component: Testimonials,
   },
   {
     id: 'blog',
@@ -545,7 +549,7 @@ function AdminPage() {
                   Siris Realty Group
                 </span>
                 <span className="admin-topbar__brand-subtitle">
-                  Workflow of Wealth
+                  Real Estate with Common Sense
                 </span>
               </span>
             </a>

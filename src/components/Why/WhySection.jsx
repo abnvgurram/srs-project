@@ -33,23 +33,23 @@ const features = [
 
 const stats = [
   {
-    value: '128+',
-    label: 'Successful Closings',
+    value: '18',
+    label: 'Sales in Last 12 Months',
     icon: Trophy,
   },
   {
-    value: '$1.3M',
-    label: 'Top Sale Value',
+    value: '209',
+    label: 'Total Sales',
     icon: BadgeDollarSign,
   },
   {
-    value: '5.0',
-    label: 'Average Zillow Rating',
+    value: '$330K - $1.5M',
+    label: 'Price Range',
     icon: Trophy,
   },
   {
-    value: '2017',
-    label: 'Licensed Since',
+    value: '$619K',
+    label: 'Average Price',
     icon: CalendarDays,
   },
 ]

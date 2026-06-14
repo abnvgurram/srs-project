@@ -175,35 +175,6 @@ for delete
 to authenticated
 using (public.is_admin_user(auth.uid()));
 
-drop policy if exists "Public read review integrations" on public.review_integrations;
-create policy "Admin read review integrations"
-on public.review_integrations
-for select
-to authenticated
-using (public.is_admin_user(auth.uid()));
-
-drop policy if exists "Temporary public insert review integrations" on public.review_integrations;
-create policy "Admin insert review integrations"
-on public.review_integrations
-for insert
-to authenticated
-with check (public.is_admin_user(auth.uid()));
-
-drop policy if exists "Temporary public update review integrations" on public.review_integrations;
-create policy "Admin update review integrations"
-on public.review_integrations
-for update
-to authenticated
-using (public.is_admin_user(auth.uid()))
-with check (public.is_admin_user(auth.uid()));
-
-drop policy if exists "Temporary public delete review integrations" on public.review_integrations;
-create policy "Admin delete review integrations"
-on public.review_integrations
-for delete
-to authenticated
-using (public.is_admin_user(auth.uid()));
-
 drop policy if exists "Temporary public upload property images" on storage.objects;
 create policy "Admin upload property images"
 on storage.objects

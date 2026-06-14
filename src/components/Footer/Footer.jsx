@@ -5,7 +5,7 @@ import {
   faLinkedinIn,
   faXTwitter,
 } from '@fortawesome/free-brands-svg-icons'
-import { Calendar, Globe, Mail, MapPin, Phone } from 'lucide-react'
+import { Calendar, Globe, Mail, Phone } from 'lucide-react'
 import useSiteSections from '../../context/siteSections/useSiteSections.js'
 import { serviceChildPages } from '../../data/servicePages.js'
 import { resolveSiteHref } from '../../utils/siteNavigation.js'
@@ -41,20 +41,14 @@ const resourceLinks = [
 
 const contactLinks = [
   {
-    label: '804-426-6495',
-    href: 'tel:8044266495',
+    label: '+1 804-614-6454',
+    href: 'tel:+18046146454',
     icon: Phone,
   },
   {
     label: 'info@sirisrealtygroup.com',
     href: 'mailto:info@sirisrealtygroup.com',
     icon: Mail,
-  },
-  {
-    label: '11549 Nuckold Rd, Ste B, Glen Allen, VA 23059',
-    href: 'https://www.google.com/maps/search/?api=1&query=11549+Nuckold+Rd%2C+Ste+B%2C+Glen+Allen%2C+VA+23059',
-    icon: MapPin,
-    external: true,
   },
   {
     label: 'sirisrealtygroup.com',
@@ -111,7 +105,7 @@ function Footer({ currentPath = '/' }) {
               <span className="site-footer__brand-copy">
                 <span className="site-footer__brand-title">Siris Realty Group</span>
                 <span className="site-footer__brand-subtitle">
-                  Workflow of Wealth
+                  Real Estate with Common Sense
                 </span>
               </span>
             </a>

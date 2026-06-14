@@ -14,9 +14,9 @@ import {
 } from 'lucide-react'
 import './SupportFab.scss'
 
-const SUPPORT_PHONE_NUMBER = '804-426-6495'
-const SUPPORT_PHONE_HREF = 'tel:8044266495'
-const SUPPORT_WHATSAPP_URL = 'https://wa.me/18044266495'
+const SUPPORT_PHONE_NUMBER = '+1 804-614-6454'
+const SUPPORT_PHONE_HREF = 'tel:+18046146454'
+const SUPPORT_WHATSAPP_URL = 'https://wa.me/18046146454'
 const SUPPORT_EMAIL = 'info@sirisrealtygroup.com'
 const SUPPORT_EMAIL_HREF = `mailto:${SUPPORT_EMAIL}`
 

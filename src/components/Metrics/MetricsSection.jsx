@@ -3,33 +3,33 @@ import './MetricsSection.scss'
 
 const metrics = [
   {
-    label: 'Closed Sales',
-    value: 128,
-    suffix: '+',
+    label: 'Sales in Last 12 Months',
+    value: 18,
     decimals: 0,
   },
   {
-    label: 'Years Experience',
-    value: 8,
-    suffix: '+',
+    label: 'Total Sales',
+    value: 209,
     decimals: 0,
   },
   {
-    label: 'Top Sale Value',
-    value: 1.3,
+    label: 'Price Range',
+    displayValue: '$330K - $1.5M',
+  },
+  {
+    label: 'Average Price',
+    value: 619,
     prefix: '$',
-    suffix: 'M',
-    decimals: 1,
-  },
-  {
-    label: 'Zillow Rating',
-    value: 5,
-    suffix: '\u2605',
+    suffix: 'K',
     decimals: 0,
   },
 ]
 
 function formatMetricValue(metric, progress) {
+  if (metric.displayValue) {
+    return metric.displayValue
+  }
+
   const value = metric.value * progress
 
   if (metric.decimals > 0) {
@@ -98,7 +98,7 @@ function MetricsSection() {
           {metrics.map((metric) => (
             <article className="metric-card" key={metric.label}>
               <div className="metric-card__value">
-                {metric.prefix ? (
+                {metric.prefix && !metric.displayValue ? (
                   <span className="metric-card__value-part metric-card__value-part--prefix">
                     {metric.prefix}
                   </span>
@@ -106,7 +106,7 @@ function MetricsSection() {
                 <span className="metric-card__value-part">
                   {formatMetricValue(metric, progress)}
                 </span>
-                {metric.suffix ? (
+                {metric.suffix && !metric.displayValue ? (
                   <span className="metric-card__value-part metric-card__value-part--suffix">
                     {metric.suffix}
                   </span>

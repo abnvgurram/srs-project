@@ -37,7 +37,7 @@
   display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
-  width: fit-content;
+  width: max-content;
 }
 
 .site-footer__brand-title {
@@ -50,12 +50,14 @@
 
 .site-footer__brand-subtitle {
   display: block;
+  width: 100%;
   color: var(--brand-red);
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.055em;
+  letter-spacing: 0.08em;
   line-height: 1.1;
-  text-align: left;
+  text-align: justify;
+  text-align-last: justify;
   text-transform: uppercase;
 }
 
@@ -211,8 +213,8 @@
   }
 
   .site-footer__brand-subtitle {
-    font-size: 12px;
-    letter-spacing: 0.055em;
+    font-size: 9px;
+    letter-spacing: 0.08em;
   }
 
   .site-footer__legal {

@@ -1,45 +1,70 @@
 import { useEffect, useRef, useState } from 'react'
+import useMetrics from '../../context/metrics/useMetrics.js'
 import './MetricsSection.scss'
 
-const metrics = [
-  {
-    label: 'Sales in Last 12 Months',
-    value: 18,
-    decimals: 0,
-  },
-  {
-    label: 'Total Sales',
-    value: 209,
-    decimals: 0,
-  },
-  {
-    label: 'Price Range',
-    displayValue: '$330K - $1.5M',
-  },
-  {
-    label: 'Average Price',
-    value: 619,
-    prefix: '$',
-    suffix: 'K',
-    decimals: 0,
-  },
-]
+function parseAnimatedMetricValue(value) {
+  const match = String(value ?? '')
+    .trim()
+    .match(/^(\$)?\s*(\d+(?:\.\d+)?)\s*([KMB])?$/i)
+
+  if (!match) return null
+
+  const [, prefix = '', numericValue, suffix = ''] = match
+
+  return {
+    decimals: numericValue.includes('.') ? 1 : 0,
+    prefix,
+    suffix: suffix.toUpperCase(),
+    value: Number(numericValue),
+  }
+}
 
 function formatMetricValue(metric, progress) {
-  if (metric.displayValue) {
-    return metric.displayValue
-  }
+  const animatedValue = parseAnimatedMetricValue(metric.value)
 
-  const value = metric.value * progress
+  if (!animatedValue) return metric.value
 
-  if (metric.decimals > 0) {
-    return value.toFixed(metric.decimals)
+  const value = animatedValue.value * progress
+
+  if (animatedValue.decimals > 0) {
+    return value.toFixed(animatedValue.decimals)
   }
 
   return String(Math.round(value))
 }
 
+function MetricValue({ metric, progress }) {
+  const animatedValue = parseAnimatedMetricValue(metric.value)
+
+  if (!animatedValue) {
+    return (
+      <span className="metric-card__value-part">
+        {formatMetricValue(metric, progress)}
+      </span>
+    )
+  }
+
+  return (
+    <>
+      {animatedValue.prefix ? (
+        <span className="metric-card__value-part metric-card__value-part--prefix">
+          {animatedValue.prefix}
+        </span>
+      ) : null}
+      <span className="metric-card__value-part">
+        {formatMetricValue(metric, progress)}
+      </span>
+      {animatedValue.suffix ? (
+        <span className="metric-card__value-part metric-card__value-part--suffix">
+          {animatedValue.suffix}
+        </span>
+      ) : null}
+    </>
+  )
+}
+
 function MetricsSection() {
+  const { metrics } = useMetrics()
   const [progress, setProgress] = useState(0)
   const [animationRun, setAnimationRun] = useState(0)
   const sectionRef = useRef(null)
@@ -96,21 +121,9 @@ function MetricsSection() {
       <div className="metrics-section__inner">
         <div className="metrics-section__grid">
           {metrics.map((metric) => (
-            <article className="metric-card" key={metric.label}>
+            <article className="metric-card" key={metric.id}>
               <div className="metric-card__value">
-                {metric.prefix && !metric.displayValue ? (
-                  <span className="metric-card__value-part metric-card__value-part--prefix">
-                    {metric.prefix}
-                  </span>
-                ) : null}
-                <span className="metric-card__value-part">
-                  {formatMetricValue(metric, progress)}
-                </span>
-                {metric.suffix && !metric.displayValue ? (
-                  <span className="metric-card__value-part metric-card__value-part--suffix">
-                    {metric.suffix}
-                  </span>
-                ) : null}
+                <MetricValue metric={metric} progress={progress} />
               </div>
               <div className="metric-card__label">{metric.label}</div>
             </article>

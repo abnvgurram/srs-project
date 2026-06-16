@@ -175,6 +175,21 @@ for delete
 to authenticated
 using (public.is_admin_user(auth.uid()));
 
+drop policy if exists "Temporary public insert site metrics" on public.site_metrics;
+create policy "Admin insert site metrics"
+on public.site_metrics
+for insert
+to authenticated
+with check (public.is_admin_user(auth.uid()));
+
+drop policy if exists "Temporary public update site metrics" on public.site_metrics;
+create policy "Admin update site metrics"
+on public.site_metrics
+for update
+to authenticated
+using (public.is_admin_user(auth.uid()))
+with check (public.is_admin_user(auth.uid()));
+
 drop policy if exists "Temporary public upload property images" on storage.objects;
 create policy "Admin upload property images"
 on storage.objects

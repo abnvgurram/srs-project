@@ -9,6 +9,7 @@ import Footer from './footer/Footer.jsx'
 import Header from './header/Header.jsx'
 import Hero from './hero/Hero.jsx'
 import Inquiry from './inquiry/Inquiry.jsx'
+import Metrics from './metrics/Metrics.jsx'
 import Properties from './properties/Properties.jsx'
 import Services from './services/Services.jsx'
 import Testimonials from './testimonials/Testimonials.jsx'
@@ -17,6 +18,7 @@ import {
   Bot,
   BriefcaseBusiness,
   Building2,
+  ChartColumn,
   ContactRound,
   Eye,
   EyeOff,
@@ -39,6 +41,7 @@ const enabledSidebarSectionIds = new Set([
   'dashboard',
   'properties',
   'testimonials',
+  'metrics',
 ])
 
 const adminSections = [
@@ -59,6 +62,12 @@ const adminSections = [
     label: 'Testimonials',
     icon: MessageSquareQuote,
     Component: Testimonials,
+  },
+  {
+    id: 'metrics',
+    label: 'Metrics',
+    icon: ChartColumn,
+    Component: Metrics,
   },
   {
     id: 'header',

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 import './InquirySection.scss'
 
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mjgpqowr'
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xykavjae'
 const serviceOptions = ['Buy', 'Sell', 'Rent', 'Property Management']
 
 const contactPoints = [

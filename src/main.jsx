@@ -1,5 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { MetricsProvider } from './context/metrics/MetricsContext.jsx'
 import { PropertyListingsProvider } from './context/propertyListings/PropertyListingsContext.jsx'
 import { SiteSectionsProvider } from './context/siteSections/SiteSectionsContext.jsx'
 import { TestimonialsProvider } from './context/testimonials/TestimonialsContext.jsx'
@@ -11,7 +12,9 @@ createRoot(document.getElementById('root')).render(
     <SiteSectionsProvider>
       <PropertyListingsProvider>
         <TestimonialsProvider>
-          <RootRouter />
+          <MetricsProvider>
+            <RootRouter />
+          </MetricsProvider>
         </TestimonialsProvider>
       </PropertyListingsProvider>
     </SiteSectionsProvider>

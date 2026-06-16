@@ -6,6 +6,7 @@ import {
   Target,
   Trophy,
 } from 'lucide-react'
+import useMetrics from '../../context/metrics/useMetrics.js'
 import './WhySection.scss'
 
 const features = [
@@ -31,30 +32,11 @@ const features = [
   },
 ]
 
-const stats = [
-  {
-    value: '18',
-    label: 'Sales in Last 12 Months',
-    icon: Trophy,
-  },
-  {
-    value: '209',
-    label: 'Total Sales',
-    icon: BadgeDollarSign,
-  },
-  {
-    value: '$330K - $1.5M',
-    label: 'Price Range',
-    icon: Trophy,
-  },
-  {
-    value: '$619K',
-    label: 'Average Price',
-    icon: CalendarDays,
-  },
-]
+const statIcons = [Trophy, BadgeDollarSign, Trophy, CalendarDays]
 
 function WhySection() {
+  const { metrics } = useMetrics()
+
   return (
     <section className="why-section" id="why">
       <div className="why-section__circle why-section__circle--large" aria-hidden="true"></div>
@@ -92,18 +74,18 @@ function WhySection() {
           </div>
 
           <div className="why-section__right">
-            {stats.map((stat) => {
-              const Icon = stat.icon
+            {metrics.map((metric, index) => {
+              const Icon = statIcons[index] ?? Trophy
 
               return (
-                <article className="why-stat-react" key={stat.label}>
+                <article className="why-stat-react" key={metric.id}>
                   <span className="why-stat-react__icon" aria-hidden="true">
                     <Icon size={28} />
                   </span>
 
                   <div>
-                    <p className="why-stat-react__value">{stat.value}</p>
-                    <p className="why-stat-react__label">{stat.label}</p>
+                    <p className="why-stat-react__value">{metric.value}</p>
+                    <p className="why-stat-react__label">{metric.label}</p>
                   </div>
                 </article>
               )

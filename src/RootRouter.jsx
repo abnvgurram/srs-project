@@ -10,6 +10,7 @@ import BuyAHome from './pages/services/buyAHome/BuyAHome.jsx'
 import PropertyManagement from './pages/services/propertyManagement/PropertyManagement.jsx'
 import SellYourHome from './pages/services/sellYourHome/SellYourHome.jsx'
 import Services from './pages/services/services/Services.jsx'
+import { isHomeSectionPath } from './utils/siteNavigation.js'
 
 const ADMIN_PATH = '/admin'
 const PRICING_PATH = '/pricing'
@@ -19,6 +20,7 @@ function normalizePath(pathname) {
 
   if (cleanPath === ADMIN_PATH) return ADMIN_PATH
   if (cleanPath === PRICING_PATH) return PRICING_PATH
+  if (isHomeSectionPath(cleanPath)) return cleanPath
   if (isPropertyPath(cleanPath)) return cleanPath
   if (getServicePageByPath(cleanPath)) return cleanPath
   return '/'

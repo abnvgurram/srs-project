@@ -4,7 +4,7 @@ export const siteSections = [
   { key: 'hero', label: 'Hero' },
   { key: 'agent', label: 'Agent Section' },
   { key: 'services', label: 'Services' },
-  { key: 'why', label: 'Why Us' },
+  { key: 'about-us', label: 'About Us' },
   { key: 'testimonials', label: 'Testimonials' },
   { key: 'blog', label: 'Blog / Resources' },
   { key: 'cta', label: 'CTA' },
@@ -28,9 +28,15 @@ export function normalizeSectionVisibility(input) {
   }
 
   return siteSections.reduce((visibility, section) => {
-    visibility[section.key] =
+    const legacyKey = section.key === 'about-us' ? 'why' : section.key
+    const inputValue =
       typeof input[section.key] === 'boolean'
         ? input[section.key]
+        : input[legacyKey]
+
+    visibility[section.key] =
+      typeof inputValue === 'boolean'
+        ? inputValue
         : defaultSectionVisibility[section.key]
 
     return visibility

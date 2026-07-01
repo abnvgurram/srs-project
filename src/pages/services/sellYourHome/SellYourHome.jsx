@@ -63,7 +63,7 @@ function SellYourHome({ currentPath }) {
             </p>
 
             <div className="sell-home-page__actions">
-              <a className="sell-home-page__primary" href="#inquiry">
+              <a className="sell-home-page__primary" href="/contact">
                 Request a Seller Consultation
               </a>
             </div>

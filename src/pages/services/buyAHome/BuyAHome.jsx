@@ -75,7 +75,7 @@ function BuyAHome({ currentPath }) {
             </p>
 
             <div className="buy-home-page__actions">
-              <a className="buy-home-page__primary" href="#inquiry">
+              <a className="buy-home-page__primary" href="/contact">
                 Talk About Your Search
               </a>
             </div>

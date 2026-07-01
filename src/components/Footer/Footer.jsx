@@ -17,19 +17,19 @@ const serviceLinks = [
     href: page.path,
     sectionKey: 'services',
   })),
-  { label: 'Relocation', href: '#services', sectionKey: 'services' },
-  { label: 'Foreclosures', href: '#services', sectionKey: 'services' },
-  { label: 'Landlord Consulting', href: '#services', sectionKey: 'services' },
+  { label: 'Relocation', href: '/services', sectionKey: 'services' },
+  { label: 'Foreclosures', href: '/services', sectionKey: 'services' },
+  { label: 'Landlord Consulting', href: '/services', sectionKey: 'services' },
 ]
 
 const resourceLinks = [
-  { label: 'Market Updates', href: '#blog', sectionKey: 'blog' },
-  { label: "Buyer's Guide", href: '#blog', sectionKey: 'blog' },
-  { label: "Seller's Guide", href: '#blog', sectionKey: 'blog' },
-  { label: 'Investor Tips', href: '#blog', sectionKey: 'blog' },
+  { label: 'Market Updates', href: '/blog', sectionKey: 'blog' },
+  { label: "Buyer's Guide", href: '/blog', sectionKey: 'blog' },
+  { label: "Seller's Guide", href: '/blog', sectionKey: 'blog' },
+  { label: 'Investor Tips', href: '/blog', sectionKey: 'blog' },
   {
     label: 'Reviews',
-    href: '#testimonials',
+    href: '/testimonials',
     sectionKey: 'testimonials',
   },
   {

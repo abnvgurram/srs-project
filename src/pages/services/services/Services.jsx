@@ -69,7 +69,7 @@ function Services({ currentPath }) {
             </p>
 
             <div className="services-page__actions">
-              <a className="services-page__primary" href="/#inquiry">
+              <a className="services-page__primary" href="/contact">
                 Start a Conversation
               </a>
               <a className="services-page__secondary" href="/">

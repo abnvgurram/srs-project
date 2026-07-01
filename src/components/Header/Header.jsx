@@ -6,7 +6,7 @@ import { resolveSiteHref } from '../../utils/siteNavigation.js'
 import './Header.scss'
 
 const navItems = [
-  { label: 'About Us', href: '#why', sectionKey: 'why' },
+  { label: 'About Us', href: '/about-us', sectionKey: 'about-us' },
   {
     label: 'Services',
     href: '/services',
@@ -17,8 +17,8 @@ const navItems = [
     })),
   },
   { label: 'Pricing', href: '/pricing' },
-  { label: 'Properties', href: '#properties', sectionKey: 'properties' },
-  { label: 'Blog', href: '#blog', sectionKey: 'blog' },
+  { label: 'Properties', href: '/properties', sectionKey: 'properties' },
+  { label: 'Blog', href: '/blog', sectionKey: 'blog' },
 ]
 
 const TABLET_NAV_BREAKPOINT = 1120
@@ -156,7 +156,7 @@ function Header({ currentPath = '/' }) {
 
             <a
               className="site-header__cta"
-              href={resolveSiteHref('#inquiry', currentPath)}
+              href={resolveSiteHref('/contact', currentPath)}
             >
               <span>Contact Us</span>
             </a>
@@ -228,7 +228,7 @@ function Header({ currentPath = '/' }) {
 
         <a
           className="mobile-nav-panel__cta"
-          href={resolveSiteHref('#inquiry', currentPath)}
+          href={resolveSiteHref('/contact', currentPath)}
           onClick={() => setMenuOpen(false)}
         >
           <span>Contact Us</span>

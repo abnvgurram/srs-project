@@ -1,7 +1,7 @@
 import './Header.scss'
 import SectionVisibilityGate from '../common/sectionVisibilityGate/SectionVisibilityGate.jsx'
 
-const navItems = ['Services', 'Properties', 'Why Us', 'Reviews', 'Blog', 'Contact Us']
+const navItems = ['Services', 'Properties', 'About Us', 'Reviews', 'Blog', 'Contact Us']
 
 function Header() {
   return (

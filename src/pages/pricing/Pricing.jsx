@@ -267,7 +267,7 @@ function Pricing({ currentPath }) {
             </p>
 
             <div className="pricing-page__actions">
-              <a className="pricing-page__primary" href="/#inquiry">
+              <a className="pricing-page__primary" href="/contact">
                 Ask About Pricing
               </a>
             </div>

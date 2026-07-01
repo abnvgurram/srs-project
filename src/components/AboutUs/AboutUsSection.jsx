@@ -7,7 +7,7 @@ import {
   Trophy,
 } from 'lucide-react'
 import useMetrics from '../../context/metrics/useMetrics.js'
-import './WhySection.scss'
+import './AboutUsSection.scss'
 
 const features = [
   {
@@ -34,36 +34,36 @@ const features = [
 
 const statIcons = [Trophy, BadgeDollarSign, Trophy, CalendarDays]
 
-function WhySection() {
+function AboutUsSection() {
   const { metrics } = useMetrics()
 
   return (
-    <section className="why-section" id="why">
-      <div className="why-section__circle why-section__circle--large" aria-hidden="true"></div>
-      <div className="why-section__circle why-section__circle--small" aria-hidden="true"></div>
+    <section className="about-us-section" id="about-us">
+      <div className="about-us-section__circle about-us-section__circle--large" aria-hidden="true"></div>
+      <div className="about-us-section__circle about-us-section__circle--small" aria-hidden="true"></div>
 
-      <div className="why-section__inner">
-        <div className="why-section__content">
-          <div className="why-section__left">
-            <p className="why-section__eyebrow">Why Choose Us</p>
-            <h2 className="why-section__title">A Realtor Who&apos;s Always In Your Corner</h2>
-            <p className="why-section__copy">
+      <div className="about-us-section__inner">
+        <div className="about-us-section__content">
+          <div className="about-us-section__left">
+            <p className="about-us-section__eyebrow">About Us</p>
+            <h2 className="about-us-section__title">A Realtor Who&apos;s Always In Your Corner</h2>
+            <p className="about-us-section__copy">
               Vijay Kanth is a full-time, dedicated realtor, not a part-time
               agent. That means you get expert attention, fast response times,
               and unwavering advocacy throughout your real estate journey.
             </p>
 
-            <div className="why-section__features">
+            <div className="about-us-section__features">
               {features.map((feature) => {
                 const Icon = feature.icon
 
                 return (
-                  <article className="why-feature-react" key={feature.title}>
-                    <span className="why-feature-react__icon" aria-hidden="true">
+                  <article className="about-us-feature-react" key={feature.title}>
+                    <span className="about-us-feature-react__icon" aria-hidden="true">
                       <Icon size={20} />
                     </span>
 
-                    <div className="why-feature-react__body">
+                    <div className="about-us-feature-react__body">
                       <h3>{feature.title}</h3>
                       <p>{feature.body}</p>
                     </div>
@@ -73,19 +73,19 @@ function WhySection() {
             </div>
           </div>
 
-          <div className="why-section__right">
+          <div className="about-us-section__right">
             {metrics.map((metric, index) => {
               const Icon = statIcons[index] ?? Trophy
 
               return (
-                <article className="why-stat-react" key={metric.id}>
-                  <span className="why-stat-react__icon" aria-hidden="true">
+                <article className="about-us-stat-react" key={metric.id}>
+                  <span className="about-us-stat-react__icon" aria-hidden="true">
                     <Icon size={28} />
                   </span>
 
                   <div>
-                    <p className="why-stat-react__value">{metric.value}</p>
-                    <p className="why-stat-react__label">{metric.label}</p>
+                    <p className="about-us-stat-react__value">{metric.value}</p>
+                    <p className="about-us-stat-react__label">{metric.label}</p>
                   </div>
                 </article>
               )
@@ -97,4 +97,4 @@ function WhySection() {
   )
 }
 
-export default WhySection
+export default AboutUsSection

@@ -79,7 +79,7 @@ function PropertyManagement({ currentPath }) {
             </p>
 
             <div className="property-management-page__actions">
-              <a className="property-management-page__primary" href="#inquiry">
+              <a className="property-management-page__primary" href="/contact">
                 Ask About Property Management
               </a>
             </div>

@@ -31,7 +31,7 @@ const heroSlides = [
     },
     secondaryAction: {
       label: 'Browse Properties',
-      href: '#properties',
+      href: '/properties',
       icon: House,
     },
     image:
@@ -53,7 +53,7 @@ const heroSlides = [
     },
     secondaryAction: {
       label: 'How We Sell',
-      href: '#services',
+      href: '/services',
       icon: ArrowRight,
     },
     image:
@@ -75,7 +75,7 @@ const heroSlides = [
     },
     secondaryAction: {
       label: 'Management Services',
-      href: '#services',
+      href: '/services',
       icon: ArrowRight,
     },
     image:
@@ -97,7 +97,7 @@ const heroSlides = [
     },
     secondaryAction: {
       label: 'Explore Neighborhoods',
-      href: '#properties',
+      href: '/properties',
       icon: ArrowRight,
     },
     image:

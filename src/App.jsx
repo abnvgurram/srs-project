@@ -1,4 +1,6 @@
+import { useEffect } from 'react'
 import AgentSection from './components/Agent/AgentSection.jsx'
+import AboutUsSection from './components/AboutUs/AboutUsSection.jsx'
 import BlogSection from './components/Blog/BlogSection.jsx'
 import CtaSection from './components/Cta/CtaSection.jsx'
 import InquirySection from './components/Inquiry/InquirySection.jsx'
@@ -9,11 +11,28 @@ import HeroSection from './components/Hero/HeroSection.jsx'
 import PropertiesSection from './components/Properties/propertiesSection/PropertiesSection.jsx'
 import ServicesSection from './components/Services/ServicesSection.jsx'
 import TestimonialsSection from './components/Testimonials/TestimonialsSection.jsx'
-import WhySection from './components/Why/WhySection.jsx'
 import useSiteSections from './context/siteSections/useSiteSections.js'
+import { getHomeSectionIdFromPath } from './utils/siteNavigation.js'
 
 function App({ currentPath = '/' }) {
   const { sectionVisibility } = useSiteSections()
+
+  useEffect(() => {
+    const sectionId = getHomeSectionIdFromPath(currentPath)
+
+    if (!sectionId) return undefined
+
+    const timeoutId = window.setTimeout(() => {
+      document.getElementById(sectionId)?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+    }, 80)
+
+    return () => {
+      window.clearTimeout(timeoutId)
+    }
+  }, [currentPath])
 
   return (
     <div className="app-shell">
@@ -23,7 +42,7 @@ function App({ currentPath = '/' }) {
       {sectionVisibility.agent && <AgentSection />}
       {sectionVisibility.services && <ServicesSection />}
       {sectionVisibility.properties && <PropertiesSection />}
-      {sectionVisibility.why && <WhySection />}
+      {sectionVisibility['about-us'] && <AboutUsSection />}
       {sectionVisibility.testimonials && <TestimonialsSection />}
       {sectionVisibility.blog && <BlogSection />}
       {sectionVisibility.cta && <CtaSection />}

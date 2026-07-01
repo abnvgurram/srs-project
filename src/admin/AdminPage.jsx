@@ -13,7 +13,7 @@ import Metrics from './metrics/Metrics.jsx'
 import Properties from './properties/Properties.jsx'
 import Services from './services/Services.jsx'
 import Testimonials from './testimonials/Testimonials.jsx'
-import Why from './why/Why.jsx'
+import AboutUs from './aboutUs/AboutUs.jsx'
 import {
   Bot,
   BriefcaseBusiness,
@@ -94,10 +94,10 @@ const adminSections = [
     Component: Services,
   },
   {
-    id: 'why',
-    label: 'Why Us',
+    id: 'about-us',
+    label: 'About Us',
     icon: Sparkles,
-    Component: Why,
+    Component: AboutUs,
   },
   {
     id: 'blog',

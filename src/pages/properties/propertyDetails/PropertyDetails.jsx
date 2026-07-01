@@ -239,7 +239,7 @@ function PropertyDetails({ currentPath }) {
             <div className="property-detail-page__breadcrumbs">
               <a href="/">Home</a>
               <span>/</span>
-              <a href="/#properties">Properties</a>
+              <a href="/properties">Properties</a>
               {listing ? (
                 <>
                   <span>/</span>
@@ -256,7 +256,7 @@ function PropertyDetails({ currentPath }) {
                 <p>
                   This property is no longer available or the listing path is invalid.
                 </p>
-                <a className="property-detail-page__back" href="/#properties">
+                <a className="property-detail-page__back" href="/properties">
                   Back to Properties
                 </a>
               </div>
